@@ -351,7 +351,7 @@
       text: 'From: ' + m3.from + '\nSubject: ' + m3.subject + '\n\n' + m3.body[1] + ' ' + m3.body[2],
       pile: 'remove',
       accept: ['remove', 'never'],
-      reason: 'Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer\'s policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.'
+      reason: 'Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address and the business with stand-ins such as [CUSTOMER], then put the real ones back in your reply. The order number means nothing outside your own company\'s systems, so it may stay, as it does in part 2. What would tip it to "do not paste": an employer\'s policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.'
     },
     {
       n: 4,
@@ -363,7 +363,8 @@
           return [r.order, r.date, r.business, r.contact, r.phone, r.email, r.amount, r.status].join(' | ');
         }).join('\n') + '\n(' + (orderRows.length - 2) + ' more rows)',
       pile: 'remove',
-      reason: 'The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that.'
+      accept: ['remove', 'never'],
+      reason: 'Two piles are defensible. The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer: part 2 of this exercise does exactly that. What would tip it to "do not paste": an employer\'s policy that keeps all customer data out of public tools, whatever is removed.'
     },
     {
       n: 5,
@@ -385,14 +386,14 @@
     {
       n: 7,
       title: 'Our customer contact list: every contact name with a mobile number',
-      purpose: 'To ask for help sorting it by area.',
+      purpose: 'To ask for help putting it into one tidy format for a new phone system.',
       text: customers.slice(1, 4).map(function (c) { return c.contact + ', ' + c.business + ', ' + c.phone; }).join('\n') + '\n(' + (customers.length - 3) + ' more rows)',
       pile: 'never',
-      reason: 'The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself.'
+      reason: 'The list is nothing but personal details: take them out and nothing is left to work on. To learn how to tidy such a list, paste two rows you have made up, then do the real list yourself.'
     },
     {
       n: 8,
-      title: 'The terms of a signed supply contract with our largest customer (invented)',
+      title: 'The terms of a signed supply contract with an events customer (invented)',
       purpose: 'To ask what a penalty clause means for us.',
       text: 'Supply agreement with Juniper Hall Events. Prices fixed for 12 months. An 8% discount in any month above $5,000.00. A penalty of $250.00 for each late delivery. Both parties keep these terms confidential.',
       pile: 'never',
@@ -416,6 +417,9 @@
       situation: 'I work at ' + F.supplier + '. Our ' + F.managerRole + ', ' + F.manager + ', has to decide today on a customer\'s request for a credit. She has not read the e-mails and has two minutes to read a summary.',
       material: ['thread'],
       task: 'Summarise the e-mail thread above for ' + F.manager.split(' ')[0] + '.',
+      // The last sentence of the form is the line that makes the answer checkable. In exercise 2 the
+      // participant writes it; the recorded answer was made with this exact line in the request.
+      citeLine: 'After each fact, put the number of the message it comes from in brackets, like this: (msg 2).',
       form: 'At most 120 words, as short bullet points. Include the order number, the invoice number, what went wrong, the amount in question, and what we did and did not promise. After each fact, put the number of the message it comes from in brackets, like this: (msg 2).',
       limits: 'Use only the e-mails. Do not guess, and do not work out figures that are not in them. Where the customer says something we have not checked, write "' + F.contactFirst + ' says". If something is not in the e-mails, write "not stated".'
     },
@@ -456,30 +460,30 @@
       n: 2, objective: 'O1',
       text: 'In exercise 1, the reply to the one-line request promised the customer a corrected invoice that nobody had decided on. Which line in a brief would most likely have prevented that?',
       options: [
-        { text: '"Be professional."', why: 'A promise can be perfectly professional in tone. This line says nothing about what may be promised.' },
-        { text: '"Do not promise anything the thread and the policy do not already commit us to: no credit, no change to the invoice, no delivery day."', correct: true, why: 'It names exactly what not to do, and where the boundary comes from, so the assistant can word the reply around it.' },
-        { text: '"Keep it short."', why: 'A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.' },
-        { text: '"Write in a friendly tone."', why: 'A friendly tone makes a promise more likely, not less.' }
+        { text: '"Be professional, and keep a calm and friendly tone."', why: 'A promise can be perfectly professional and friendly. This line says nothing about what may be promised.' },
+        { text: '"Do not promise anything the e-mails and the policy do not."', correct: true, why: 'It names what not to do, and where the boundary comes from, so the assistant can word the reply around it.' },
+        { text: '"Keep it under 150 words, in three short paragraphs."', why: 'A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.' },
+        { text: '"Use the e-mails below, and reply only to her very last message."', why: 'That is the material and the task. The recorded reply had both, and still made the promise.' }
       ]
     },
     {
       n: 3, objective: 'O2',
       text: 'An assistant\'s summary says: "The customer asks for a credit of ' + money(F.creditAsked + 9) + '." You cannot find that figure anywhere in the thread. What do you do first?',
       options: [
-        { text: 'Find the figures in the thread that the credit is made of, and add them yourself.', correct: true, why: 'The thread is the authority. If the parts are there, you can rebuild the total and see whether it is right: here it is not.' },
-        { text: 'Keep it: the assistant can add up.', why: 'Assistants can and do get sums wrong, or add figures that were never meant to be added. A figure you cannot find is a figure you have not checked.' },
-        { text: 'Delete the whole summary and write it yourself.', why: 'One wrong figure does not make the rest worthless. Check and fix it, and keep what is right.' },
-        { text: 'Ask the assistant whether it is sure.', why: 'It will often say yes, or give you a different number with the same confidence. Only the material can settle it.' }
+        { text: 'Find the figures the credit is made of, and add them yourself.', correct: true, why: 'The thread is the authority. If the parts are there, you can rebuild the total and see whether it is right: here it is not.' },
+        { text: 'Keep it: assistants add up well, and the sum looks about right.', why: 'Assistants can and do get sums wrong, or add figures that were never meant to be added. A figure you cannot find is a figure you have not checked.' },
+        { text: 'Delete the whole summary and write a new one from the start.', why: 'One wrong figure does not make the rest worthless. Check and fix it, and keep what is right.' },
+        { text: 'Ask the assistant whether it is sure, and keep it if it says yes.', why: 'It will often say yes, or give you a different number with the same confidence. Only the material can settle it.' }
       ]
     },
     {
       n: 4, objective: 'O2',
       text: 'Which line in a request makes the answer quickest to check?',
       options: [
-        { text: '"Be accurate."', why: 'Every assistant already tries to be. This line gives you nothing to check with.' },
-        { text: '"Double-check your work."', why: 'It may change the wording, but you still cannot see where any figure came from.' },
-        { text: '"After each fact, write the number of the message it comes from."', correct: true, why: 'Now each figure points to the place to look. Checking takes seconds per fact, and a fact with no source stands out.' },
-        { text: '"Use bullet points."', why: 'Bullet points are easier to read, not easier to check. You would still have to search the thread for every figure.' }
+        { text: '"Be accurate, and check each figure carefully."', why: 'Every assistant already tries to be. This line gives you nothing to check with.' },
+        { text: '"Double-check your work before you answer."', why: 'It may change the wording, but you still cannot see where any figure came from.' },
+        { text: '"After each fact, name the message it is from."', correct: true, why: 'Now each figure points to the place to look. Checking takes seconds per fact, and a fact with no source stands out.' },
+        { text: '"Use short bullet points, most important first."', why: 'Bullet points are easier to read, not easier to check. You would still have to search the thread for every figure.' }
       ]
     },
     {
@@ -487,28 +491,28 @@
       text: 'The thread says ' + F.cupsMissing + ' cartons were missing and ' + F.cupsCrushed + ' arrived crushed. A summary says: "' + F.cupsCrushed + ' cartons were missing or damaged." What is wrong?',
       options: [
         { text: 'It merges two groups: ' + (F.cupsMissing + F.cupsCrushed) + ' cartons were affected, not ' + F.cupsCrushed + '.', correct: true, why: 'The same number appears twice with two meanings. Merging them halves the problem the manager has to decide on.' },
-        { text: 'Nothing: ' + F.cupsCrushed + ' is in the thread.', why: 'A figure can be in the thread and still be used wrongly. Here it counts two different groups of cartons.' },
-        { text: 'The number should be written in words.', why: 'How a number is written does not make it right or wrong. What it counts does.' },
-        { text: 'It breaks the policy.', why: 'A summary for your own manager breaks no rule of the policy. The problem is the figure, not a rule.' }
+        { text: 'Nothing: ' + F.cupsCrushed + ' is in the thread, so the figure must be right.', why: 'A figure can be in the thread and still be used wrongly. Here it counts two different groups of cartons.' },
+        { text: 'The figure should be written out in words.', why: 'How a number is written does not make it right or wrong. What it counts does.' },
+        { text: 'It breaks a rule of the returns policy.', why: 'A summary for your own manager breaks no rule of the policy. The problem is the figure, not a rule.' }
       ]
     },
     {
       n: 6, objective: 'O3',
       text: 'A drafted reply says: "I can confirm that we will cover the ' + money(F.localPurchase) + ' you spent at the cash-and-carry." Every figure in it is correct. Why could it still be wrong?',
       options: [
-        { text: 'It is too short.', why: 'Length is not the problem. One short sentence can commit the company to a cost.' },
-        { text: 'The amount should be rounded.', why: 'Rounding would make the figure less exact, and the promise would still break the policy.' },
-        { text: 'Nothing: the customer asked for it.', why: 'What a customer asks for and what you may promise are different things. The reply must follow the policy.' },
-        { text: 'It promises something the policy says must never be promised by e-mail.', correct: true, why: 'Paying a customer\'s other costs needs the ' + F.managerRole + '\'s agreement in writing (policy, rules 5 and 6). Correct figures do not make a promise allowed.' }
+        { text: 'It is too short to explain the decision.', why: 'Length is not the problem. One short sentence can commit the company to a cost.' },
+        { text: 'The amount should be rounded to a whole number.', why: 'Rounding would make the figure less exact, and the promise would still break the policy.' },
+        { text: 'Nothing: the customer asked for exactly that.', why: 'What a customer asks for and what you may promise are different things. The reply must follow the policy.' },
+        { text: 'It promises a payment the policy rules out.', correct: true, why: 'Paying a customer\'s other costs needs the ' + F.managerRole + '\'s agreement in writing (policy, rules 5 and 6). Correct figures do not make a promise allowed.' }
       ]
     },
     {
       n: 7, objective: 'O4',
       text: 'You want help writing a kind message to an employee who is coming back after an injury. What is the safest way to ask a public assistant?',
       options: [
-        { text: 'Paste the doctor\'s note, so the assistant has every detail.', why: 'Health information about a person should not go into a public assistant, and the message does not need it.' },
-        { text: 'Paste the note with the name taken out.', why: 'In a small team, everyone knows who has been off injured. Taking out the name does not hide who it is.' },
-        { text: 'Describe the situation in general words, with no name and no health details, and add the personal part yourself.', correct: true, why: 'You get the help with the wording, and nothing about the person leaves your computer.' },
+        { text: 'Paste the doctor\'s note, so it has every detail.', why: 'Health information about a person should not go into a public assistant, and the message does not need it.' },
+        { text: 'Paste the note, but with the employee\'s name taken out first.', why: 'In a small team, everyone knows who has been off injured. Taking out the name does not hide who it is.' },
+        { text: 'Ask in general words, with no name or health details.', correct: true, why: 'You get the help with the wording, and nothing about the person leaves your computer. Add the personal part yourself.' },
         { text: 'Do not use an assistant for anything about staff.', why: 'That is stricter than it needs to be. You can get good help without giving any personal facts.' }
       ]
     },
@@ -516,29 +520,29 @@
       n: 8, objective: 'O4',
       text: 'Your manager asks which customers ordered most this quarter. You prepare the orders table for an assistant. What do you keep?',
       options: [
-        { text: 'Every column: the assistant will ignore what it does not need.', why: 'It may ignore it, but it has still received it. What you do not paste cannot leak.' },
-        { text: 'The amounts, the dates and a stand-in for each customer, with the key to the stand-ins kept on your own computer.', correct: true, why: 'That is everything the question needs. You map the answer back yourself. And your employer\'s own policy comes first: if it says no customer data at all, follow it.' },
-        { text: 'Only the names and phone numbers.', why: 'Those are the personal details, and the question does not need them at all.' },
-        { text: 'Nothing: this question can never be asked.', why: 'It can, once the table holds nothing personal. The stand-ins make that possible.' }
+        { text: 'Every column: it will ignore what it does not need.', why: 'It may ignore it, but it has still received it. What you do not paste cannot leak.' },
+        { text: 'The amounts, the dates and a stand-in for each customer.', correct: true, why: 'That is everything the question needs. The key to the stand-ins stays on your own computer, and you map the answer back yourself. Your employer\'s own policy comes first: if it says no customer data at all, follow it.' },
+        { text: 'The names and phone numbers, so it can tell customers apart.', why: 'Those are the personal details, and the question does not need them: a stand-in tells customers apart just as well.' },
+        { text: 'Nothing: this question can never be asked safely.', why: 'It can, once the table holds nothing personal. The stand-ins make that possible.' }
       ]
     },
     {
       n: 9, objective: 'O5',
       text: 'A colleague\'s template begins: "Summarise the thread below for ' + F.manager + ' about order ' + F.orderNo + ', in at most 120 words." What should change before others reuse it?',
       options: [
-        { text: 'Nothing: it works.', why: 'It worked once, for one case. The next person would send the wrong name and the wrong order number.' },
-        { text: 'Take out the word limit.', why: 'The word limit is part of the form, and it is the same every time. Keep it.' },
-        { text: 'Replace the person and the order number with named placeholders, such as [MANAGER] and [ORDER NUMBER].', correct: true, why: 'A named placeholder tells the next person exactly what to put there, and a check can find any that were left unfilled.' },
-        { text: 'Make it longer, so it covers more cases.', why: 'Longer is not more reusable. What makes it reusable is taking the case\'s values out.' }
+        { text: 'Nothing: it worked well the first time.', why: 'It worked once, for one case. The next person would send the wrong name and the wrong order number.' },
+        { text: 'Take out the word limit, to suit longer threads.', why: 'The word limit is part of the form, and it is the same every time. Keep it.' },
+        { text: 'Put named placeholders for the person and order.', correct: true, why: 'A named placeholder, such as [MANAGER] or [ORDER NUMBER], tells the next person exactly what to put there, and a check can find any that were left unfilled.' },
+        { text: 'Make it longer, so that it covers more kinds of case.', why: 'Longer is not more reusable. What makes it reusable is taking the case\'s values out.' }
       ]
     },
     {
       n: 10, objective: 'O5',
       text: 'Someone used a template for a new customer, and the summary they got back mentions a customer from an old case. What most likely happened?',
       options: [
-        { text: 'The assistant invented a customer.', why: 'Possible, but the more likely cause is in the request itself. Check the template first.' },
-        { text: 'The template had too many placeholders.', why: 'Placeholders cannot add a name: they are the places where a name is meant to go.' },
-        { text: 'The new e-mails were too long.', why: 'Long material can cause other problems, but it would not bring in a customer from an old case.' },
+        { text: 'The assistant invented a customer from nowhere.', why: 'Possible, but the more likely cause is in the request itself. Check the template first.' },
+        { text: 'The template had too many placeholders in it.', why: 'Placeholders cannot add a name: they are the places where a name is meant to go.' },
+        { text: 'The new e-mails were too long for the assistant to read.', why: 'Long material can cause other problems, but it would not bring in a customer from an old case.' },
         { text: 'A value from the old case was left in the template.', correct: true, why: 'A name or a number left in a template goes out with every use. That is why the template check looks for values of the old case.' }
       ]
     }

@@ -86,17 +86,34 @@ test('nothing claims the workshop was taught, or reports a class, a participant 
   assert.match(raw('docs/HOW-THIS-WAS-TESTED.md'), /\nThis kit has not been taught to a class of people\.\n/);
 });
 
-test('every relative link in the documents leads to a file that exists (the owed screenshot apart)', () => {
-  const owed = ['docs/img/workbook.png'];
+test('every relative link in the documents leads to a file that exists', () => {
   for (const f of files.filter((x) => x.endsWith('.md'))) {
     for (const m of raw(f).matchAll(/\]\(([^)\s]+)\)/g)) {
       const target = m[1].split('#')[0];
       if (!target || /^(https?:|mailto:)/.test(target)) { continue; }
       const rel = path.posix.normalize(path.posix.join(path.posix.dirname(f), target)).replace(/\/$/, '');
-      if (owed.includes(rel)) { continue; }
       assert.ok(lib.exists(rel), f + ' links to ' + m[1]);
     }
   }
+});
+
+test('every image a page embeds exists in the repository', () => {
+  let embedded = 0;
+  for (const f of docs) {
+    const t = raw(f);
+    const sources = [...t.matchAll(/!\[[^\]]*\]\(([^)\s]+)\)/g), ...t.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g)].map((m) => m[1]);
+    for (const src of sources) {
+      // The one remote image is the CI badge, which GitHub draws from the workflow's last run.
+      if (src === 'https://github.com/evgenybl/practical-ai-workshop-kit/actions/workflows/ci.yml/badge.svg' && f === 'README.md') { continue; }
+      embedded++;
+      assert.ok(!/^(https?:|\/\/)/.test(src), f + ' embeds a remote image: ' + src);
+      if (/^data:/.test(src)) { continue; }
+      const rel = path.posix.normalize(path.posix.join(path.posix.dirname(f), src));
+      assert.ok(lib.exists(rel), f + ' embeds ' + src + ', which is not in the repository');
+    }
+  }
+  // Today no page embeds a picture: the README's screenshot comes back only when the file exists.
+  assert.equal(embedded, 0);
 });
 
 // ---- pasted output ----------------------------------------------------------------
@@ -131,25 +148,88 @@ function evidenceTable(f) {
   const start = t.indexOf('| Kind of evidence |');
   return t.slice(start, t.indexOf('\n\n', start));
 }
+const evidenceRows = () => evidenceTable('docs/HOW-THIS-WAS-TESTED.md').split('\n');
+const evidenceState = (kind) => evidenceRows().find((r) => r.startsWith('| ' + kind + ' |')).split('|').slice(-2, -1)[0].trim();
 
 test('the README repeats the evidence table of How this kit was tested, word for word', () => {
   const a = evidenceTable('README.md');
-  assert.ok(a.split('\n').length === 7, 'five kinds of evidence');
+  assert.equal(a.split('\n').length, 8, 'six kinds of evidence');
   assert.equal(a, evidenceTable('docs/HOW-THIS-WAS-TESTED.md'));
 });
 
-test('the evidence table says what is owed: the new-user test and the review are not yet done; teaching is not done', () => {
-  const rows = evidenceTable('docs/HOW-THIS-WAS-TESTED.md').split('\n');
-  const state = (kind) => rows.find((r) => r.startsWith('| ' + kind)).split('|').slice(-2, -1)[0].trim();
-  assert.match(state('A new-user test by an AI agent'), /^Not yet done/);
-  assert.match(state('An independent review'), /^Not yet done/);
-  assert.match(state('Taught to a class of people'), /^Not done/);
-  assert.match(state('Recorded answers through the checker'), /^Done/);
+test('the evidence table says what is done, what was done once, and what is owed', () => {
+  assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
+  assert.match(evidenceState('A new-user test by an AI agent'), /^Done once, at commit 5059ae2, by a separate AI agent\..*write-up .* is owed/);
+  assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent\..*write-up .* is owed/);
+  assert.equal(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), 'Not yet done.');
+  assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
+  assert.match(evidenceState('Automated tests'), /CI: run 45300468336 passed on Linux and Windows with Node 22 and 24, at commit 5059ae2; the commits since have not been through CI\./);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
-    assert.match(section, /not yet done/i, h);
+    assert.match(section, /the write-up is owed/, h);
   }
+  const browser = how.slice(how.indexOf('## Opened in a real browser'), how.indexOf('\n---', how.indexOf('## Opened in a real browser')));
+  assert.match(browser, /\*\*State: not yet done\.\*\*/);
+});
+
+test('the test count in the evidence table is the one the pasted test run printed', () => {
+  // Only the number of tests is compared: the pasted run is the one before this run, so its pass and
+  // fail lines are checked by reading them, not by this test.
+  const m = evidenceState('Automated tests').match(/^Done locally: (\d+) tests, (\d+) pass, 0 fail/);
+  assert.ok(m, 'the count is in the table');
+  assert.equal(m[1], m[2]);
+  const run = pastedBlocks('docs/HOW-THIS-WAS-TESTED.md').find((b) => /^node --test/.test(b.command)).text;
+  const pasted = run.match(/^# tests (\d+)$/m);
+  assert.ok(pasted, 'the pasted run has its count');
+  assert.equal(m[1], pasted[1]);
+});
+
+test('the docs say that the browser enforces "sends nothing", and that this awaits the real-browser pass', () => {
+  const how = raw('docs/HOW-THIS-WAS-TESTED.md');
+  assert.ok(how.includes("connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'"));
+  assert.match(how, /so "sends nothing" is enforced by the browser/);
+  assert.match(how, /awaits the real-browser pass/);
+});
+
+// ---- what is claimed ------------------------------------------------------------------
+
+test('the README says what is tested, and what a test cannot prove', () => {
+  const readme = raw('README.md');
+  assert.doesNotMatch(readme, /Every claim on this page is backed/);
+  assert.match(readme, /\*\*What is tested:\*\*/);
+  assert.match(readme, /\*\*What no test can prove:\*\* whether the teaching works, since the kit has not been taught; how the page behaves in a real browser, which is owed; and where the recorded answers came from, which rests on the author's record/);
+});
+
+test('the README claims no client, no session run and no use by anyone', () => {
+  const readme = raw('README.md');
+  for (const re of [/\bclients?\b/i, /\btrusted by\b/i, /\bused (by|in|at) \d/i, /\b\d+ (sessions|workshops|companies|teams|organi[sz]ations)\b/i,
+    /\b(has|have) been (run|delivered|taught|used|piloted)\b/i, /\b(sessions?|workshops?) (run|held|delivered) (for|at|with)\b/i]) {
+    assert.doesNotMatch(readme, re);
+  }
+});
+
+test('the README and every instructor page say the kit has not been taught, and that the timings are planned', () => {
+  for (const f of ['README.md', ...lib.listFiles('instructor', (x) => x.endsWith('.md'))]) {
+    const t = raw(f);
+    assert.match(t, /has not (yet )?been taught/, f);
+    assert.match(t, /\bplanned\b/, f);
+  }
+});
+
+test('the recordings\' origin is stated as the author\'s record, with what it is not', () => {
+  for (const f of ['recorded/README.md', 'docs/HOW-THIS-WAS-TESTED.md', 'instructor/guide.md']) {
+    const t = raw(f);
+    assert.match(t, /according to the author's record/i, f);
+    assert.match(t, /own system prompt/, f);
+    assert.match(t, /not a plain chat/, f);
+  }
+  for (const f of ['recorded/README.md', 'docs/HOW-THIS-WAS-TESTED.md']) {
+    assert.match(raw(f), /holds no transcript/, f);
+    assert.match(raw(f), /not changed since it was saved/, f);
+  }
+  assert.match(raw('README.md'), /no chat product was tried/);
+  for (const f of docs) { assert.doesNotMatch(raw(f), /works with any (chat )?assistant/i, f); }
 });
 
 // ---- the planned minutes -------------------------------------------------------------
@@ -164,12 +244,56 @@ test('the run sheet runs from 0:00 to 1:30 with no gap and no overlap', () => {
   assert.equal(rows[rows.length - 1][1], 90);
 });
 
-test('the planned minutes agree: workbook, run sheet and README, adding up to 90', () => {
+const FLOW = [8, 18, 20, 15, 20, 9];
+
+test('the planned minutes agree: guide, run sheet, README and workbook, adding up to 90, with exercise 5 as homework', () => {
   const blocks = (f) => [...raw(f).matchAll(/^\|[^|\n]+\|(?:[^|\n]+\|)? (\d+) \|$/gm)].map((m) => Number(m[1]));
-  const sheet = blocks('instructor/run-sheet.md');
-  assert.deepEqual(sheet, [5, 15, 20, 12, 20, 8, 10]);
-  assert.equal(sheet.reduce((a, b) => a + b, 0), 90);
-  assert.deepEqual(blocks('README.md'), sheet);
+  assert.equal(FLOW.reduce((a, b) => a + b, 0), 90);
+  assert.deepEqual(blocks('instructor/run-sheet.md'), FLOW);
+  assert.deepEqual(blocks('README.md'), FLOW);
+  const guide = raw('instructor/guide.md');
+  const inGuide = [...guide.matchAll(/^## .*\((\d+) minutes\)$|^\*\*Planned: (\d+) minutes/gm)].map((m) => Number(m[1] || m[2]));
+  assert.deepEqual(inGuide, FLOW);
   const page = [...raw('participant/workbook/index.html').matchAll(/Planned: (\d+) minutes/g)].map((m) => Number(m[1]));
-  assert.deepEqual(page, sheet.slice(1));
+  assert.deepEqual(page, FLOW.slice(1));
+  // Exercise 5 is homework everywhere, with no minutes in the session.
+  assert.match(guide, /^## Exercise 5: Make it reusable \(homework\)$/m);
+  assert.match(raw('instructor/run-sheet.md'), /Exercise 5, \*Make it reusable\*, is homework/);
+  assert.match(raw('README.md'), /^\| 5\. Make it reusable \| Homework: .* \| Homework \|$/m);
+  assert.match(raw('participant/workbook/index.html'), /<p class="meta">Homework, about eight minutes\./);
+});
+
+test('each variant adds up to its length', () => {
+  const v = raw('instructor/variants.md');
+  const section = (h) => v.slice(v.indexOf(h), v.indexOf('\n---', v.indexOf(h)) === -1 ? undefined : v.indexOf('\n---', v.indexOf(h)));
+  for (const [h, total] of [['## 60 minutes', 60], ['## Half a day', 210], ['## Online', 90]]) {
+    const rows = [...section(h).matchAll(/^\| [^|\n]+ \| (\d+) \|/gm)].map((m) => Number(m[1]));
+    assert.equal(rows.reduce((a, b) => a + b, 0), total, h);
+    assert.ok(section(h).includes('| **' + total + '** |'), h);
+  }
+});
+
+test('each exercise has one debrief question, the same in the guide and the run sheet', () => {
+  const guide = raw('instructor/guide.md');
+  const sheet = raw('instructor/run-sheet.md');
+  const questions = [...guide.matchAll(/^- \*\*Debrief question:\*\* \*"([^"]+)"\*/gm)].map((m) => m[1]);
+  assert.equal(questions.length, 5, 'one for each of the five exercises');
+  assert.equal((guide.match(/Debrief question/g) || []).length, 5);
+  for (const q of questions) { assert.ok(sheet.includes('"' + q + '"'), q); }
+  assert.doesNotMatch(guide, /Opening question|Short debrief/);
+});
+
+test('the instructor is told how people keep the case in view, and the page says it too', () => {
+  for (const f of ['instructor/guide.md', 'instructor/run-sheet.md', 'participant/workbook/index.html']) {
+    const t = raw(f);
+    assert.match(t, /second window/, f);
+    assert.match(t, /printed/, f);
+  }
+});
+
+test('the single-file workbook is what is sent by default', () => {
+  assert.match(raw('instructor/guide.md'), /\*\*The single-file workbook\*\*, `participant\/workbook-single-file\.html`, on each laptop\. Send it the day before\./);
+  assert.match(raw('instructor/variants.md'), /In every variant, send the single-file workbook/);
+  assert.match(raw('participant/README.md'), /\*\*To start, open `workbook-single-file\.html` by double-clicking it\.\*\*/);
+  assert.match(raw('instructor/when-things-go-wrong.md'), /### 12\. The page shows only a yellow line: "The workbook did not load"/);
 });

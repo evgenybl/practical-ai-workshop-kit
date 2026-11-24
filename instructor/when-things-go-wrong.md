@@ -1,6 +1,6 @@
 # When things go wrong
 
-Practical fixes for a room that does not go to plan. Each entry says what you will see, what to do now, and, where it helps, how to turn it into part of the lesson. Read it once before the session; most fixes take a minute if you know them in advance.
+Practical fixes for a room that does not go to plan. Each entry says what you will see, what to do now, and, where it helps, how to turn it into part of the lesson. Read it once before the session; most fixes take a minute if you know them in advance. This kit has not yet been taught to a class, so these are the problems its author planned for, not a record of what happened in a room.
 
 ---
 
@@ -10,7 +10,7 @@ Practical fixes for a room that does not go to plan. Each entry says what you wi
 
 **Do now:** the workbook needs no internet. Say so, and switch the whole room to the recorded answers: each exercise shows its answer directly or has a *Use the recorded answer* button. Run exercise 2 with the recorded answer for everyone, and in exercise 4, use *No assistant? Use an example answer* for the map-back.
 
-**Lesson:** nothing is lost. The skills are briefing, checking and deciding, and the recorded answers are real answers with real mistakes worth finding.
+**Lesson:** nothing is lost. The skills are briefing, checking and deciding. The recorded answers are one model's answers, with mistakes worth finding, and the two edited ones say so.
 
 ### 2. An assistant refuses, or the employer blocks it
 
@@ -24,7 +24,7 @@ Practical fixes for a room that does not go to plan. Each entry says what you wi
 
 **You see:** a summary or reply in a language other than the request's, often because the assistant follows the browser's language or an account setting.
 
-**Do now:** add one line to the Form part: "Write in English." Send again. If that does not work, use the stand-in.
+**Do now:** add one line to the Form part: "Write in English." Send again. If that does not work, use the recorded answer.
 
 **Lesson:** this is the Form part doing its job. Anything you do not state, the assistant decides for you, including the language.
 
@@ -93,16 +93,22 @@ Or pair them with someone who is stuck, if both agree.
 
 **Do now:**
 - If it opens as text in an editor: right-click `index.html`, choose *Open with*, and pick the browser.
-- If the browser blocks the folder: open `participant/workbook-single-file.html` instead. It is the same workbook in one file.
+- If the browser blocks the folder: open `participant/workbook-single-file.html` instead. It is the same workbook in one file, and the one to send by default.
 - If the laptop blocks all local pages: pair the person with a neighbour, or print the case (`participant/case/`) and the handout.
 
-### 12. Answers disappear
+### 12. The page shows only a yellow line: "The workbook did not load"
+
+**You see:** the workbook's title and a yellow line saying it did not load, with no case and no working buttons. Usually the person opened `index.html` straight from inside a compressed (zip) folder, so the browser has the page but not the files next to it.
+
+**Do now:** open `workbook-single-file.html` instead, which needs nothing next to it. Or extract the whole folder first (right-click the zip, *Extract all*), then open `workbook/index.html` from the extracted folder.
+
+### 13. Answers disappear
 
 **You see:** "I came back and everything was gone."
 
 **Do now:** the workbook keeps answers in the browser's own storage. A private window, a different browser, or a cleared browser loses them. Ask them to use a normal window. At the end, remind everyone of *Save my answers as a text file*.
 
-### 13. The checker flags something the participant is sure is right, or misses something wrong
+### 14. The checker flags something the participant is sure is right, or misses something wrong
 
 **You see:** "But that figure is right!" or "The checker said OK, but this is wrong."
 
@@ -110,23 +116,23 @@ Or pair them with someone who is stuck, if both agree.
 
 **Lesson:** this is the one idea in miniature. "The checker drafts a verdict; you check it; you decide."
 
-### 14. Different assistants give very different answers
+### 15. Different assistants give very different answers
 
 **You see:** two neighbours with quite different summaries from the same request.
 
 **Do now:** use it. Ask both to run their answer through the check and compare. Ask the room: "If two answers to the same request differ, how do you know which one to trust?" (Answer: neither, until you check them against the material.)
 
-### 15. You are running late
+### 16. You are running late
 
-**Do now:** in this order: make exercise 5 homework; give everyone the recorded answer in exercise 2; shorten the part 1 debrief in exercise 4. Never cut the debriefs of exercises 2 and 3: they carry the lesson. See the run sheet, "If you are running late".
+**Do now:** in this order: give everyone the recorded answer in exercise 2; in exercise 4, part 2, demonstrate the helper on the screen. Exercise 5 is already homework. Never cut the debriefs: they carry the lesson. See the run sheet, "If you are running late".
 
-### 16. Someone challenges the privacy key
+### 17. Someone challenges the privacy key
 
 **You see:** "At my company we paste customer data all the time," or "That's too strict."
 
 **Do now:** agree that the key is a teaching key, not legal advice, and that their employer's policy comes first, in both directions. If their employer has a contract with an assistant's provider that allows customer data, that is their policy. Then ask: "Does the question need the detail?" That test applies whatever the policy.
 
-### 17. An assistant brings in facts from outside the material
+### 18. An assistant brings in facts from outside the material
 
 **You see:** an answer that mentions the weather on the delivery day, an industry average, or a "typical" credit policy, often because the assistant searched the web or used a file from an earlier conversation.
 

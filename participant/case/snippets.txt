@@ -55,7 +55,7 @@ Fit note: Jakub Novak, warehouse. Lower back strain. Not fit for lifting over 10
 ----------
 
 Snippet 7: Our customer contact list: every contact name with a mobile number
-Why someone might paste it: To ask for help sorting it by area.
+Why someone might paste it: To ask for help putting it into one tidy format for a new phone system.
 
 Jonas Arvidsen, Copperleaf Catering, 000-000-0102
 Tessa Moreau, Bramble Lane Cafe, 000-000-0103
@@ -64,7 +64,7 @@ Ravi Castellan, North Quay Deli, 000-000-0104
 
 ----------
 
-Snippet 8: The terms of a signed supply contract with our largest customer (invented)
+Snippet 8: The terms of a signed supply contract with an events customer (invented)
 Why someone might paste it: To ask what a penalty clause means for us.
 
 Supply agreement with Juniper Hall Events. Prices fixed for 12 months. An 8% discount in any month above $5,000.00. A penalty of $250.00 for each late delivery. Both parties keep these terms confidential.

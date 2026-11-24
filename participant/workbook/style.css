@@ -51,6 +51,8 @@ button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
 .record { background: var(--note-bg); color: var(--note-text); padding: 0.4rem 0.75rem; border-radius: 4px; font-size: 0.92rem; margin: 0.5rem 0; }
 .record:empty { display: none; }
 h3.later { border-top: 1px dashed var(--line); padding-top: 1rem; }
+.session { background: var(--note-bg); color: var(--note-text); padding: 0.5rem 0.75rem; border-radius: 4px; }
+[hidden] { display: none !important; }
 
 label { display: block; font-weight: 600; margin: 0.9rem 0 0.25rem; }
 textarea, select {

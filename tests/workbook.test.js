@@ -17,7 +17,9 @@ test('the page shows the case from the data file', () => {
   const tbody = $('orders-table').children.find((c) => c.tagName === 'TBODY');
   assert.equal(tbody.children.length, CASE.orders.rows.length);
   assert.equal($('ex1-answer').textContent, REC.ex1.text);
-  assert.equal($('ex2-request').value, C.requestText('summary'));
+  // Exercise 2 starts without the line that asks for sources: the participant writes it.
+  assert.equal($('ex2-request').value, C.requestText('summary', { withoutCiteLine: true }));
+  assert.ok(!$('ex2-request').value.includes(CASE.briefs.summary.citeLine));
 });
 
 test('every [data-fact] is filled from the data file', () => {
@@ -57,7 +59,8 @@ test('exercise 2: the recorded answer is labelled with its model and date, and c
   const { $ } = openPage(html);
   $('ex2-use-recorded').click();
   assert.equal($('ex2-answer').value, REC.ex2.text);
-  assert.match($('ex2-record').textContent, new RegExp('^A real answer, exactly as it came back: ' + REC.ex2.model + ', recorded on ' + REC.ex2.recorded_on));
+  assert.ok($('ex2-record').textContent.startsWith('Recorded: one model\'s answer (' + REC.ex2.model + ', ' + REC.ex2.recorded_on + '), unchanged.'));
+  assert.match($('ex2-record').textContent, /your assistant will answer differently/);
   $('ex2-check').click();
   assert.ok($('ex2-result').textContent.startsWith(C.summaryLine(C.checkSummary(REC.ex2.text))));
 });
@@ -74,8 +77,13 @@ test('exercise 3: one radio group per numbered sentence, marked against the key'
 test('exercise 3: each answer says where it came from, and the optional answer sits under its own heading', () => {
   const { doc, $ } = openPage(html);
   const text = $('ex3-answers').textContent;
-  assert.match(text, /A real answer, exactly as it came back/);
-  assert.match(text, /A real answer, edited to plant the errors this exercise teaches/);
+  // The page says which answers are edited: every edited answer, and only those, carries the word.
+  const blocks = text.split(/(?=Answer [A-Z]Recorded|Answer [A-Z]Edited)/).filter((b) => /^Answer [A-Z]/.test(b));
+  assert.equal(blocks.length, REC.ex3.length);
+  REC.ex3.forEach((a, i) => {
+    assert.ok(blocks[i].startsWith('Answer ' + a.id + (a.kind === 'edited' ? 'Edited: no assistant wrote this.' : 'Recorded: one model')), a.id);
+  });
+  assert.ok(REC.ex3.some((a) => a.kind === 'edited') && REC.ex3.some((a) => a.kind === 'recorded'));
   assert.match(text, /For those who finish early, or as homework/);
   assert.ok(text.indexOf('For those who finish early') > text.indexOf('Answer B'));
   assert.equal(doc.querySelectorAll('[data-fact]').length > 0, true);
@@ -94,8 +102,23 @@ test('exercise 4: the stand-in helper, the check, the example answer and the map
   assert.match($('ex4-mapback-result').textContent, new RegExp(F.customer));
 });
 
+test('exercise 4: every column starts on "Choose", and nothing is prepared until each is chosen', () => {
+  const { doc, $ } = openPage(html);
+  for (const c of CASE.orders.columns) { assert.equal($('col-' + c.id).value, '', c.id); }
+  $('ex4-prepare').click();
+  assert.equal($('ex4-extract').value, '');
+  assert.match($('ex4b-result').textContent, /^Choose what to do with every column first\. Still to choose: /);
+  for (const c of CASE.orders.columns.slice(1)) { choose(doc, 'col-' + c.id, 'keep'); }
+  $('ex4-prepare').click();
+  assert.equal($('ex4-extract').value, '');
+  assert.ok($('ex4b-result').textContent.endsWith('Still to choose: ' + CASE.orders.columns[0].label + '.'));
+  $('ex4-mapback').click();
+  assert.match($('ex4-mapback-result').textContent, /^Press Prepare the extract first/);
+});
+
 test('exercise 4: keeping every column is caught before pasting', () => {
-  const { $ } = openPage(html);
+  const { doc, $ } = openPage(html);
+  for (const c of CASE.orders.columns) { choose(doc, 'col-' + c.id, 'keep'); }
   $('ex4-prepare').click();
   $('ex4b-check').click();
   assert.match($('ex4b-result').textContent, /Do not paste this yet/);
@@ -103,8 +126,9 @@ test('exercise 4: keeping every column is caught before pasting', () => {
 
 test('exercise 5: the exercise 2 request goes in the box, and is caught as not yet a template', () => {
   const { $ } = openPage(html);
+  type($('ex2-request'), C.requestText('summary'));
   $('ex5-put').click();
-  assert.equal($('ex5-template').value, C.requestText('summary'));
+  assert.equal($('ex5-template').value, $('ex2-request').value, 'the participant\'s own request goes in');
   $('ex5-check').click();
   assert.match($('ex5-result').textContent, /0 OK, 2 to look at again/);
 });
@@ -143,10 +167,13 @@ test('"Save my answers as a text file" works, and the text holds every box', () 
   const p = openPage(html);
   type(p.$('ex1-notes'), 'It promises the credit.');
   p.$('save-text').click();
-  assert.match(p.$('answers-status').textContent, /^Saved as my-workshop-answers\.txt/);
+  // A page cannot know whether the browser saved the file, so the status does not say it did.
+  assert.match(p.$('answers-status').textContent, /^Your browser was asked to save my-workshop-answers\.txt/);
+  assert.match(p.$('answers-status').textContent, /If no file appears, it was blocked/);
+  assert.doesNotMatch(p.$('answers-status').textContent, /^Saved/);
   const text = p.page.answersToText({ fields: { 'ex1-notes': 'It promises the credit.' }, choices: { 'q-2': 'B' } }, '2026-01-01 10:00');
   assert.match(text, /Saved: 2026-01-01 10:00/);
-  assert.match(text, /== Exercise 1, step 1: what is wrong with the reply ==\nIt promises the credit\./);
+  assert.match(text, /== Exercise 1, step 1: my list of problems ==\nIt promises the credit\./);
   for (const [, label] of p.page.FIELDS) { assert.ok(text.includes('== ' + label + ' =='), label); }
   assert.match(text, /== The ten questions: my answers ==\n2: B/);
 });
@@ -181,8 +208,11 @@ test('every button is a plain button, and the page declares its language and sca
   assert.match(html, /<meta name="viewport"/);
 });
 
-test('focus is visible: the stylesheet styles :focus-visible', () => {
-  assert.match(css, /:focus-visible\s*\{[^}]*outline:\s*3px/);
+test('focus is visible: the stylesheet gives :focus-visible a 3px outline, and nothing removes an outline', () => {
+  assert.match(css, /:focus-visible\s*\{[^}]*outline:\s*3px solid[^}]*\}/);
+  assert.doesNotMatch(css, /outline(-style|-width)?:\s*(none|0)\b/);
+  const widths = [...css.matchAll(/outline:\s*(\d+)px/g)].map((m) => Number(m[1]));
+  assert.ok(widths.length >= 2 && widths.every((w) => w >= 2), 'every outline is at least 2px: ' + widths.join(', '));
 });
 
 test('text and background colours have a contrast ratio of at least 4.5 to 1', () => {
@@ -203,4 +233,55 @@ test('the scripts load in order, as classic scripts', () => {
   assert.deepEqual(srcs, ['case-data.js', 'recorded-answers.js', 'checker.js', 'workbook.js']);
   assert.ok(!/type="module"/.test(html));
   for (const f of srcs) { assert.ok(!/^\s*(import|export)\s/m.test(lib.readText('participant/workbook/' + f)), f); }
+});
+
+// ---- added with the first review -----------------------------------------------------
+
+test('exercise 2: the participant adds the line that asks for sources, and the request check says so', () => {
+  const { $ } = openPage(html);
+  $('ex2-request-check').click();
+  assert.match($('ex2-request-result').textContent, /A source for every fact: I found no line that asks/);
+  type($('ex2-request'), C.requestText('summary'));
+  $('ex2-request-check').click();
+  assert.match($('ex2-request-result').textContent, /2 OK, 0 to look at again/);
+});
+
+test('exercise 1: the two buttons are numbered in the order they are meant to be pressed, and the case says who you are', () => {
+  const show = html.indexOf('id="ex1-issues-show"');
+  const run = html.indexOf('id="ex1-reply-check"');
+  assert.ok(show > 0 && run > show);
+  assert.match(html, /id="ex1-issues-show"[^>]*>1\. Show the instructor's list of problems</);
+  assert.match(html, /id="ex1-reply-check">2\. Run the checker on this reply</);
+  assert.match(html, /You are <span data-fact="staff"><\/span> \(invented\), in customer service/);
+  assert.match(html, /Write a short list, one line for each problem you find/);
+  assert.match(html, /Press the button to put the whole thread in this box; do not type a note in its place\./);
+});
+
+test('exercise 3 has a box for what the checker misses, and exercise 2 and 3 boxes are saved', () => {
+  const { $, page } = openPage(html);
+  assert.match(html, /<label for="ex3-misses">Which errors does the checker miss, and why\?<\/label>/);
+  const ids = page.FIELDS.map((f) => f[0]);
+  for (const id of ['ex2-request', 'ex3-misses']) { assert.ok(ids.includes(id), id); assert.ok($(id).hasAttribute('data-save'), id); }
+});
+
+test('a page opened without its folder says so; the warning is hidden once the scripts run', () => {
+  assert.match(html, /<p class="warn load-warning" id="load-warning">The workbook did not load: extract the whole folder first, or open the single-file copy/);
+  assert.doesNotMatch(html, /id="load-warning"[^>]*hidden/, 'the warning shows until a script hides it');
+  const { $ } = openPage(html);
+  assert.equal($('load-warning').hidden, true);
+  const single = lib.readText('participant/workbook-single-file.html');
+  assert.match(single, /id="load-warning">The workbook did not start\. It needs JavaScript/);
+});
+
+const CSP = '<meta http-equiv="Content-Security-Policy" content="connect-src \'none\'; img-src data:; media-src \'none\'; frame-src \'none\'; object-src \'none\'; form-action \'none\'">';
+
+test('both copies carry the content security policy, which blocks sending and leaves the page\'s own scripts and style alone', () => {
+  for (const f of ['participant/workbook/index.html', 'participant/workbook-single-file.html']) {
+    const page = lib.readText(f);
+    assert.ok(page.includes(CSP), f);
+    assert.equal(page.split('Content-Security-Policy').length, 2, f + ': one policy only');
+    // No directive that would block the scripts and style the page loads from its folder or holds inline.
+    assert.doesNotMatch(page.match(/content="connect-src[^"]*"/)[0], /default-src|script-src|style-src/, f);
+    assert.ok(page.indexOf(CSP) < page.indexOf('<script'), f + ': the policy comes before any script');
+  }
 });

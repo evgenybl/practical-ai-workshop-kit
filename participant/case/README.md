@@ -1,6 +1,6 @@
 # The case, as plain files
 
-These files hold the same case as the workbook, for printing or for attaching to an assistant. Everything in them is invented.
+These files hold the same case as the workbook: print the thread and the policy to keep them in view during the session, or attach them to an assistant. Everything in them is invented.
 
 | File | What it is |
 |---|---|

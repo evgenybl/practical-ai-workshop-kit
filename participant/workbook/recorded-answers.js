@@ -17,16 +17,16 @@
       "in_session": true,
       "text": "**Subject:** Re: Order SO-20417 has not arrived - still waiting\n\nHi Mira,\n\nYou are right, and I am sorry. I told you I would confirm a delivery day for the missing cartons by Friday 7 March, and I did not. You should have heard from me, and I should not have let that date pass in silence.\n\n**The 6 missing cartons.** [Tom: confirm the delivery day and time with our transport team before sending, and replace this line with it. If no date is set yet, say so and give the date by which you will confirm it.]\n\n**Invoice INV-7731.** You were billed for the full order, including the 6 cartons that never left our warehouse. [Billing: confirm the corrected invoice amount and when it will be issued.] We will issue a corrected invoice that removes those cartons.\n\n**The damaged cartons.** Thank you for the photos. They are clear, and I have them with your request. The 6 damaged cartons come to $219.00 at $36.50 a carton, and that credit is with our operations manager, Dana Liu. I have also sent her your receipt for the $312.00 you spent on cups at the cash-and-carry, so she has the full request in front of her. I cannot approve the $531.00 myself, and I do not want to promise an amount before she has decided. Dana will give you her decision by [date, to be confirmed by Dana before sending].\n\nI know the Saturday job has already been affected, and I am sorry for the trouble this has caused your business. If you need anything else from me in the meantime, reply to this email and I will answer the same day.\n\nBest regards,\nTom Becker\nCustomer service, Larkfield Wholesale\n\n---\n\nBefore sending, check these points:\n\n- The three bracketed items are facts I do not have: the delivery day for the 6 missing cartons, the corrected invoice amount, and Dana Liu's decision date. Do not send with them still in brackets.\n- The $219.00 figure is correct (6 \u00d7 $36.50). The $531.00 total is Mira's request, and the thread does not show that anyone at Larkfield has agreed to any part of it.\n- The apology covers the missed Friday confirmation, which is the one thing Larkfield clearly committed to and did not do.\n- I have not sent this. Mira's deadline is \"by Friday\" (14 March), so Dana's decision date needs to be settled before this goes out.",
       "issues": [
-        "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
-        "It says \"I have also sent her your receipt\". Nobody has: in message 4, Tom sent the operations manager the photos and the request; the receipt arrived only in message 5.",
+        "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" No one in the thread offered that, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
+        "It says \"I have also sent her your receipt\". Nothing in the thread says anyone has: in message 4, Tom sent the operations manager the photos and the request, and the receipt arrived only in message 5.",
         "It promises an answer \"the same day\" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.",
-        "It commits the operations manager to a decision by a date (\"Dana will give you her decision by [date ...]\"): a promise made on someone else's behalf.",
-        "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.",
-        "Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the $531.00, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
+        "It promises a decision from the operations manager by a date: \"Dana will give you her decision by [date, to be confirmed by Dana before sending].\" The bracket asks for the date to be confirmed, but the promise that she will decide by then is made on her behalf.",
+        "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that an e-mail program may show as they are.",
+        "Its own notes under the line are useful, and incomplete. They list the three gaps, and say that the thread does not show anyone agreeing to any part of the $531.00. But they treat the corrected invoice as settled, asking only for its amount, and they say nothing about the receipt the reply says was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
       ],
       "strengths": [
         "It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.",
-        "Its figures are right, and it does not promise the credit: it says the amount is the operations manager's decision."
+        "Its figures are right, and it does not promise the credit: it says it cannot approve the $531.00 itself, and that the operations manager will decide."
       ]
     },
     "ex2": {
@@ -46,7 +46,7 @@
       ],
       "strengths": [
         "It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.",
-        "It keeps the two groups of 6 apart, cites a message for every fact, and writes \"Not stated\" where the thread is silent, as the request asked."
+        "It keeps the two groups of 6 apart, ends every bullet that states a fact with the messages it comes from, and writes \"Not stated\" where the thread is silent, as the request asked."
       ]
     },
     "ex3": [
@@ -141,7 +141,7 @@
             "accept": [
               "policy"
             ],
-            "reason": "Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval."
+            "reason": "Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the recorded answer A, this sentence said that the credit needs approval."
           }
         ],
         "id": "B"
@@ -152,10 +152,10 @@
         "model": "claude-haiku-5-5",
         "recorded_on": "2026-11-24",
         "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
-        "edits": "Three changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) Removed the assistant's notes under the reply, which describe the original wording.",
+        "edits": "Four changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) To keep the reply consistent with the day it now promises: \"even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\" became \"even if Dana's decision is not final by then, and I will tell you where it stands.\" (4) Removed the assistant's notes under the reply, which describe the original wording.",
         "edited_from": "recorded/answers/ex3-answer-a.txt",
         "in_session": false,
-        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van will bring them to you on Thursday 13 March. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\n\nTom Becker",
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van will bring them to you on Thursday 13 March. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if Dana's decision is not final by then, and I will tell you where it stands.\n\nTom Becker",
         "key": [
           {
             "accept": [

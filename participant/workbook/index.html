@@ -3,12 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'">
 <title>Practical AI at Work: participant workbook</title>
 <!-- single-file-note -->
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the workbook</a>
+
+<p class="warn load-warning" id="load-warning">The workbook did not load: extract the whole folder first, or open the single-file copy (workbook-single-file.html).</p>
 
 <header class="top">
   <p class="kit">Practical AI at Work: participant workbook</p>
@@ -32,17 +35,19 @@
 
 <main id="main">
 
-<noscript><p class="warn">This workbook needs JavaScript to show the case and to check your answers. It runs only on this computer and sends nothing anywhere. Please allow JavaScript for this file, or ask your instructor for the printed case.</p></noscript>
+<noscript><p class="warn">This workbook needs JavaScript to show the case and to check your answers. It runs only on this computer and sends nothing anywhere. Please allow JavaScript for this file, or use the plain files in the case folder and ask your instructor for the printed case.</p></noscript>
 
 <!-- ======================================================================= -->
 <section id="start" aria-labelledby="start-h">
   <h2 id="start-h">Start here</h2>
-  <p>In this session you will work through one invented case in five short exercises, then answer ten questions. The planned time is 90 minutes, with your instructor.</p>
+  <p>In this session you will work through one invented case in four short exercises, then answer ten questions. Exercise 5 is homework. The planned time is 90 minutes, with your instructor.</p>
   <p>One idea runs through all of it: <strong>the assistant drafts; you check; you decide.</strong> An assistant is fast at producing a first draft. It is not responsible for what you send. You are.</p>
   <ul>
-    <li><strong>Any assistant, or none.</strong> Use any chat assistant your employer allows. If you have none, or are not allowed one, every exercise that needs an assistant's answer has one ready for you.</li>
+    <li><strong>Keep the case in view.</strong> You will compare answers with the e-mails and the policy all session. Use the printed case from your instructor, or open this page in a second window and keep that one on <a href="#case">The case</a>.</li>
+    <li><strong>The assistant your employer allows, or none.</strong> If you have none, or are not allowed one, every exercise that needs an assistant's answer has one ready for you: one model's recorded answer. Two answers in exercise 3 are edited, and say so.</li>
     <li><strong>Your answers stay here.</strong> What you type is kept in this browser, on this computer, and is sent nowhere. At the end, use <a href="#answers">Your answers</a> to save a copy as a text file, or to clear everything.</li>
     <li><strong>The checks are helpers.</strong> Each <em>Check</em> button looks for simple signs and says what it found. It can miss things, and it can flag things that are fine. It points; you decide.</li>
+    <li><strong>If this page will not work,</strong> open <em>workbook-single-file.html</em>, next to this folder: the same workbook in one file. The case is also in the <em>case</em> folder as plain files you can open or print.</li>
     <li><strong>Nothing here is real.</strong> The businesses, the people and the figures are invented. Never paste real customer or company data into this workbook.</li>
   </ul>
 </section>
@@ -50,8 +55,8 @@
 <!-- ======================================================================= -->
 <section id="case" aria-labelledby="case-h">
   <h2 id="case-h">The case</h2>
-  <p>You work in customer service at <span data-fact="supplier"></span> (invented), a small wholesale supplier of cups, lids and packaging to cafes and bakeries, with about a dozen staff. One of your customers, <span data-fact="contact"></span> of <span data-fact="customer"></span> (invented), has had a late, short and partly damaged delivery, and she is not happy.</p>
-  <p>Everything the exercises need is below. Open each part when an exercise asks for it.</p>
+  <p>You are <span data-fact="staff"></span> (invented), in customer service at <span data-fact="supplier"></span> (invented), a small wholesale supplier of cups, lids and packaging to cafes and bakeries, with about a dozen staff. One of your customers, <span data-fact="contact"></span> of <span data-fact="customer"></span> (invented), has had a late, short and partly damaged delivery, and she is not happy.</p>
+  <p>Everything the exercises need is below. Read the thread and the policy now; you will come back to them in every exercise.</p>
 
   <details id="case-thread">
     <summary>The e-mail thread: five messages over nine days</summary>
@@ -88,33 +93,40 @@
 <!-- ======================================================================= -->
 <section id="ex1" aria-labelledby="ex1-h">
   <h2 id="ex1-h">Exercise 1: From a wish to a brief</h2>
-  <p class="meta">Planned: 15 minutes. Objective O1: write a request as a five-part brief.</p>
+  <p class="meta">Planned: 18 minutes. Objective O1: write a request as a five-part brief.</p>
   <p class="goal"><strong>Goal:</strong> turn a one-line wish into a brief that an assistant can act on.</p>
 
   <h3>Step 1: See what a wish produces</h3>
-  <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is what came back. It is polished and polite. Read it as if you were about to press Send.</p>
+  <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is what came back. It is polished and polite. Read it as if you were about to press Send, with the thread and the policy open beside it.</p>
   <div class="record" id="ex1-record"></div>
   <pre class="answer" id="ex1-answer" tabindex="0" aria-label="The reply to the one-line request"></pre>
-  <label for="ex1-notes">Would you send it? With the thread and the policy open, note everything the reply says or decides that nobody asked it to, anything it claims that did not happen, and anything that stops you sending it as it is.</label>
+  <p>Write a short list, one line for each problem you find:</p>
+  <ul>
+    <li>anything the reply <strong>decides or promises</strong> that nobody asked it to;</li>
+    <li>anything it <strong>says happened</strong> that the thread does not show;</li>
+    <li>anything that <strong>stops you sending it</strong> as it is.</li>
+  </ul>
+  <label for="ex1-notes">My list of problems</label>
   <textarea id="ex1-notes" rows="5" data-save></textarea>
+  <p>Then press the first button to compare your list with the instructor's, and the second to see what the automatic checker finds. The checker reads figures and some promise words; expect it to miss most of what is wrong here.</p>
   <div class="buttons">
-    <button type="button" id="ex1-reply-check">Run the checker on this reply</button>
-    <button type="button" id="ex1-issues-show" aria-expanded="false" aria-controls="ex1-issues">Show the instructor's list</button>
+    <button type="button" id="ex1-issues-show" aria-expanded="false" aria-controls="ex1-issues">1. Show the instructor's list of problems</button>
+    <button type="button" id="ex1-reply-check">2. Run the checker on this reply</button>
   </div>
-  <div class="result" id="ex1-reply-result" role="status" aria-live="polite" tabindex="-1"></div>
   <div class="reveal" id="ex1-issues" hidden></div>
+  <div class="result" id="ex1-reply-result" role="status" aria-live="polite" tabindex="-1"></div>
 
   <h3>Step 2: Write the request again, in five parts</h3>
-  <p>Write each part as if to a capable new colleague who has never heard of this customer. The colleague will do exactly what you ask, and only that.</p>
+  <p>Write each part as if to a capable new colleague who has never heard of this customer, and who will fill any gap you leave with a guess.</p>
 
   <div class="part">
     <label for="ex1-situation">1. Situation</label>
-    <p class="hint" id="ex1-situation-hint">Who are you, who is the reader, and what has happened? Why does it matter today?</p>
+    <p class="hint" id="ex1-situation-hint">Who you are (<span data-fact="staff"></span>, in customer service), who the reader is (<span data-fact="contactFirst"></span>), what has happened, and why it matters today.</p>
     <textarea id="ex1-situation" rows="4" data-save aria-describedby="ex1-situation-hint"></textarea>
   </div>
   <div class="part">
     <label for="ex1-material">2. Material</label>
-    <p class="hint" id="ex1-material-hint">Everything the assistant needs, and nothing it does not. Here: the whole thread. If your limits rely on the policy, add the policy too.</p>
+    <p class="hint" id="ex1-material-hint">Everything the assistant needs. Press the button to put the whole thread in this box; do not type a note in its place. If your limits rely on the policy, add the policy too.</p>
     <div class="buttons">
       <button type="button" id="ex1-put-thread">Put the thread in this box</button>
       <button type="button" id="ex1-put-policy">Add the policy</button>
@@ -128,7 +140,7 @@
   </div>
   <div class="part">
     <label for="ex1-form">4. Form</label>
-    <p class="hint" id="ex1-form-hint">How long, in what shape, in what tone. For example: "at most 150 words, in three short paragraphs".</p>
+    <p class="hint" id="ex1-form-hint">How long, in what shape, in what tone. For example: "at most 150 words, in three short paragraphs, plain text".</p>
     <textarea id="ex1-form" rows="3" data-save aria-describedby="ex1-form-hint"></textarea>
   </div>
   <div class="part">
@@ -165,19 +177,21 @@
 <section id="ex2" aria-labelledby="ex2-h">
   <h2 id="ex2-h">Exercise 2: Summarise, and prove it</h2>
   <p class="meta">Planned: 20 minutes. Objective O2: ask for an answer that can be checked, and check it.</p>
-  <p class="goal"><strong>Goal:</strong> get a summary for your manager that you can check, then check its figures and facts against the thread.</p>
+  <p class="goal"><strong>Goal:</strong> ask for a summary you can check, then check its figures and facts against the thread.</p>
 
-  <h3>Step 1: Read the request</h3>
-  <p>This request is ready to send. Look at its <strong>Form</strong> part: it asks the assistant to put the number of the message each fact comes from after the fact. That one line is what makes the answer quick to check.</p>
-  <label for="ex2-request">The prepared request</label>
-  <textarea id="ex2-request" rows="10" readonly></textarea>
+  <h3>Step 1: Make the request checkable</h3>
+  <p>Your manager, <span data-fact="manager"></span>, has to decide today on the customer's request for a credit. This request for a summary is almost ready. Add <strong>one line</strong> to its Form part that asks the assistant to say, after each fact, which message the fact comes from. That one line turns checking from a search into a glance. Then press <em>Check my request</em>.</p>
+  <label for="ex2-request">The request: add your line to the Form part</label>
+  <textarea id="ex2-request" rows="12" data-save></textarea>
   <div class="buttons">
+    <button type="button" id="ex2-request-check">Check my request</button>
     <button type="button" id="ex2-copy">Copy the request</button>
     <span class="copy-status" id="ex2-copy-status" role="status"></span>
   </div>
+  <div class="result" id="ex2-request-result" role="status" aria-live="polite" tabindex="-1"></div>
 
   <h3>Step 2: Get an answer, and check it</h3>
-  <p>Send the request to your assistant and paste its answer below. No assistant, or not allowed one? Use the recorded answer: a real assistant's answer to this exact request.</p>
+  <p>Send your request to your assistant and paste its answer below. No assistant, or not allowed one? Use the recorded answer: one assistant's answer to this request, made with this line in its Form part: <q data-fact="citeLine"></q></p>
   <div class="buttons">
     <button type="button" id="ex2-use-recorded">Use the recorded answer</button>
   </div>
@@ -188,33 +202,43 @@
     <button type="button" id="ex2-check">Check my answer</button>
   </div>
   <div class="result" id="ex2-result" role="status" aria-live="polite" tabindex="-1"></div>
-  <p class="small">What the check reads: every figure written in digits, compared as a number, so 1,250.00 and 1250 are the same figure, and a date counts as its parts. Message numbers in brackets, such as (msg 3), are read as citations, not as figures. <strong>A figure written in words, such as "six", is not checked.</strong></p>
 
-  <h3>Step 3: Decide, and correct</h3>
-  <p>For each <em>Look again</em>, open the thread, find the message, and decide: keep it, fix it, or take it out. Then read every sentence against the message it cites, including the sentences the check passed: a sentence can pass every check and still be wrong. Last, write the version you would really send your manager, and check it again.</p>
+  <h3>Step 3: Read, decide, and correct</h3>
+  <p>For each <em>Look again</em>, open the thread and decide: keep it, fix it, or take it out. Then pick the <strong>three bullets you trust least</strong> and read each one against the message it cites, word by word: a sentence can pass every check and still say the opposite of the thread.</p>
+  <p>Last, write the version you would really send. In at most <span data-fact="wordLimit"></span> words (message numbers in brackets are not counted), it must say:</p>
+  <ul>
+    <li>the order number and the invoice number;</li>
+    <li>what went wrong: that the order came late, that cartons were missing, and that cartons arrived damaged;</li>
+    <li>the amount in question;</li>
+    <li>what was promised, including that <span data-fact="staffFirst"></span>'s promise to confirm a delivery day by <span data-fact="confirmBy"></span> was not kept, and that no credit was promised.</li>
+  </ul>
+  <p class="small">The check looks for words, not meaning: for example late, missing, damaged, promised, Friday, did not. A due date followed by a later delivery date also counts as late. It does not count a word after "not" or "nothing".</p>
   <label for="ex2-final">My corrected summary</label>
   <textarea id="ex2-final" rows="8" data-save></textarea>
   <div class="buttons">
     <button type="button" id="ex2-final-check">Check my corrected summary</button>
   </div>
   <div class="result" id="ex2-final-result" role="status" aria-live="polite" tabindex="-1"></div>
+  <p class="small">What the check reads: every figure written in digits, compared as a number, so 1,250.00 and 1250 are the same figure. A date written as 28/02 is compared by its day and month. Message numbers in brackets, such as (msg 3), are read as citations, not as figures. <strong>A figure written in words, such as "six", is not checked.</strong></p>
 </section>
 
 <!-- ======================================================================= -->
 <section id="ex3" aria-labelledby="ex3-h">
   <h2 id="ex3-h">Exercise 3: Find what is wrong</h2>
-  <p class="meta">Planned: 12 minutes. Objective O3: name what is wrong in an answer that looks right.</p>
-  <p class="goal"><strong>Goal:</strong> find the errors in three replies that read well.</p>
-  <p>Here are replies to <span data-fact="contactFirst"></span>'s last message, answering the strong brief of exercise 1. <strong>Answer A</strong> is a real assistant's reply, exactly as it came back, with the assistant's own notes under it. <strong>Answer B</strong> is the same reply, edited to plant errors that A does not contain. Mark every numbered sentence of A and B; the assistant's notes are not numbered, but read them. Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
+  <p class="meta">Planned: 15 minutes. Objective O3: name what is wrong in an answer that looks right.</p>
+  <p class="goal"><strong>Goal:</strong> find the errors in replies that read well.</p>
+  <p class="session"><strong>In the session: answers A and B, eleven sentences.</strong> Answer C, further down, is for those who finish early, or homework.</p>
+  <p>Here are replies to <span data-fact="contactFirst"></span>'s last message, answering the strong brief of exercise 1. <strong>Answer A</strong> is one assistant's recorded reply, unchanged, with the assistant's own notes under it. <strong>Answer B</strong> is the same reply, edited to plant errors that A does not contain. The assistant's notes are not numbered, but read them. Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
   <ul>
     <li><strong>Fine:</strong> true to the thread, and allowed by the policy.</li>
     <li><strong>A wrong figure:</strong> a number that is wrong, or used with the wrong meaning.</li>
     <li><strong>Not in the material:</strong> a fact that is in neither the thread nor the policy.</li>
     <li><strong>Against the policy:</strong> a promise or an offer the policy does not allow.</li>
   </ul>
+  <p>Some sentences can be marked two ways. Pick the mark you can defend; the result says when the key accepts both.</p>
   <details>
-    <summary>The request behind the three replies</summary>
-    <pre class="doc" id="ex3-request" tabindex="0" aria-label="The request behind the three replies"></pre>
+    <summary>The request behind the replies</summary>
+    <pre class="doc" id="ex3-request" tabindex="0" aria-label="The request behind the replies"></pre>
   </details>
   <div id="ex3-answers"></div>
   <div class="buttons">
@@ -223,9 +247,11 @@
   <div class="result" id="ex3-result" role="status" aria-live="polite" tabindex="-1"></div>
 
   <h3>Then: what does a machine catch?</h3>
-  <p>Run the automatic reply check on each answer, and compare what it finds with what you found. Which errors does it miss, and why?</p>
+  <p>Run the automatic reply check on answers A and B, and compare what it finds with what you found.</p>
   <div class="buttons" id="ex3-auto-buttons"></div>
   <div class="result" id="ex3-auto-result" role="status" aria-live="polite" tabindex="-1"></div>
+  <label for="ex3-misses">Which errors does the checker miss, and why?</label>
+  <textarea id="ex3-misses" rows="4" data-save></textarea>
 </section>
 
 <!-- ======================================================================= -->
@@ -236,7 +262,7 @@
   <p class="warn">Your employer's own policy on AI tools comes first. If it is stricter than anything in this exercise, follow it.</p>
 
   <h3>Part 1: Sort the eight snippets</h3>
-  <p>For each snippet, choose a pile: <strong>fine to paste</strong>, <strong>paste after removing details</strong>, or <strong>do not paste</strong>. Think about who could be harmed, and whether the question needs the detail at all.</p>
+  <p>For each snippet, choose a pile: <strong>fine to paste</strong>, <strong>paste after removing details</strong>, or <strong>do not paste</strong>. Think about who could be harmed, and whether the question needs the detail at all. Some snippets can go in two piles; pick the one you can defend.</p>
   <div id="ex4-snippets"></div>
   <div class="buttons">
     <button type="button" id="ex4a-check">Check my piles</button>
@@ -244,11 +270,17 @@
   <div class="result" id="ex4a-result" role="status" aria-live="polite" tabindex="-1"></div>
 
   <h3>Part 2: Prepare the orders table</h3>
-  <p>Your manager asks: <q data-fact="ordersQuestion"></q> You want an assistant to work it out from the orders table (in <a href="#case-orders">The case</a>). Prepare an extract with this page's stand-in helper. It runs only in this browser.</p>
+  <p>Your manager asks: <q data-fact="ordersQuestion"></q> You want an assistant to work it out from the orders table (in <a href="#case-orders">The case</a>). Three words you will need:</p>
+  <ul>
+    <li><strong>Stand-in:</strong> a made-up label used instead of a real value, such as Customer 01 instead of a business name.</li>
+    <li><strong>Key:</strong> the list of which stand-in means which real value. It stays on this computer; you never paste it.</li>
+    <li><strong>Map back:</strong> put the real values back into the assistant's answer, using the key.</li>
+  </ul>
+  <p>For example: in the extract, <span data-fact="exampleBusiness"></span> becomes Customer 01. The key says Customer 01 is <span data-fact="exampleBusiness"></span>. When the assistant's answer mentions Customer 01, this page puts <span data-fact="exampleBusiness"></span> back. The helper runs only in this browser.</p>
   <ol>
-    <li>For each column, choose: keep it, replace each value with a stand-in (such as Customer 01), or leave it out. Keep only what the question needs.</li>
-    <li>Press <em>Prepare the extract</em>. Read the text and the question under it (change the question if you like), then press <em>Check what I am about to paste</em>.</li>
-    <li>Send it, paste the answer, and press <em>Put the real names back</em>.</li>
+    <li>For each column, choose: keep it, replace each value with a stand-in, or leave it out. Keep only what the question needs.</li>
+    <li>Press <em>Prepare the extract</em>. Read the text and the question under it, then press <em>Check what I am about to paste</em>.</li>
+    <li>Paste the extract into your assistant. Paste its answer in the last box, and press <em>Put the real names back</em>.</li>
   </ol>
   <fieldset class="columns">
     <legend>What to do with each column</legend>
@@ -257,7 +289,7 @@
   <div class="buttons">
     <button type="button" id="ex4-prepare">Prepare the extract</button>
   </div>
-  <label for="ex4-extract">The text you are about to paste</label>
+  <label for="ex4-extract">The text you are about to paste into your assistant</label>
   <textarea id="ex4-extract" rows="10" data-save></textarea>
   <div class="buttons">
     <button type="button" id="ex4b-check">Check what I am about to paste</button>
@@ -279,13 +311,13 @@
 <!-- ======================================================================= -->
 <section id="ex5" aria-labelledby="ex5-h">
   <h2 id="ex5-h">Exercise 5: Make it reusable</h2>
-  <p class="meta">Planned: 8 minutes, or as homework. Objective O5: turn a request that worked into a template a colleague can reuse.</p>
+  <p class="meta">Homework, about eight minutes. Objective O5: turn a request that worked into a template a colleague can reuse.</p>
   <p class="goal"><strong>Goal:</strong> turn the request of exercise 2 into a template a colleague can fill in for any customer.</p>
   <ol>
     <li>Put the exercise 2 request in the box below.</li>
     <li>Replace everything that belongs to this case with a <strong>named placeholder</strong> in square brackets, such as [CUSTOMER NAME]. The whole thread becomes one placeholder, such as [PASTE THE E-MAIL THREAD HERE].</li>
     <li>Keep what is true every time: the form and the limits.</li>
-    <li>Add one line at the top for your colleague: what to fill in, and what to check afterwards.</li>
+    <li>Add one line at the top for your colleague. For example: "Fill in every part in square brackets, then send. Afterwards, check every figure against the message it names."</li>
   </ol>
   <div class="buttons">
     <button type="button" id="ex5-put">Put the exercise 2 request in the box</button>
@@ -301,7 +333,7 @@
 <!-- ======================================================================= -->
 <section id="quiz" aria-labelledby="quiz-h">
   <h2 id="quiz-h">The ten-question check</h2>
-  <p class="meta">Planned: 10 minutes, with the close.</p>
+  <p class="meta">Planned: 9 minutes, with the close.</p>
   <p>Ten questions, two for each objective. Choose the best answer to each, then check. Every option has an explanation, so a wrong choice still teaches you something.</p>
   <div id="quiz-questions"></div>
   <div class="buttons">
@@ -324,7 +356,7 @@
 </main>
 
 <footer>
-  <p>Practical AI at Work: a workshop kit. Every business, person and figure in it is invented. This page works offline and sends nothing anywhere.</p>
+  <p>Practical AI at Work: a workshop kit. Every business, person and figure in it is invented. This page works offline, and its security policy tells the browser not to let it connect anywhere.</p>
   <p>The code is under the MIT licence; the teaching text is under Creative Commons Attribution-NonCommercial 4.0. The kit's README says which covers what.</p>
 </footer>
 

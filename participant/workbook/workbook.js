@@ -29,15 +29,17 @@
 
   // The boxes whose content is saved, in the order they are written to the text file.
   var FIELDS = [
-    ['ex1-notes', 'Exercise 1, step 1: what is wrong with the reply'],
+    ['ex1-notes', 'Exercise 1, step 1: my list of problems'],
     ['ex1-situation', 'Exercise 1, step 2: Situation'],
     ['ex1-material', 'Exercise 1, step 2: Material'],
     ['ex1-task', 'Exercise 1, step 2: Task'],
     ['ex1-form', 'Exercise 1, step 2: Form'],
     ['ex1-limits', 'Exercise 1, step 2: Limits'],
     ['ex1-newreply', 'Exercise 1, step 3: the reply my brief produced'],
+    ['ex2-request', 'Exercise 2, step 1: my request'],
     ['ex2-answer', 'Exercise 2: the answer'],
     ['ex2-final', 'Exercise 2: my corrected summary'],
+    ['ex3-misses', 'Exercise 3: which errors the checker misses, and why'],
     ['ex4-extract', 'Exercise 4, part 2: the text I was about to paste'],
     ['ex4-answer', 'Exercise 4, part 2: the assistant\'s answer'],
     ['ex5-template', 'Exercise 5: my template']
@@ -186,6 +188,9 @@
   function fillFacts() {
     var values = {
       supplier: F.supplier, customer: F.customer, contact: F.contact, contactFirst: F.contactFirst,
+      staff: F.staff, staffFirst: F.staffFirst, manager: F.manager,
+      confirmBy: CASE.format.wdm(F.dates.confirmBy), wordLimit: String(C.SUMMARY_LIMIT),
+      citeLine: CASE.briefs.summary.citeLine, exampleBusiness: CASE.orders.rows[0].business,
       wishLine: CASE.briefs.wish.line, ordersQuestion: CASE.orders.question
     };
     Array.prototype.forEach.call(doc.querySelectorAll('[data-fact]'), function (e) {
@@ -225,9 +230,9 @@
   function recordText(entry) {
     if (!entry) { return ''; }
     if (entry.kind === 'edited') {
-      return 'A real answer, edited to plant the errors this exercise teaches (answer A, ' + entry.model + ', recorded on ' + entry.recorded_on + ', with changes).';
+      return 'Edited: no assistant wrote this. It is answer A with errors planted on purpose; the kit lists every change (recorded/README.md).';
     }
-    return 'A real answer, exactly as it came back: ' + entry.model + ', recorded on ' + entry.recorded_on + '. Anything under a line of three dashes is the assistant\'s own note to you.';
+    return 'Recorded: one model\'s answer (' + entry.model + ', ' + entry.recorded_on + '), unchanged. It came through a developer tool, not a chat product, and your assistant will answer differently. Anything under a line of three dashes is the assistant\'s own note to you.';
   }
 
   // --- a radio group -------------------------------------------------------------
@@ -271,7 +276,7 @@
       var open = issues.hidden;
       issues.hidden = !open;
       this.setAttribute('aria-expanded', String(open));
-      this.textContent = open ? 'Hide the instructor\'s list' : 'Show the instructor\'s list';
+      this.textContent = open ? '1. Hide the instructor\'s list of problems' : '1. Show the instructor\'s list of problems';
     });
     $('ex1-reply-check').addEventListener('click', function () { showResult($('ex1-reply-result'), C.checkReply(REC.ex1.text)); });
     $('ex1-put-thread').addEventListener('click', function () { insertInto('ex1-material', CASE.threadText); });
@@ -293,7 +298,8 @@
   }
 
   function setupEx2() {
-    $('ex2-request').value = C.requestText('summary');
+    $('ex2-request').value = C.requestText('summary', { withoutCiteLine: true });
+    $('ex2-request-check').addEventListener('click', function () { showResult($('ex2-request-result'), C.checkRequest($('ex2-request').value)); });
     $('ex2-copy').addEventListener('click', function () { copyText($('ex2-request').value, $('ex2-copy-status')); });
     $('ex2-use-recorded').addEventListener('click', function () {
       $('ex2-record').textContent = recordText(REC.ex2);
@@ -358,7 +364,7 @@
     });
 
     var cols = $('ex4-columns');
-    var opts = [['keep', 'Keep'], ['standin', 'Replace with a stand-in'], ['leave', 'Leave out']];
+    var opts = [['', 'Choose'], ['keep', 'Keep'], ['standin', 'Replace with a stand-in'], ['leave', 'Leave out']];
     CASE.orders.columns.forEach(function (c) {
       var wrap = el('div', { class: 'column-choice' });
       var id = 'col-' + c.id;
@@ -375,6 +381,11 @@
       return ch;
     }
     $('ex4-prepare').addEventListener('click', function () {
+      var open = CASE.orders.columns.filter(function (c) { return !$('col-' + c.id).value; });
+      if (open.length) {
+        showText($('ex4b-result'), 'Choose what to do with every column first. Still to choose: ' + open.map(function (c) { return c.label; }).join(', ') + '.', null);
+        return;
+      }
       var ex = C.makeExtract(choices());
       currentKey = ex.key;
       $('ex4-extract').value = ex.text + '\n' + CASE.orders.question + '\n';
@@ -384,10 +395,9 @@
     });
     $('ex4b-check').addEventListener('click', function () { showResult($('ex4b-result'), C.checkExtract($('ex4-extract').value)); });
     $('ex4-example').addEventListener('click', function () {
-      var key = currentKey || C.makeExtract(choices()).key;
-      var text = exampleMapBackAnswer(key);
+      var text = currentKey ? exampleMapBackAnswer(currentKey) : null;
       if (!text) {
-        showText($('ex4-mapback-result'), 'The example needs the customer business column replaced with stand-ins. Choose that, prepare the extract, and try again.', null);
+        showText($('ex4-mapback-result'), 'The example needs the customer business column replaced with stand-ins. Choose that, press Prepare the extract, and try again.', null);
         return;
       }
       $('ex4-answer').value = text;
@@ -395,7 +405,11 @@
       $('ex4-answer').focus();
     });
     $('ex4-mapback').addEventListener('click', function () {
-      var key = currentKey || C.makeExtract(choices()).key;
+      var key = currentKey;
+      if (!key) {
+        showText($('ex4-mapback-result'), 'Press Prepare the extract first: the key to the stand-ins is made then.', null);
+        return;
+      }
       showText($('ex4-mapback-result'), 'The answer with the real values put back. This happened on this computer only.', C.mapBack($('ex4-answer').value, key));
     });
   }
@@ -421,7 +435,7 @@
     $('ex5-put').addEventListener('click', function () {
       var box = $('ex5-template');
       if (box.value.trim() && !root().confirm('Replace what is in the box with the exercise 2 request?')) { return; }
-      box.value = C.requestText('summary');
+      box.value = $('ex2-request').value.trim() ? $('ex2-request').value : C.requestText('summary');
       remember(box);
       box.focus();
     });
@@ -474,7 +488,7 @@
         a.click();
         doc.body.removeChild(a);
         setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-        $('answers-status').textContent = 'Saved as my-workshop-answers.txt, in your downloads folder.';
+        $('answers-status').textContent = 'Your browser was asked to save my-workshop-answers.txt, usually in your downloads folder. If no file appears, it was blocked: copy your answers from the boxes instead.';
       } catch (e) {
         $('answers-status').textContent = 'Your browser did not allow saving a file. Copy your answers from the boxes instead.';
       }
@@ -485,7 +499,7 @@
       try { root().localStorage.removeItem(STORAGE_KEY); } catch (e) { /* nothing stored */ }
       Array.prototype.forEach.call(doc.querySelectorAll('[data-save]'), function (e) { e.value = ''; });
       Array.prototype.forEach.call(doc.querySelectorAll('input[data-choice]'), function (e) { e.checked = false; });
-      Array.prototype.forEach.call(doc.querySelectorAll('select[data-choice]'), function (e) { e.value = 'keep'; });
+      Array.prototype.forEach.call(doc.querySelectorAll('select[data-choice]'), function (e) { e.value = ''; });
       Array.prototype.forEach.call(doc.querySelectorAll('.result'), function (e) { e.textContent = ''; });
       $('ex4-key').textContent = '';
       currentKey = null;
@@ -494,6 +508,9 @@
   }
 
   function init() {
+    // The scripts loaded, so the warning for a page opened without its folder is not needed.
+    var warning = $('load-warning');
+    if (warning) { warning.hidden = true; }
     fillFacts();
     renderCase();
     setupEx1();

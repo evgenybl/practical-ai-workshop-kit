@@ -29,5 +29,5 @@ jobs:
       - name: The single-file workbook and every other generated file, rebuilt and compared
         run: node tools/build.js --check
 
-      - name: Every constructed or recorded answer, and every model answer, through the command-line checker
+      - name: Every recorded and edited answer, and every model answer, through the command-line checker
         run: node tools/run-answers.js

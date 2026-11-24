@@ -42,7 +42,8 @@ class FakeElement {
     if (c.parentNode && c.parentNode.removeChild) { c.parentNode.removeChild(c); }
     this.children.push(c);
     c.parentNode = this;
-    if (this.tagName === 'SELECT' && c.tagName === 'OPTION' && !this.value) { this.value = c.attrs.value; }
+    // As in a browser, a select starts on its first option, even when that option's value is empty.
+    if (this.tagName === 'SELECT' && c.tagName === 'OPTION' && !this._hasOption) { this.value = c.attrs.value; this._hasOption = true; }
     return c;
   }
   removeChild(c) { this.children = this.children.filter((x) => x !== c); c.parentNode = null; return c; }
