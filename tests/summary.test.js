@@ -243,3 +243,20 @@ test('the wordings the instructor guide gives for the two traps are each flagged
     assert.ok(status(r, 'credit') === 'look' || status(r, 'counts') === 'look', q);
   }
 });
+
+// ---- conditions of the checker that no test held: each test fails if its condition is removed ----
+
+test('trap: a negation written with n\'t, such as "didn\'t", holds back a promise word', () => {
+  assert.equal(status(C.checkSummary(strong + '- ' + F.staffFirst + ' didn\'t promise a credit (msg 4).\n'), 'credit'), 'ok');
+  assert.equal(status(C.checkSummary(strong + '- ' + F.staffFirst + ' did promise a credit (msg 4).\n'), 'credit'), 'look');
+});
+
+test('required, what was promised: a summary that says nothing of the credit\'s state is flagged, and says what is missing', () => {
+  const noCredit = 'Order ' + F.orderNo + ', invoice ' + F.invoiceNo + ' (msg 1, 3). Due 28 Feb, delivered late on 5 Mar; ' + F.cupsMissing +
+    ' cartons missing; ' + F.cupsCrushed + ' crushed (msg 1, 3). ' + unkeptSentence + ' Amount: ' + money(F.creditAsked) + ' (msg 5).';
+  const r = C.checkSummary(noCredit);
+  assert.equal(status(r, 'fact-promised'), 'look');
+  assert.match(rule(r, 'fact-promised').message, /the credit described as asked for, or as waiting for a decision/);
+  assert.doesNotMatch(rule(r, 'fact-promised').message, /a word such as promised|and that it was not kept/);
+  assert.equal(status(C.checkSummary(noCredit + ' The credit awaits your decision.'), 'fact-promised'), 'ok');
+});

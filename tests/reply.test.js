@@ -149,3 +149,15 @@ test('delivery day: a report that the order was delivered is not a promise of a 
   assert.equal(status(C.checkReply(plus('I can confirm that your cartons will be delivered on Thursday.')), 'date'), 'look');
   assert.equal(status(C.checkReply(plus('I can confirm that the cartons were sent, and they arrive on Thursday.')), 'date'), 'look');
 });
+
+// ---- conditions of the checker that no test held: each test fails if its condition is removed ----
+
+test('credit: "can" before a verb of giving money makes a promise: "We can take $219.00 off your invoice."', () => {
+  assert.equal(status(C.checkReply(plus('We can take $219.00 off your invoice.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We cannot take $219.00 off your invoice.')), 'credit'), 'ok');
+});
+
+test('delivery day: "will confirm" holds back a day: "I will confirm the delivery by Thursday."', () => {
+  assert.equal(status(C.checkReply(plus('I will confirm the delivery by Thursday.')), 'date'), 'ok');
+  assert.equal(status(C.checkReply(plus('I will make the delivery by Thursday.')), 'date'), 'look');
+});
