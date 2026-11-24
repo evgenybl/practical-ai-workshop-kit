@@ -32,11 +32,23 @@ test('the thread holds at least twelve distinct figures', () => {
   }
 });
 
-test('the figures add up', () => {
-  assert.equal(F.cupsMissing, F.cupsOrdered - F.cupsDelivered);
-  assert.equal(F.invoiceTotal, F.cupsOrdered * F.cupPrice + F.lidsOrdered * F.lidPrice);
-  assert.equal(F.creditDamaged, F.cupsCrushed * F.cupPrice);
-  assert.equal(F.creditAsked, F.creditDamaged + F.localPurchase);
+test('the figures add up: each is compared with the number written here, so that a change to the data fails', () => {
+  // The figures the thread, the keys and the solutions rely on, written out by hand.
+  assert.equal(F.cupsOrdered, 40);
+  assert.equal(F.cupsDelivered, 34);
+  assert.equal(F.cupsCrushed, 6);
+  assert.equal(F.lidsOrdered, 20);
+  assert.equal(F.cupPrice, 36.5);
+  assert.equal(F.lidPrice, 18);
+  assert.equal(F.localPurchase, 312);
+  assert.equal(F.staffCreditLimit, 100);
+  // And the figures worked out from them: 40 - 34, 40 x 36.50 + 20 x 18.00, 6 x 36.50, 219.00 + 312.00.
+  assert.equal(F.cupsMissing, 6);
+  assert.equal(F.invoiceTotal, 1820);
+  assert.equal(F.creditDamaged, 219);
+  assert.equal(F.creditAsked, 531);
+  assert.equal(F.orderNo, 'SO-20417');
+  assert.equal(F.invoiceNo, 'INV-7731');
   assert.ok(F.creditDamaged > F.staffCreditLimit, 'the credit needs the manager, so the staff member cannot promise it');
 });
 
