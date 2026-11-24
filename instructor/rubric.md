@@ -26,7 +26,7 @@ Four levels for each of the five objectives, each described by **what you can se
 |---|---|
 | **Not yet** | Adds no line to the request, or one such as "be accurate". Reads the summary and accepts it. Does not open the thread. Takes the checker's "OK" as "correct". |
 | **Beginning** | Adds a line asking for sources only after the request check flags it. Fixes only what the checker flags (with the recorded answer, the length). Opens the thread, but does not read the sentences the checker passed. |
-| **Secure** | Adds, unprompted, a line that asks for the message number after each fact. Uses the message numbers to read every sentence against its message, including those the checker passed, and finds the one that says the opposite of message 4. Keeps the customer's claims as hers ("Mira says"). Writes a corrected summary inside the length that still holds what the manager needs. |
+| **Secure** | Adds, unprompted, a line that asks for the message number after each fact. Uses the message numbers to read every sentence against its message, including those the checker passed, and finds the one that says the opposite of message 4. Keeps the customer's claims as hers ("Mira says"). Writes a corrected summary inside the length that still holds what the manager needs, in the session if there is time, or after it. |
 | **Strong** | Explains why the checker cannot catch that sentence; notices a citation that passes only by coincidence; recomputes any figure that was worked out; explains why "in the material" is not the same as "right". |
 
 ## O3. Name what is wrong in an answer that looks right (exercise 3)

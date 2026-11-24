@@ -173,7 +173,7 @@ test('the README repeats the evidence table of How this kit was tested, word for
 test('the evidence table says what is done, what was done once, and what is owed', () => {
   assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
   assert.match(evidenceState('A new-user test by an AI agent'), /^Done twice, by separate AI agents: at commit 5059ae2, .* and at commit 2926752, .*Both are listed on the testing page\. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first\.$/);
-  assert.match(evidenceState('An independent review'), /^Done twice, by separate AI agents: at commit 5059ae2 \(3 blockers, 6 majors and a list of minors\) and at commit 16fa097 \(no blocker, 1 major, and minors and notes\), each worked through in the commits after it\. Both are listed on the testing page\. Not repeated after that\.$/);
+  assert.match(evidenceState('An independent review'), /^Done twice, by separate AI agents: at commit 5059ae2 \(3 blockers, 6 majors and a list of minors\) and at commit 16fa097 \(no blocker, 1 major, and minors and notes\), each worked through in the commits after it\. Both are listed on the testing page\. The changes made after the second were checked against its findings by a third agent, at commit 904828c; no review of the whole kit was made after that\.$/);
   assert.match(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), /^Not yet done by a person\. Rendered once in a headless browser .* says nothing about keyboard use or a screen reader\.$/);
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
   assert.match(evidenceState('Automated tests'), /^Done locally on macOS \(arm64\), with Node 24\.22\.3 and with Node 22\.23\.5: (\d+) tests, \1 pass, 0 fail with each\. Earlier, at commit 16fa097: 250 tests, 250 pass, 0 fail, locally on Windows with Node 24\. In CI, on Linux and Windows with Node 22 and 24: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84, both passed\. CI runs on every push; the badge at the top of the README shows the result of the last run\.$/);
@@ -187,8 +187,8 @@ test('the evidence table says what is done, what was done once, and what is owed
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
     if (h === '## An independent review') {
-      assert.match(section, /\*\*State: done twice, by separate AI agents: at commit 5059ae2, and at commit 16fa097\. Not repeated after that\.\*\*/, h);
-      for (const sub of ['### The first, at commit 5059ae2', '### The second, at commit 16fa097', '**What it could not do.** It could not open a browser, run CI, or search for the invented names, and no person took part.']) { assert.ok(section.includes(sub), sub); }
+      assert.match(section, /\*\*State: done twice, by separate AI agents: at commit 5059ae2, and at commit 16fa097\. The changes made after the second were checked against its findings by a third agent, at commit 904828c\. No review of the whole kit after that\.\*\*/, h);
+      for (const sub of ['### The first, at commit 5059ae2', '### The second, at commit 16fa097', '### The check of the changes, at commit 904828c', '**What it could not do.** It could not open a browser, run CI, or search for the invented names, and no person took part.']) { assert.ok(section.includes(sub), sub); }
     }
     assert.match(section, /What was changed/i, h);
     assert.doesNotMatch(section, /is owed/, h);
@@ -213,7 +213,7 @@ test('the test count in the evidence table is the one the pasted test run printe
 test('the docs say what the security policy forbids and what it does not, and that its enforcement awaits the real-browser pass', () => {
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   assert.ok(how.includes("connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'"));
-  assert.match(how, /In a browser that enforces it, the page cannot open a connection, submit a form, or load a picture other than an inline one, media, a frame or a plug-in\. The policy does not by itself forbid a script, a stylesheet or a font from elsewhere, or following a link to another page: the page has none of those, and `tests\/offline\.test\.js` checks that its files hold no web address and that its only links lead to places on the page\./);
+  assert.match(how, /In a browser that enforces it, the page cannot open a connection, submit a form, or load a picture other than an inline one, media, a frame or a plug-in\. The policy does not by itself forbid a script, a stylesheet or a font from elsewhere, or following a link to another page: the page has none of those, and `tests\/offline\.test\.js` checks that its files hold no address that starts with `http:\/\/` or `https:\/\/` and that its only links lead to places on the page\. The footer gives the licence's address as plain text with no scheme; it is not a link\./);
   assert.doesNotMatch(how, /enforced by the browser, not only promised/);
   assert.match(how, /awaits the real-browser pass/);
   // The page's own footer says the same, and no more.
@@ -388,7 +388,7 @@ test('the participant folder carries its own credit line, which stands without t
   const t = raw('participant/README.md');
   const credit = t.slice(t.indexOf('## Credit and licence'));
   assert.match(credit, /^## Credit and licence\n\nPractical AI at Work, a workshop kit, by Evgeny Blekhman\. The teaching text is licensed under Creative Commons Attribution-NonCommercial 4\.0 \(https:\/\/creativecommons\.org\/licenses\/by-nc\/4\.0\/\); the code is under the MIT licence\./);
-  assert.match(credit, /The code is the scripts in `workbook\/`; everything else in this folder is teaching text, and so is the text inside `workbook\/case-data\.js` and `workbook\/recorded-answers\.js`\.\n$/);
+  assert.match(credit, /The code is the scripts in `workbook\/` and the same scripts inside `workbook-single-file\.html`; everything else in this folder is teaching text, and so is the text inside `workbook\/case-data\.js` and `workbook\/recorded-answers\.js`\.\n$/);
   assert.doesNotMatch(credit, /README/);
 });
 
