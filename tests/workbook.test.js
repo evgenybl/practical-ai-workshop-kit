@@ -404,3 +404,17 @@ test('exercise 3: the label of an edited answer says what was edited, and where 
   $('ex2-use-recorded').click();
   assert.equal($('ex2-record').textContent, 'Recorded: one model\'s answer (' + REC.ex2.model + ', ' + REC.ex2.recorded_on + '), unchanged. It came through a developer tool, not a chat product, and your assistant will answer differently. Anything under a line of three dashes is the assistant\'s own note to you.');
 });
+
+test('exercise 2 says what "the amount in question" is, and what the "##" lines of the request are', () => {
+  assert.match(html, /<li>the amount in question: the credit of <span data-fact="creditAsked"><\/span> that <span data-fact="contactFirst"><\/span> asks for, or its two parts;<\/li>/);
+  assert.match(html, /Each part starts on a line of its own, such as "## Form": the ## only marks where a part begins\./);
+  const { doc } = openPage(html);
+  const amount = doc.querySelectorAll('[data-fact]').filter((e) => e.getAttribute('data-fact') === 'creditAsked');
+  assert.equal(amount.length, 1);
+  assert.equal(amount[0].textContent, CASE.format.money(F.creditAsked), 'filled from the data');
+  // What the page calls the amount is what the check accepts: the whole, or its two parts.
+  const fact = CASE.summaryFacts.find((f) => f.id === 'amount');
+  assert.deepEqual(fact.numbers, [[F.creditAsked], [F.creditDamaged, F.localPurchase]]);
+  // The request does mark each part with a "## " line, Form among them.
+  assert.match(C.requestText('summary', { withoutCiteLine: true }), /^## Form$/m);
+});

@@ -338,7 +338,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <p class="goal"><strong>Goal:</strong> ask for a summary you can check, then check its figures and facts against the thread.</p>
 
   <h3>Step 1: Make the request checkable</h3>
-  <p>Your manager, <span data-fact="manager"></span>, has to decide today on the customer's request for a credit. This request for a summary is almost ready. Add <strong>one line</strong> to its <strong>Form part</strong>, the part of a brief that says how long the answer should be and in what shape. To find it, scroll down past the thread: Form is the part just above Limits, which is the last part. Your line asks the assistant to say, after each fact, which message the fact comes from. That one line turns checking from a search into a glance. Then press <em>Check my request</em>.</p>
+  <p>Your manager, <span data-fact="manager"></span>, has to decide today on the customer's request for a credit. This request for a summary is almost ready. Add <strong>one line</strong> to its <strong>Form part</strong>, the part of a brief that says how long the answer should be and in what shape. To find it, scroll down past the thread: Form is the part just above Limits, which is the last part. Each part starts on a line of its own, such as "## Form": the ## only marks where a part begins. Your line asks the assistant to say, after each fact, which message the fact comes from. That one line turns checking from a search into a glance. Then press <em>Check my request</em>.</p>
   <label for="ex2-request">The request: add your line to the Form part</label>
   <textarea id="ex2-request" rows="12" data-save></textarea>
   <div class="buttons">
@@ -370,7 +370,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <ul>
     <li>the order number and the invoice number;</li>
     <li>what went wrong: that the order came late, that cartons were missing, and that cartons arrived damaged;</li>
-    <li>the amount in question;</li>
+    <li>the amount in question: the credit of <span data-fact="creditAsked"></span> that <span data-fact="contactFirst"></span> asks for, or its two parts;</li>
     <li>what was promised, including that <span data-fact="staffFirst"></span>'s promise to confirm a delivery day by <span data-fact="confirmBy"></span> was not kept, and that no credit was promised.</li>
   </ul>
   <p class="small">The check looks for words, not meaning: for example late, missing, damaged, promised, Friday, did not. A due date followed by a later delivery date also counts as late. It does not count a word after "not" or "nothing".</p>
@@ -2879,7 +2879,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
       staff: F.staff, staffFirst: F.staffFirst, manager: F.manager,
       confirmBy: CASE.format.wdm(F.dates.confirmBy), wordLimit: String(C.SUMMARY_LIMIT),
       citeLine: CASE.briefs.summary.citeLine, exampleBusiness: CASE.orders.rows[0].business,
-      wishLine: CASE.briefs.wish.line, ordersQuestion: CASE.orders.question
+      wishLine: CASE.briefs.wish.line, ordersQuestion: CASE.orders.question, creditAsked: CASE.format.money(F.creditAsked)
     };
     Array.prototype.forEach.call(doc.querySelectorAll('[data-fact]'), function (e) {
       e.textContent = values[e.getAttribute('data-fact')] || '';

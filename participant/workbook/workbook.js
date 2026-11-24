@@ -192,7 +192,7 @@
       staff: F.staff, staffFirst: F.staffFirst, manager: F.manager,
       confirmBy: CASE.format.wdm(F.dates.confirmBy), wordLimit: String(C.SUMMARY_LIMIT),
       citeLine: CASE.briefs.summary.citeLine, exampleBusiness: CASE.orders.rows[0].business,
-      wishLine: CASE.briefs.wish.line, ordersQuestion: CASE.orders.question
+      wishLine: CASE.briefs.wish.line, ordersQuestion: CASE.orders.question, creditAsked: CASE.format.money(F.creditAsked)
     };
     Array.prototype.forEach.call(doc.querySelectorAll('[data-fact]'), function (e) {
       e.textContent = values[e.getAttribute('data-fact')] || '';
