@@ -177,3 +177,9 @@ test('the model reply promises only what its writer does himself: no delivery da
   assert.notEqual(earlier, strong);
   assert.ok(C.splitSentences(earlier).some((s) => /with the (delivery )?day/i.test(s)));
 });
+
+test('credit: "crediting" with no figure, and money "off invoice" with no "the", are a credit too', () => {
+  assert.equal(status(C.checkReply(plus('We are crediting your account today.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We have agreed to take $219.00 off invoice INV-7731.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We are not crediting your account today.')), 'credit'), 'ok');
+});
