@@ -367,3 +367,25 @@ test('the participant folder carries its own credit line, which stands without t
   assert.match(credit, /The code is the scripts in `workbook\/`; everything else in this folder is teaching text, and so is the text inside `workbook\/case-data\.js` and `workbook\/recorded-answers\.js`\.\n$/);
   assert.doesNotMatch(credit, /README/);
 });
+
+// ---- the instructor's pages ---------------------------------------------------------------
+
+test('the guide gives the manager\'s question of exercise 4 as the page asks it', () => {
+  const { CASE } = require('./helpers');
+  const guide = raw('instructor/guide.md');
+  const part2 = guide.slice(guide.indexOf('**Say before (part 2):**'), guide.indexOf('**Mistakes to expect', guide.indexOf('**Say before (part 2):**')));
+  assert.ok(part2.includes('Your manager asks: \'' + CASE.orders.question + '\''), part2);
+  assert.doesNotMatch(part2, /which customers order most/);
+});
+
+test('the answer key stays on the instructor\'s own screen: no row of the run sheet puts it on the shared one', () => {
+  const rows = [...raw('instructor/run-sheet.md').matchAll(/^\| [0-9]:[0-9][0-9] \| [0-9]:[0-9][0-9] \|.*\| ([^|]+) \|$/gm)].map((m) => m[1]);
+  assert.ok(rows.length > 20);
+  for (const screen of rows) { assert.doesNotMatch(screen.replace('the answer key stays on your own screen', ''), /answer key|\bkey\b/i, screen); }
+  assert.match(raw('instructor/run-sheet.md'), /\| Exercise 4, part 2: the columns, set to the recommended choices; the answer key stays on your own screen \|/);
+  assert.match(raw('instructor/guide.md'), /Keep it open on your own screen, not the shared one\./);
+});
+
+test('the instructor\'s hour of preparation is marked as planned', () => {
+  assert.match(raw('instructor/guide.md'), /## Before the session\n\nAllow about an hour, once: a planned time, not a measured one\./);
+});

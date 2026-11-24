@@ -41,7 +41,7 @@ Exercise 5, *Make it reusable*, is homework: you set it in the close. Answer C o
 | 1:02 | 1:08 | Sorts the eight snippets and checks | Walk the room; then point at the three snippets with two defensible piles | Exercise 4, part 1 |
 | 1:08 | 1:09 | Listens | Set up part 2: what does the question need? Stand-in, key, map back | Exercise 4, part 2: the three words |
 | 1:09 | 1:17 | Chooses columns; prepares and checks the extract; pastes it into the assistant; maps the answer back | Walk the room; ask "Where is your key?" | Exercise 4, part 2 |
-| 1:17 | 1:21 | Debrief | Ask: "What did you leave out of the table, and how did you decide?"; then the sentence about the e-mails pasted in exercises 1 to 3 | The recommended choices (answer key, exercise 4) |
+| 1:17 | 1:21 | Debrief | Ask: "What did you leave out of the table, and how did you decide?"; set the recommended choices in the columns on your screen and say each one aloud; then the sentence about the e-mails pasted in exercises 1 to 3 | Exercise 4, part 2: the columns, set to the recommended choices; the answer key stays on your own screen |
 | 1:21 | 1:26 | Answers the ten questions and checks | Stay quiet and available | The ten-question check |
 | 1:26 | 1:28 | One person talks about one question | Ask: "Which question made you stop and think?" | The ten-question check |
 | 1:28 | 1:30 | Saves answers if they wish | The close: three things to take away, and the one idea; set exercise 5 as homework | The handout |

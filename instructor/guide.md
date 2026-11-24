@@ -25,7 +25,7 @@ Words in *italics* under **Say** are a script you can read as written or put in 
 
 ## Before the session
 
-Allow about an hour, once.
+Allow about an hour, once: a planned time, not a measured one.
 
 1. **Do every exercise yourself** in the workbook, with the recorded answers. Then do exercises 1 and 2 again with the assistant the room will use, so you have seen what it does with this case. Assistants differ and change: a live answer may go wrong in other ways than the recorded one, and what you see is what the room will see.
 2. **Read the answer key** once, in full. You do not need to remember it; you need to know where things are.
@@ -217,7 +217,7 @@ If the room has an assistant, add: *"If you finish, copy your brief, send it, an
 
 **Say before (part 2):**
 
-*"Now the useful part. Your manager wants to know which customers order most. That question needs the amounts and a way to tell customers apart. It does not need names, phone numbers or e-mail addresses. Three words on the page: a stand-in is a made-up label, such as Customer 01; the key says which stand-in is which customer, and it never leaves your computer; mapping back puts the real names into the assistant's answer. For each column, choose keep, replace with a stand-in, or leave out. Prepare the extract and check it. If you have an assistant, paste the extract into it, then paste its answer back and put the real names in. Eight minutes."*
+*"Now the useful part. Your manager asks: 'Which customers have ordered more than once, and what is the total of each one's orders? Which orders are not yet paid?' That question needs the amounts, the status of each order and a way to tell customers apart. It does not need names, phone numbers or e-mail addresses. Three words on the page: a stand-in is a made-up label, such as Customer 01; the key says which stand-in is which customer, and it never leaves your computer; mapping back puts the real names into the assistant's answer. For each column, choose keep, replace with a stand-in, or leave out. Prepare the extract and check it. If you have an assistant, paste the extract into it, then paste its answer back and put the real names in. Eight minutes."*
 
 **Mistakes to expect, and how to turn each into the lesson**
 
