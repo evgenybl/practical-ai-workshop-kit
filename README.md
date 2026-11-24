@@ -1,5 +1,7 @@
 # Practical AI at Work: a workshop kit
 
+[![tests](https://github.com/evgenybl/practical-ai-workshop-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/evgenybl/practical-ai-workshop-kit/actions/workflows/ci.yml)
+
 After 90 minutes, a participant can brief an AI assistant properly, check what it gives back against the source material, and decide what must never be pasted into it.
 
 **The assistant drafts; you check; you decide.**
@@ -13,7 +15,7 @@ A hands-on session for professionals and managers who are not technical. It work
 | [`participant/`](participant/) | The **workbook** (open `workbook/index.html`; a single-file copy is next to it), the **handout** (three cards on one printable page), and the **case** as plain files. |
 | [`instructor/`](instructor/) | The **guide** (what to say, show and expect, exercise by exercise), the minute-by-minute **run sheet**, **when things go wrong**, **variants** for 60 minutes, half a day and online, the **rubric**, and the **answer key**. |
 | [`solutions/`](solutions/) | A model answer for every exercise, and why it is strong. |
-| [`recorded/`](recorded/) | The exact requests, and the answers the session uses when there is no assistant. Today these are constructed stand-ins; the real recordings are owed. |
+| [`recorded/`](recorded/) | The exact requests, and real answers to them from one model, kept unchanged, which the session uses when there is no assistant. Two answers of exercise 3 are declared edits of a real one, made to plant errors. |
 | [`tools/`](tools/) | The command-line checker, the build script and the answer runner. |
 | [`tests/`](tests/) | The Node tests. |
 | [`docs/`](docs/) | [How this kit was tested](docs/HOW-THIS-WAS-TESTED.md). |
@@ -24,9 +26,9 @@ A hands-on session for professionals and managers who are not technical. It work
 
 ## Try it in two minutes
 
-**In a browser:** open `participant/workbook/index.html` by double-clicking it. Go to exercise 2, press *Use the stand-in answer*, then *Check my answer*.
+**In a browser:** open `participant/workbook/index.html` by double-clicking it. Go to exercise 2, press *Use the recorded answer*, then *Check my answer*.
 
-**On the command line** (Node 22 or later, nothing to install): run the stand-in answer of exercise 2 through the checker. The answer is a constructed stand-in, written to contain two mistakes an assistant commonly makes with this thread.
+**On the command line** (Node 22 or later, nothing to install): run the recorded answer of exercise 2 through the checker. It is a real assistant's summary, unchanged, and a good one. Then read its sentence that begins "Tom's cause" against message 4 of the thread (`participant/case/customer-thread.txt`): every check passes it, and it says the opposite. That is what this kit teaches.
 
 ```
 node tools/check.js 2 recorded/answers/ex2-answer.txt
@@ -35,21 +37,17 @@ node tools/check.js 2 recorded/answers/ex2-answer.txt
 <!-- pasted from: node tools/check.js 2 recorded/answers/ex2-answer.txt -->
 ```text
 Exercise 2: Summarise, and prove it
-8 OK, 2 to look at again.
+9 OK, 1 to look at again.
 
-[OK] The figures: Every figure in this answer (13 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
-[Look again] Message numbers: 3 figures cannot be found in the message cited for them. Open that message and the one named below, and correct the citation or the figure.
-    - $312.00 is cited to message 4, but it is in message 5.
-    - $531.00 is cited to message 4, but it is in message 5.
-    - 7731 is cited to message 4, but it is in messages 3 and 5.
+[OK] The figures: Every figure in this answer (22 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
+[OK] Message numbers: Each figure is in the message its citation names (11 citations checked).
 [OK] The order number: Found, as required.
 [OK] The invoice number: Found, as required.
 [OK] What went wrong: Found, as required: it says the order was late, that cartons were missing, and that cartons were damaged.
 [OK] The amount in question: Found, as required.
-[OK] What was promised: Found, as required: it says what was promised, and it describes the credit as asked for or awaiting a decision.
-[OK] Length: I counted 97 words; the limit is 120. Message numbers in brackets are not counted.
-[Look again] The promise that was never given: This answer says a credit was promised or agreed. Tom never promised one: he wrote that it must be approved by the operations manager (message 4). Mira writes "the credit you promised" (message 5), but that is her claim, not a promise. Write "Mira says", or say plainly that no credit was promised.
-    - Read this sentence: "Tom promised a credit for the 6 damaged cartons (msg 5) and said he would confirm a delivery day for the missing cartons by Friday 7 March, which he did not do (msg 4)."
+[OK] What was promised: Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by Friday, with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.
+[Look again] Length: I counted 179 words; the limit is 120. A manager with two minutes needs the short version. Message numbers in brackets are not counted.
+[OK] The promise that was never given: Nothing here says that a credit was promised or agreed. In the thread, Tom passed the request to the operations manager and promised no credit (message 4).
 [OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. Nothing here merges the two.
 
 Figures written in words, such as "six", are not checked.
@@ -89,8 +87,8 @@ After the session a participant can:
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 177 tests, 177 pass, 0 fail (Windows, Node 24). CI has not run yet. |
-| Recorded answers through the checker | Each real model answer is run through the checker in CI, and the result is the one the instructor guide describes | Not yet: the five answers are constructed stand-ins, and the recordings are owed. The stand-ins and the model answers run through the checker and give their expected results. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 194 tests, 194 pass, 0 fail (Windows, Node 24). CI has not run yet. |
+| Recorded answers through the checker | Each real model answer is run through the checker in CI, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, unchanged (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. CI has not run yet. |
 | A new-user test by an AI agent | A fresh agent, given the participant folder and nothing else, does every exercise as a first-time participant; its answers go through the checker; every point where it was unsure is listed with what was changed | Not yet done. Owed. |
 | An independent review | A reviewer with no part in the build | Not yet done. Owed. |
 | Taught to a class of people | | Not done. |
