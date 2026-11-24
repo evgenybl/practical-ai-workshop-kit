@@ -280,6 +280,15 @@ test('the planned minutes agree: guide, run sheet, README and workbook, adding u
   assert.match(raw('participant/workbook/index.html'), /<p class="meta">Homework, about eight minutes\./);
 });
 
+test('the run sheet\'s minute rows agree with its table of blocks: each block starts where the rows first name it', () => {
+  const rows = [...raw('instructor/run-sheet.md').matchAll(/^\| ([0-9]:[0-9][0-9]) \| ([0-9]:[0-9][0-9]) \|(.*)$/gm)].map((m) => ({ from: toMinutes(m[1]), to: toMinutes(m[2]), text: m[3] }));
+  // The welcome starts at 0:00; each exercise where a row first names it; the questions where a row first names them.
+  const starts = [0, ...[1, 2, 3, 4].map((n) => rows.find((r) => new RegExp('\\b[Ee]xercise ' + n + '\\b').test(r.text)).from),
+    rows.find((r) => /ten-question check/.test(r.text)).from, 90];
+  const minutes = starts.slice(1).map((s, i) => s - starts[i]);
+  assert.deepEqual(minutes, FLOW);
+});
+
 test('each variant adds up to its length', () => {
   const v = raw('instructor/variants.md');
   const section = (h) => v.slice(v.indexOf(h), v.indexOf('\n---', v.indexOf(h)) === -1 ? undefined : v.indexOf('\n---', v.indexOf(h)));
