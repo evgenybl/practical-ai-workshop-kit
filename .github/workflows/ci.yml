@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      # TODO pin: actions/setup-node to a full commit SHA
+      - uses: actions/setup-node@v4 # TODO pin: replace "v4" with the release's full commit SHA, and write the version here
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: The tests
+        run: node --test "tests/*.test.js"
+
+      - name: The single-file workbook and every other generated file, rebuilt and compared
+        run: node tools/build.js --check
+
+      - name: Every constructed or recorded answer, and every model answer, through the command-line checker
+        run: node tools/run-answers.js
