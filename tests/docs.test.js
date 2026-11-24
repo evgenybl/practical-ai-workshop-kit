@@ -389,3 +389,12 @@ test('the answer key stays on the instructor\'s own screen: no row of the run sh
 test('the instructor\'s hour of preparation is marked as planned', () => {
   assert.match(raw('instructor/guide.md'), /## Before the session\n\nAllow about an hour, once: a planned time, not a measured one\./);
 });
+
+test('exercise 2, step 3: the decision on each flag and the line for each bullet are for the session; the corrected summary, if there is time', () => {
+  const page = raw('participant/workbook/index.html');
+  assert.match(page, /<p>Last, if you have time, write the version you would really send; otherwise finish it after the session\. In at most <span data-fact="wordLimit"><\/span> words/);
+  assert.match(page, /For each <em>Look again<\/em>, open the thread and decide: keep it, fix it, or take it out\./);
+  assert.match(page, /Write one line for each of the three:/);
+  assert.match(raw('instructor/guide.md'), /Last, if you have time, write the version you would really send your manager, and check it again; if not, finish it after the session\. The page lists what it must say\. Eleven minutes\./);
+  assert.match(raw('instructor/run-sheet.md'), /\| 0:34 \| 0:41 \| Checks each flag; reads the three bullets they trust least against their messages; writes the corrected summary if there is time, or finishes it afterwards \|/);
+});

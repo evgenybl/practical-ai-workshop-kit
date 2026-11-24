@@ -141,7 +141,7 @@ If the room has an assistant, add: *"If you finish, copy your brief, send it, an
 
 **Say before (steps 2 and 3):**
 
-*"Send your request, or use the recorded answer. Paste the answer and press Check. Then do the real work: for every Look again, open the thread and decide for yourself. Then pick the three bullets you trust least and read each one against the message it cites, word by word, even if the check passed it. Last, write the version you would really send your manager, and check it again. The page lists what it must say. Eleven minutes."*
+*"Send your request, or use the recorded answer. Paste the answer and press Check. Then do the real work: for every Look again, open the thread and decide for yourself. Then pick the three bullets you trust least and read each one against the message it cites, word by word, even if the check passed it. Last, if you have time, write the version you would really send your manager, and check it again; if not, finish it after the session. The page lists what it must say. Eleven minutes."*
 
 **While they work:** with the recorded answer, the check shows nine OK and one *Look again*, for the length. Walk the room and ask: "Once it is shorter, is it ready to send?" Let people say yes. Then ask: *"Where are the six missing cartons now?"* and have them read the bullet that begins "Tom's cause" against message 4.
 

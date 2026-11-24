@@ -31,7 +31,7 @@ Exercise 5, *Make it reusable*, is homework: you set it in the close. Answer C o
 | 0:26 | 0:27 | Listens | Set up exercise 2, step 1: add one line that asks for the message number after each fact | Exercise 2, step 1: the request |
 | 0:27 | 0:30 | Adds the line; checks the request | Walk the room; look at the lines people wrote | Exercise 2, step 1 |
 | 0:30 | 0:34 | Sends the request or uses the recorded answer; pastes; checks | Walk the room; look for anyone who stops at the checker's verdict | Exercise 2, step 2 |
-| 0:34 | 0:41 | Checks each flag; reads the three bullets they trust least against their messages; writes the corrected summary | Walk the room; ask "Where are the six missing cartons now?" | Exercise 2, step 3 |
+| 0:34 | 0:41 | Checks each flag; reads the three bullets they trust least against their messages; writes the corrected summary if there is time, or finishes it afterwards | Walk the room; ask "Where are the six missing cartons now?" | Exercise 2, step 3 |
 | 0:41 | 0:46 | Debrief | Ask: "What would you change before you sent this to your manager, and how did you find it?"; read the bullet about the loading against message 4 | The recorded answer's check result |
 | 0:46 | 0:47 | Listens | Set up exercise 3: answers A and B, the four marks; C is for later | Exercise 3: the four marks |
 | 0:47 | 0:54 | Marks the eleven numbered sentences of A and B, then checks | Walk the room; watch for "everything in A is fine" | Exercise 3 |
