@@ -1120,6 +1120,20 @@
     });
     return out;
   }
+  /**
+   * The same, and the list of what looks like a stand-in but could not be put back: a number the key
+   * does not have ("Customer 99"), another spelling ("customer 02"), or a plural ("Customers 01 and 02").
+   */
+  function mapBackReport(text, key) {
+    var out = mapBack(text, key);
+    var unmapped = [];
+    Object.keys(key || {}).forEach(function (prefix) {
+      var re = new RegExp('\\b' + escapeRegExp(prefix) + 's?\\s*\\d+\\b', 'gi');
+      var m;
+      while ((m = re.exec(out))) { unmapped.push(m[0]); }
+    });
+    return { text: out, unmapped: unmapped };
+  }
 
   // ---------------------------------------------------------------------------
   // Exercise 5: the template
@@ -1333,7 +1347,7 @@
     checkReply: checkReply, checkSummary: checkSummary, SUMMARY_LIMIT: SUMMARY_LIMIT,
     LABELS: LABELS, parseMarks: parseMarks, checkMarks: checkMarks,
     parsePiles: parsePiles, checkPiles: checkPiles,
-    findPersonal: findPersonal, checkExtract: checkExtract, makeExtract: makeExtract, mapBack: mapBack,
+    findPersonal: findPersonal, checkExtract: checkExtract, makeExtract: makeExtract, mapBack: mapBack, mapBackReport: mapBackReport,
     findPlaceholders: findPlaceholders, findLeftovers: findLeftovers, checkTemplate: checkTemplate,
     parseQuiz: parseQuiz, checkQuiz: checkQuiz,
     // results

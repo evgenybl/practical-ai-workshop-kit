@@ -411,7 +411,12 @@
         showText($('ex4-mapback-result'), 'Press Prepare the extract first: the key to the stand-ins is made then.', null);
         return;
       }
-      showText($('ex4-mapback-result'), 'The answer with the real values put back. This happened on this computer only.', C.mapBack($('ex4-answer').value, key));
+      var back = C.mapBackReport($('ex4-answer').value, key);
+      var heading = 'The answer with the real values put back. This happened on this computer only.';
+      if (back.unmapped.length) {
+        heading += ' I could not put back: ' + back.unmapped.join(', ') + '. Put ' + (back.unmapped.length === 1 ? 'it' : 'them') + ' back yourself, using the key.';
+      }
+      showText($('ex4-mapback-result'), heading, back.text);
     });
   }
   function showKey(key) {

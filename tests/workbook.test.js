@@ -369,3 +369,17 @@ test('the participant\'s page and the results of the ten questions show no objec
   assert.match(lib.readText('instructor/answer-key.md'), /\| 1 \| O1 \|/);
   assert.match(lib.readText('instructor/guide.md'), /Objective O1/);
 });
+
+test('exercise 4: the map-back result says which stand-ins it could not put back', () => {
+  const { doc, $ } = openPage(html);
+  for (const [col, v] of Object.entries(CASE.orders.recommendedChoices)) { choose(doc, 'col-' + col, v); }
+  $('ex4-prepare').click();
+  type($('ex4-answer'), 'Customer 01 ordered most; customers 02 and 03 ordered once.');
+  $('ex4-mapback').click();
+  const text = $('ex4-mapback-result').textContent;
+  assert.ok(text.includes(F.customer), text);
+  assert.match(text, /I could not put back: customers 02\. Put it back yourself, using the key\./);
+  type($('ex4-answer'), 'Customer 01 ordered most.');
+  $('ex4-mapback').click();
+  assert.doesNotMatch($('ex4-mapback-result').textContent, /could not put back/);
+});

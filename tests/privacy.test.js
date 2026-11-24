@@ -141,3 +141,11 @@ test('part 2: a long run shaped almost like an e-mail address is read in linear 
   assert.deepEqual(C.findContactShapes('Write to a.b' + at + 'example.com or c' + at + 'example.com.').map((s) => s.value), ['a.b' + at + 'example.com', 'c' + at + 'example.com']);
   assert.deepEqual(C.findContactShapes('x' + at + 'y, ' + at + 'example.com, a' + at + 'b.c' + at + 'd.e').map((s) => s.value), ['a' + at + 'b.c']);
 });
+
+test('map-back says which stand-ins it could not put back', () => {
+  const ex = C.makeExtract(CASE.orders.recommendedChoices);
+  const r = C.mapBackReport('Customer 01 ordered most. Customers 01 and 02 ordered twice; customer 02 too. Customer 99 is unknown.', ex.key);
+  assert.equal(r.text, ex.key.Customer[1] + ' ordered most. Customers 01 and 02 ordered twice; customer 02 too. Customer 99 is unknown.');
+  assert.deepEqual(r.unmapped, ['Customers 01', 'customer 02', 'Customer 99']);
+  assert.deepEqual(C.mapBackReport('Customer 01 and Customer 2.', ex.key).unmapped, []);
+});
