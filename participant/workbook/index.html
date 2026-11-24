@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practical AI at Work: participant workbook</title>
+<!-- single-file-note -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the workbook</a>
+
+<header class="top">
+  <p class="kit">Practical AI at Work: participant workbook</p>
+  <h1>Practical AI at Work</h1>
+  <p class="idea">The assistant drafts; you check; you decide.</p>
+</header>
+
+<nav aria-label="Sections of the workbook">
+  <ol>
+    <li><a href="#start">Start here</a></li>
+    <li><a href="#case">The case</a></li>
+    <li><a href="#ex1">1. From a wish to a brief</a></li>
+    <li><a href="#ex2">2. Summarise, and prove it</a></li>
+    <li><a href="#ex3">3. Find what is wrong</a></li>
+    <li><a href="#ex4">4. What must not go in</a></li>
+    <li><a href="#ex5">5. Make it reusable</a></li>
+    <li><a href="#quiz">Ten questions</a></li>
+    <li><a href="#answers">Your answers</a></li>
+  </ol>
+</nav>
+
+<main id="main">
+
+<noscript><p class="warn">This workbook needs JavaScript to show the case and to check your answers. It runs only on this computer and sends nothing anywhere. Please allow JavaScript for this file, or ask your instructor for the printed case.</p></noscript>
+
+<!-- ======================================================================= -->
+<section id="start" aria-labelledby="start-h">
+  <h2 id="start-h">Start here</h2>
+  <p>In this session you will work through one invented case in five short exercises, then answer ten questions. The planned time is 90 minutes, with your instructor.</p>
+  <p>One idea runs through all of it: <strong>the assistant drafts; you check; you decide.</strong> An assistant is fast at producing a first draft. It is not responsible for what you send. You are.</p>
+  <ul>
+    <li><strong>Any assistant, or none.</strong> Use any chat assistant your employer allows. If you have none, or are not allowed one, every exercise that needs an assistant's answer has one ready for you.</li>
+    <li><strong>Your answers stay here.</strong> What you type is kept in this browser, on this computer, and is sent nowhere. At the end, use <a href="#answers">Your answers</a> to save a copy as a text file, or to clear everything.</li>
+    <li><strong>The checks are helpers.</strong> Each <em>Check</em> button looks for simple signs and says what it found. It can miss things, and it can flag things that are fine. It points; you decide.</li>
+    <li><strong>Nothing here is real.</strong> The businesses, the people and the figures are invented. Never paste real customer or company data into this workbook.</li>
+  </ul>
+</section>
+
+<!-- ======================================================================= -->
+<section id="case" aria-labelledby="case-h">
+  <h2 id="case-h">The case</h2>
+  <p>You work in customer service at <span data-fact="supplier"></span> (invented), a small wholesale supplier of cups, lids and packaging to cafes and bakeries, with about a dozen staff. One of your customers, <span data-fact="contact"></span> of <span data-fact="customer"></span> (invented), has had a late, short and partly damaged delivery, and she is not happy.</p>
+  <p>Everything the exercises need is below. Open each part when an exercise asks for it.</p>
+
+  <details id="case-thread">
+    <summary>The e-mail thread: five messages over nine days</summary>
+    <div class="buttons">
+      <button type="button" id="copy-thread">Copy the whole thread</button>
+      <span class="copy-status" id="copy-thread-status" role="status"></span>
+    </div>
+    <pre class="doc" id="thread-text" tabindex="0" aria-label="The e-mail thread"></pre>
+  </details>
+
+  <details id="case-policy">
+    <summary>The returns and credits policy</summary>
+    <div class="buttons">
+      <button type="button" id="copy-policy">Copy the policy</button>
+      <span class="copy-status" id="copy-policy-status" role="status"></span>
+    </div>
+    <pre class="doc" id="policy-text" tabindex="0" aria-label="The returns and credits policy"></pre>
+  </details>
+
+  <details id="case-orders">
+    <summary>The orders table: thirty rows</summary>
+    <p class="small" id="orders-note"></p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="The orders table, scrollable">
+      <table id="orders-table"></table>
+    </div>
+  </details>
+
+  <details id="case-snippets">
+    <summary>Eight snippets someone might paste into an assistant</summary>
+    <div id="snippets-list"></div>
+  </details>
+</section>
+
+<!-- ======================================================================= -->
+<section id="ex1" aria-labelledby="ex1-h">
+  <h2 id="ex1-h">Exercise 1: From a wish to a brief</h2>
+  <p class="meta">Planned: 15 minutes. Objective O1: write a request as a five-part brief.</p>
+  <p class="goal"><strong>Goal:</strong> turn a one-line wish into a brief that an assistant can act on.</p>
+
+  <h3>Step 1: See what a wish produces</h3>
+  <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is a reply to that request.</p>
+  <div class="standin" id="ex1-standin"></div>
+  <pre class="answer" id="ex1-answer" tabindex="0" aria-label="The reply to the one-line request"></pre>
+  <label for="ex1-notes">What is wrong with this reply? List everything you would not send, and why. Use the thread and the policy.</label>
+  <textarea id="ex1-notes" rows="5" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex1-reply-check">Run the checker on this reply</button>
+    <button type="button" id="ex1-issues-show" aria-expanded="false" aria-controls="ex1-issues">Show the instructor's list</button>
+  </div>
+  <div class="result" id="ex1-reply-result" role="status" aria-live="polite" tabindex="-1"></div>
+  <div class="reveal" id="ex1-issues" hidden></div>
+
+  <h3>Step 2: Write the request again, in five parts</h3>
+  <p>Write each part as if to a capable new colleague who has never heard of this customer. The colleague will do exactly what you ask, and only that.</p>
+
+  <div class="part">
+    <label for="ex1-situation">1. Situation</label>
+    <p class="hint" id="ex1-situation-hint">Who are you, who is the reader, and what has happened? Why does it matter today?</p>
+    <textarea id="ex1-situation" rows="4" data-save aria-describedby="ex1-situation-hint"></textarea>
+  </div>
+  <div class="part">
+    <label for="ex1-material">2. Material</label>
+    <p class="hint" id="ex1-material-hint">Everything the assistant needs, and nothing it does not. Here: the whole thread. If your limits rely on the policy, add the policy too.</p>
+    <div class="buttons">
+      <button type="button" id="ex1-put-thread">Put the thread in this box</button>
+      <button type="button" id="ex1-put-policy">Add the policy</button>
+    </div>
+    <textarea id="ex1-material" rows="6" data-save aria-describedby="ex1-material-hint"></textarea>
+  </div>
+  <div class="part">
+    <label for="ex1-task">3. Task</label>
+    <p class="hint" id="ex1-task-hint">The one job, starting with a verb: draft, summarise, list.</p>
+    <textarea id="ex1-task" rows="2" data-save aria-describedby="ex1-task-hint"></textarea>
+  </div>
+  <div class="part">
+    <label for="ex1-form">4. Form</label>
+    <p class="hint" id="ex1-form-hint">How long, in what shape, in what tone. For example: "at most 150 words, in three short paragraphs".</p>
+    <textarea id="ex1-form" rows="3" data-save aria-describedby="ex1-form-hint"></textarea>
+  </div>
+  <div class="part">
+    <label for="ex1-limits">5. Limits</label>
+    <p class="hint" id="ex1-limits-hint">What the answer must not do. Write at least one sentence that starts with "Do not".</p>
+    <textarea id="ex1-limits" rows="4" data-save aria-describedby="ex1-limits-hint"></textarea>
+  </div>
+  <div class="buttons">
+    <button type="button" id="ex1-check">Check my answer</button>
+  </div>
+  <div class="result" id="ex1-result" role="status" aria-live="polite" tabindex="-1"></div>
+
+  <h3>Step 3, if you have an assistant: try your brief</h3>
+  <p>Copy your brief as one text, send it, and paste the reply here. Check it, and compare it with the reply in step 1. What changed, and why?</p>
+  <div class="buttons">
+    <button type="button" id="ex1-copy">Copy my brief as one text</button>
+    <span class="copy-status" id="ex1-copy-status" role="status"></span>
+  </div>
+  <label for="ex1-newreply">The reply your brief produced</label>
+  <textarea id="ex1-newreply" rows="8" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex1-newreply-check">Check this reply</button>
+  </div>
+  <div class="result" id="ex1-newreply-result" role="status" aria-live="polite" tabindex="-1"></div>
+
+  <details>
+    <summary>Compare with one strong brief</summary>
+    <p>One way to write it. Yours can differ and still be strong: what matters is that each part does its job.</p>
+    <pre class="doc" id="ex1-model" tabindex="0" aria-label="One strong brief"></pre>
+  </details>
+</section>
+
+<!-- ======================================================================= -->
+<section id="ex2" aria-labelledby="ex2-h">
+  <h2 id="ex2-h">Exercise 2: Summarise, and prove it</h2>
+  <p class="meta">Planned: 20 minutes. Objective O2: ask for an answer that can be checked, and check it.</p>
+  <p class="goal"><strong>Goal:</strong> get a summary for your manager that you can check, then check its figures and facts against the thread.</p>
+
+  <h3>Step 1: Read the request</h3>
+  <p>This request is ready to send. Look at its <strong>Form</strong> part: it asks the assistant to put the number of the message each fact comes from after the fact. That one line is what makes the answer quick to check.</p>
+  <label for="ex2-request">The prepared request</label>
+  <textarea id="ex2-request" rows="10" readonly></textarea>
+  <div class="buttons">
+    <button type="button" id="ex2-copy">Copy the request</button>
+    <span class="copy-status" id="ex2-copy-status" role="status"></span>
+  </div>
+
+  <h3>Step 2: Get an answer, and check it</h3>
+  <p>Send the request to your assistant and paste its answer below. No assistant, or not allowed one? Use the stand-in answer.</p>
+  <div class="buttons">
+    <button type="button" id="ex2-use-standin">Use the stand-in answer</button>
+  </div>
+  <div class="standin" id="ex2-standin" hidden></div>
+  <label for="ex2-answer">The answer</label>
+  <textarea id="ex2-answer" rows="10" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex2-check">Check my answer</button>
+  </div>
+  <div class="result" id="ex2-result" role="status" aria-live="polite" tabindex="-1"></div>
+  <p class="small">What the check reads: every figure written in digits, compared as a number, so 1,250.00 and 1250 are the same figure, and a date counts as its parts. Message numbers in brackets, such as (msg 3), are read as citations, not as figures. <strong>A figure written in words, such as "six", is not checked.</strong></p>
+
+  <h3>Step 3: Decide, and correct</h3>
+  <p>For each <em>Look again</em>, open the thread, find the message, and decide: keep it, fix it, or take it out. Then write the version you would really send your manager, and check it again.</p>
+  <label for="ex2-final">My corrected summary</label>
+  <textarea id="ex2-final" rows="8" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex2-final-check">Check my corrected summary</button>
+  </div>
+  <div class="result" id="ex2-final-result" role="status" aria-live="polite" tabindex="-1"></div>
+</section>
+
+<!-- ======================================================================= -->
+<section id="ex3" aria-labelledby="ex3-h">
+  <h2 id="ex3-h">Exercise 3: Find what is wrong</h2>
+  <p class="meta">Planned: 12 minutes. Objective O3: name what is wrong in an answer that looks right.</p>
+  <p class="goal"><strong>Goal:</strong> find the errors in three replies that read well.</p>
+  <p>Here are three replies to <span data-fact="contactFirst"></span>'s last message, each answering the same strong brief (the one in exercise 1). Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
+  <ul>
+    <li><strong>Fine:</strong> true to the thread, and allowed by the policy.</li>
+    <li><strong>A wrong figure:</strong> a number that is wrong, or used with the wrong meaning.</li>
+    <li><strong>Not in the material:</strong> a fact that is in neither the thread nor the policy.</li>
+    <li><strong>Against the policy:</strong> a promise or an offer the policy does not allow.</li>
+  </ul>
+  <details>
+    <summary>The request behind the three replies</summary>
+    <pre class="doc" id="ex3-request" tabindex="0" aria-label="The request behind the three replies"></pre>
+  </details>
+  <div id="ex3-answers"></div>
+  <div class="buttons">
+    <button type="button" id="ex3-check">Check my marks</button>
+  </div>
+  <div class="result" id="ex3-result" role="status" aria-live="polite" tabindex="-1"></div>
+
+  <h3>Then: what does a machine catch?</h3>
+  <p>Run the automatic reply check on each answer, and compare what it finds with what you found. Which errors does it miss, and why?</p>
+  <div class="buttons" id="ex3-auto-buttons"></div>
+  <div class="result" id="ex3-auto-result" role="status" aria-live="polite" tabindex="-1"></div>
+</section>
+
+<!-- ======================================================================= -->
+<section id="ex4" aria-labelledby="ex4-h">
+  <h2 id="ex4-h">Exercise 4: What must not go in</h2>
+  <p class="meta">Planned: 20 minutes. Objective O4: decide what must not be pasted into a public assistant, and prepare a table so that it can be.</p>
+  <p class="goal"><strong>Goal:</strong> sort what may be pasted, and prepare a table so that nothing personal leaves this computer.</p>
+  <p class="warn">Your employer's own policy on AI tools comes first. If it is stricter than anything in this exercise, follow it.</p>
+
+  <h3>Part 1: Sort the eight snippets</h3>
+  <p>For each snippet, choose a pile: <strong>fine to paste</strong>, <strong>paste after removing details</strong>, or <strong>do not paste</strong>. Think about who could be harmed, and whether the question needs the detail at all.</p>
+  <div id="ex4-snippets"></div>
+  <div class="buttons">
+    <button type="button" id="ex4a-check">Check my piles</button>
+  </div>
+  <div class="result" id="ex4a-result" role="status" aria-live="polite" tabindex="-1"></div>
+
+  <h3>Part 2: Prepare the orders table</h3>
+  <p>Your manager asks: <q data-fact="ordersQuestion"></q> You want an assistant to work it out from the orders table (in <a href="#case-orders">The case</a>). Prepare an extract with this page's stand-in helper. It runs only in this browser.</p>
+  <ol>
+    <li>For each column, choose: keep it, replace each value with a stand-in (such as Customer 01), or leave it out. Keep only what the question needs.</li>
+    <li>Press <em>Prepare the extract</em>. Read the text and the question under it (change the question if you like), then press <em>Check what I am about to paste</em>.</li>
+    <li>Send it, paste the answer, and press <em>Put the real names back</em>.</li>
+  </ol>
+  <fieldset class="columns">
+    <legend>What to do with each column</legend>
+    <div id="ex4-columns"></div>
+  </fieldset>
+  <div class="buttons">
+    <button type="button" id="ex4-prepare">Prepare the extract</button>
+  </div>
+  <label for="ex4-extract">The text you are about to paste</label>
+  <textarea id="ex4-extract" rows="10" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex4b-check">Check what I am about to paste</button>
+  </div>
+  <div class="result" id="ex4b-result" role="status" aria-live="polite" tabindex="-1"></div>
+  <details id="ex4-key-box">
+    <summary>The key to your stand-ins: it stays on this computer, never paste it</summary>
+    <div id="ex4-key"></div>
+  </details>
+  <label for="ex4-answer">The assistant's answer, with stand-ins</label>
+  <textarea id="ex4-answer" rows="5" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex4-example">No assistant? Use an example answer</button>
+    <button type="button" id="ex4-mapback">Put the real names back</button>
+  </div>
+  <div class="result" id="ex4-mapback-result" role="status" aria-live="polite" tabindex="-1"></div>
+</section>
+
+<!-- ======================================================================= -->
+<section id="ex5" aria-labelledby="ex5-h">
+  <h2 id="ex5-h">Exercise 5: Make it reusable</h2>
+  <p class="meta">Planned: 8 minutes, or as homework. Objective O5: turn a request that worked into a template a colleague can reuse.</p>
+  <p class="goal"><strong>Goal:</strong> turn the request of exercise 2 into a template a colleague can fill in for any customer.</p>
+  <ol>
+    <li>Put the exercise 2 request in the box below.</li>
+    <li>Replace everything that belongs to this case with a <strong>named placeholder</strong> in square brackets, such as [CUSTOMER NAME]. The whole thread becomes one placeholder, such as [PASTE THE E-MAIL THREAD HERE].</li>
+    <li>Keep what is true every time: the form and the limits.</li>
+    <li>Add one line at the top for your colleague: what to fill in, and what to check afterwards.</li>
+  </ol>
+  <div class="buttons">
+    <button type="button" id="ex5-put">Put the exercise 2 request in the box</button>
+  </div>
+  <label for="ex5-template">My template</label>
+  <textarea id="ex5-template" rows="16" data-save></textarea>
+  <div class="buttons">
+    <button type="button" id="ex5-check">Check my answer</button>
+  </div>
+  <div class="result" id="ex5-result" role="status" aria-live="polite" tabindex="-1"></div>
+</section>
+
+<!-- ======================================================================= -->
+<section id="quiz" aria-labelledby="quiz-h">
+  <h2 id="quiz-h">The ten-question check</h2>
+  <p class="meta">Planned: 10 minutes, with the close.</p>
+  <p>Ten questions, two for each objective. Choose the best answer to each, then check. Every option has an explanation, so a wrong choice still teaches you something.</p>
+  <div id="quiz-questions"></div>
+  <div class="buttons">
+    <button type="button" id="quiz-check">Check my answers</button>
+  </div>
+  <div class="result" id="quiz-result" role="status" aria-live="polite" tabindex="-1"></div>
+</section>
+
+<!-- ======================================================================= -->
+<section id="answers" aria-labelledby="answers-h">
+  <h2 id="answers-h">Your answers</h2>
+  <p>Your answers are kept in this browser's own storage, on this computer. They are not sent anywhere. In a private window they are lost when you close it.</p>
+  <div class="buttons">
+    <button type="button" id="save-text">Save my answers as a text file</button>
+    <button type="button" id="clear-all" class="danger">Clear all my answers</button>
+  </div>
+  <p class="copy-status" id="answers-status" role="status"></p>
+</section>
+
+</main>
+
+<footer>
+  <p>Practical AI at Work: a workshop kit. Every business, person and figure in it is invented. This page works offline and sends nothing anywhere.</p>
+  <p>The code is under the MIT licence; the teaching text is under Creative Commons Attribution-NonCommercial 4.0. The kit's README says which covers what.</p>
+</footer>
+
+<script src="case-data.js"></script>
+<script src="recorded-answers.js"></script>
+<script src="checker.js"></script>
+<script src="workbook.js"></script>
+</body>
+</html>
