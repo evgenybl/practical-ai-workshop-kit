@@ -383,3 +383,24 @@ test('exercise 4: the map-back result says which stand-ins it could not put back
   $('ex4-mapback').click();
   assert.doesNotMatch($('ex4-mapback-result').textContent, /could not put back/);
 });
+
+test('exercise 3: the label of an edited answer says what was edited, and where the page shows it, without naming a file', () => {
+  const { $ } = openPage(html);
+  const text = $('ex3-answers').textContent;
+  const label = 'Edited: no assistant wrote this. It is answer A, changed by hand: errors were planted on purpose, and some other sentences were cut or reworded. When you check your marks, the reason for each planted sentence starts with "Planted".';
+  const edited = REC.ex3.filter((a) => a.kind === 'edited');
+  assert.equal(text.split(label).length - 1, edited.length);
+  assert.doesNotMatch(text, /recorded\/README|\.md\b|\.txt\b/);
+  // What the label says is so: each edited answer has planted sentences, each reason for one starts with "Planted",
+  // and each planted sentence is not in answer A.
+  const a = REC.ex3.find((x) => x.id === 'A');
+  for (const e of edited) {
+    const sentences = C.numberedSentences(e.text);
+    const planted = e.key.map((k, i) => [k, sentences[i]]).filter(([k]) => /^Planted\./.test(k.reason));
+    assert.ok(planted.length >= 1, e.id);
+    for (const [, s] of planted) { assert.ok(!a.text.includes(s), e.id + ': ' + s); }
+  }
+  // The recorded answer's label, in the picture of exercise 2, is unchanged.
+  $('ex2-use-recorded').click();
+  assert.equal($('ex2-record').textContent, 'Recorded: one model\'s answer (' + REC.ex2.model + ', ' + REC.ex2.recorded_on + '), unchanged. It came through a developer tool, not a chat product, and your assistant will answer differently. Anything under a line of three dashes is the assistant\'s own note to you.');
+});

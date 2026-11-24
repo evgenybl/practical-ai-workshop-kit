@@ -2918,7 +2918,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   function recordText(entry) {
     if (!entry) { return ''; }
     if (entry.kind === 'edited') {
-      return 'Edited: no assistant wrote this. It is answer A with errors planted on purpose; the kit lists every change (recorded/README.md).';
+      return 'Edited: no assistant wrote this. It is answer A, changed by hand: errors were planted on purpose, and some other sentences were cut or reworded. When you check your marks, the reason for each planted sentence starts with "Planted".';
     }
     return 'Recorded: one model\'s answer (' + entry.model + ', ' + entry.recorded_on + '), unchanged. It came through a developer tool, not a chat product, and your assistant will answer differently. Anything under a line of three dashes is the assistant\'s own note to you.';
   }
