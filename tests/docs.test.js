@@ -195,11 +195,16 @@ test('the test count in the evidence table is the one the pasted test run printe
   assert.equal(m[1], pasted[1]);
 });
 
-test('the docs say that the browser enforces "sends nothing", and that this awaits the real-browser pass', () => {
+test('the docs say what the security policy forbids and what it does not, and that its enforcement awaits the real-browser pass', () => {
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   assert.ok(how.includes("connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'"));
-  assert.match(how, /so "sends nothing" is enforced by the browser/);
+  assert.match(how, /In a browser that enforces it, the page cannot open a connection, submit a form, or load a picture other than an inline one, media, a frame or a plug-in\. The policy does not by itself forbid a script, a stylesheet or a font from elsewhere, or following a link to another page: the page has none of those, and `tests\/offline\.test\.js` checks that its files hold no web address and that its only links lead to places on the page\./);
+  assert.doesNotMatch(how, /enforced by the browser, not only promised/);
   assert.match(how, /awaits the real-browser pass/);
+  // The page's own footer says the same, and no more.
+  const page = raw('participant/workbook/index.html');
+  assert.match(page, /Its security policy tells the browser not to let it connect anywhere, submit a form, or load pictures, media, frames or plug-ins from elsewhere\. The page itself loads no script, style or font from elsewhere, and links to no other page\./);
+  assert.doesNotMatch(page, /security policy tells the browser not to let it connect anywhere\.</);
 });
 
 // ---- what is claimed ------------------------------------------------------------------

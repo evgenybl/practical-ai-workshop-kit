@@ -47,3 +47,11 @@ test('the single-file copy loads nothing at all', () => {
   assert.ok(!/<script\b[^>]*\bsrc=/i.test(html));
   assert.ok(!/<link\b[^>]*\bhref=/i.test(html));
 });
+
+test('the page links to nothing outside itself: every link leads to a place on the page', () => {
+  for (const f of ['participant/workbook/index.html', 'participant/workbook-single-file.html']) {
+    const links = [...lib.readText(f).matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)].map((m) => m[1]);
+    assert.ok(links.length >= 5, f);
+    for (const href of links) { assert.match(href, /^#[\w-]+$/, f + ': ' + href); }
+  }
+});
