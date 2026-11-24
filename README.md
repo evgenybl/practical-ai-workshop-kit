@@ -122,8 +122,8 @@ Written with Claude Code under the author's direction. **What is tested:** every
 
 | Files | Licence |
 |---|---|
-| Every `.js` file (in `participant/workbook/`, `tools/` and `tests/`) and the CI workflow, `.github/workflows/ci.yml` | MIT, in [`LICENSE`](LICENSE) |
-| Everything else: the pages and documents (`.md`, `.html`, `.css`), the case files, the recorded requests and answers, and the teaching text inside `participant/workbook/case-data.js` (the case, the exercises and the questions) | Creative Commons Attribution-NonCommercial 4.0, in [`LICENSE-TEXT.md`](LICENSE-TEXT.md) |
-| `participant/workbook-single-file.html` | Both: it holds the MIT code and the CC BY-NC teaching text in one file, each under its own licence |
+| The code: every `.js` file in `participant/workbook/`, `tools/` and `tests/`, and the CI workflow, `.github/workflows/ci.yml`. The teaching text inside two of those scripts is in the next row. | MIT, in [`LICENSE`](LICENSE) |
+| Everything else: the pages and documents (`.md`, `.html`, `.css`), the case files, and the recorded requests and answers; and the teaching text inside two scripts: `participant/workbook/case-data.js` (the case, the exercises and the questions) and `participant/workbook/recorded-answers.js`, which is generated from `recorded/answers/` and holds the recorded answers and the key with its reasons | Creative Commons Attribution-NonCommercial 4.0, in [`LICENSE-TEXT.md`](LICENSE-TEXT.md) |
+| `participant/workbook-single-file.html` | Both: it holds the MIT code and the CC BY-NC teaching text in one file, each under its own licence, and its footer says so |
 
 Author: Evgeny Blekhman, https://www.linkedin.com/in/evgeny-blekhman/

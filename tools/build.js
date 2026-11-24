@@ -65,6 +65,8 @@ function buildRecorded() {
   return [
     '/*',
     ' * The answers used in exercises 1, 2 and 3, with their keys.',
+    ' * The answers and the keys are teaching text, under Creative Commons Attribution-NonCommercial 4.0',
+    ' * (LICENSE-TEXT.md); the few lines of code around them are under the MIT licence (LICENSE).',
     ' * ' + GENERATED_NOTE,
     ' * Source: the files in recorded/answers.',
     ' */',

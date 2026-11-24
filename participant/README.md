@@ -21,4 +21,4 @@ If double-clicking opens the file in a text editor instead: right-click it, choo
 
 ## Credit and licence
 
-Practical AI at Work, a workshop kit, by Evgeny Blekhman. The teaching text is licensed under Creative Commons Attribution-NonCommercial 4.0 (https://creativecommons.org/licenses/by-nc/4.0/); the code is under the MIT licence. The kit's README says which files are which.
+Practical AI at Work, a workshop kit, by Evgeny Blekhman. The teaching text is licensed under Creative Commons Attribution-NonCommercial 4.0 (https://creativecommons.org/licenses/by-nc/4.0/); the code is under the MIT licence. The code is the scripts in `workbook/`; everything else in this folder is teaching text, and so is the text inside `workbook/case-data.js` and `workbook/recorded-answers.js`.

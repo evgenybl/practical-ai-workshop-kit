@@ -325,3 +325,45 @@ test('the key in the page is said plainly: in the guide, when things go wrong, t
   }
   assert.match(raw('participant/workbook/index.html'), /<strong>A practice tool, not an exam\.<\/strong> The workbook carries its own answer key/);
 });
+
+// ---- the licences ------------------------------------------------------------------------
+
+test('the licence table says, row by row, what each licence covers, and what it says is so', () => {
+  const t = raw('README.md');
+  const start = t.indexOf('| Files | Licence |');
+  const rows = t.slice(start, t.indexOf('\n\n', start)).split('\n').slice(2).map((r) => r.replace(/^\| | \|$/g, '').split(' | '));
+  assert.equal(rows.length, 3);
+  assert.match(rows[0][0], /^The code: every `\.js` file in `participant\/workbook\/`, `tools\/` and `tests\/`, and the CI workflow, `\.github\/workflows\/ci\.yml`\. The teaching text inside two of those scripts is in the next row\.$/);
+  assert.equal(rows[0][1], 'MIT, in [`LICENSE`](LICENSE)');
+  assert.match(rows[1][0], /^Everything else: the pages and documents \(`\.md`, `\.html`, `\.css`\), the case files, and the recorded requests and answers; and the teaching text inside two scripts: `participant\/workbook\/case-data\.js` \(the case, the exercises and the questions\) and `participant\/workbook\/recorded-answers\.js`, which is generated from `recorded\/answers\/` and holds the recorded answers and the key with its reasons$/);
+  assert.equal(rows[1][1], 'Creative Commons Attribution-NonCommercial 4.0, in [`LICENSE-TEXT.md`](LICENSE-TEXT.md)');
+  assert.equal(rows[2][0], '`participant/workbook-single-file.html`');
+  assert.match(rows[2][1], /^Both: it holds the MIT code and the CC BY-NC teaching text in one file, each under its own licence, and its footer says so$/);
+  // Every script is in one of the three folders the first row names.
+  for (const f of files.filter((x) => x.endsWith('.js'))) { assert.match(f, /^(participant\/workbook|tools|tests)\//, f); }
+  // recorded-answers.js does hold the recorded answers and the key, and says what licence they are under.
+  const { REC } = require('./helpers');
+  const rec = raw('participant/workbook/recorded-answers.js');
+  assert.ok(rec.includes(JSON.stringify(REC.ex2.text).slice(1, 60)), 'the recorded answer of exercise 2');
+  assert.ok(rec.includes('"reason"'), 'the key with its reasons');
+  assert.match(rec, /teaching text, under Creative Commons Attribution-NonCommercial 4\.0/);
+});
+
+test('the single-file workbook and the handout name the author and both licences on their own, without pointing to the README', () => {
+  for (const [f, foot] of [['participant/workbook-single-file.html', /<footer>[\s\S]*?<\/footer>/], ['participant/handout.html', /<p class="foot">[\s\S]*?<\/p>/]]) {
+    const text = raw(f).match(foot)[0];
+    assert.match(text, /Practical AI at Work, a workshop kit, by Evgeny Blekhman\./, f);
+    assert.match(text, /MIT licence/, f);
+    assert.match(text, /Creative Commons Attribution-NonCommercial 4\.0/, f);
+    assert.match(text, /creativecommons\.org\/licenses\/by-nc\/4\.0/, f);
+    assert.doesNotMatch(text, /README/, f);
+  }
+});
+
+test('the participant folder carries its own credit line, which stands without the kit\'s README', () => {
+  const t = raw('participant/README.md');
+  const credit = t.slice(t.indexOf('## Credit and licence'));
+  assert.match(credit, /^## Credit and licence\n\nPractical AI at Work, a workshop kit, by Evgeny Blekhman\. The teaching text is licensed under Creative Commons Attribution-NonCommercial 4\.0 \(https:\/\/creativecommons\.org\/licenses\/by-nc\/4\.0\/\); the code is under the MIT licence\./);
+  assert.match(credit, /The code is the scripts in `workbook\/`; everything else in this folder is teaching text, and so is the text inside `workbook\/case-data\.js` and `workbook\/recorded-answers\.js`\.\n$/);
+  assert.doesNotMatch(credit, /README/);
+});
