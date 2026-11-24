@@ -16,16 +16,24 @@ function writeText(rel, text) {
   fs.mkdirSync(path.dirname(abs(rel)), { recursive: true });
   fs.writeFileSync(abs(rel), text.replace(/\r\n?/g, '\n'), 'utf8');
 }
+/**
+ * Files and folders a computer adds by itself, which are never part of the kit: macOS's .DS_Store and
+ * ._ files, Windows's Thumbs.db and desktop.ini, and the __MACOSX folder of an extracted zip.
+ * .gitignore lists the same names.
+ */
+function isStray(name) {
+  return /^(\.DS_Store|\._.*|\.Spotlight-V100|\.Trashes|\.fseventsd|\.TemporaryItems|Thumbs\.db|ehthumbs\.db|[Dd]esktop\.ini|__MACOSX)$/.test(name);
+}
 function listFiles(relDir, filter) {
   const dir = abs(relDir);
   if (!fs.existsSync(dir)) { return []; }
-  return fs.readdirSync(dir).filter((f) => !filter || filter(f)).sort().map((f) => relDir + '/' + f);
+  return fs.readdirSync(dir).filter((f) => !isStray(f) && (!filter || filter(f))).sort().map((f) => relDir + '/' + f);
 }
-/** Every file of the repository that git would track, walked from the root (without .git). */
+/** Every file of the repository that git would track, walked from the root (without .git and stray files). */
 function walk(relDir = '', out = []) {
   const dir = relDir ? abs(relDir) : ROOT;
   for (const name of fs.readdirSync(dir).sort()) {
-    if (name === '.git' || name === 'node_modules') { continue; }
+    if (name === '.git' || name === 'node_modules' || isStray(name)) { continue; }
     const rel = relDir ? relDir + '/' + name : name;
     if (fs.statSync(abs(rel)).isDirectory()) { walk(rel, out); } else { out.push(rel); }
   }
@@ -67,4 +75,4 @@ function applyEdits(text, steps) {
   return out;
 }
 
-module.exports = { ROOT, WORKBOOK, abs, readText, exists, writeText, listFiles, walk, freshRequire, loadWorkbook, applyEdits };
+module.exports = { ROOT, WORKBOOK, abs, readText, exists, writeText, isStray, listFiles, walk, freshRequire, loadWorkbook, applyEdits };
