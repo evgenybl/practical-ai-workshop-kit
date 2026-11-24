@@ -164,7 +164,7 @@ test('the evidence table says what is done, what was done once, and what is owed
   assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent: .*listed on the testing page\. The review has not been repeated on the current version\.$/);
   assert.match(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), /^Not yet done by a person\. Rendered once in a headless browser .* says nothing about keyboard use or a screen reader\.$/);
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
-  assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI\./);
+  assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run\./);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
