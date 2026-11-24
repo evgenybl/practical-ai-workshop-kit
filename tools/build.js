@@ -296,7 +296,9 @@ function answerKey(CASE, REC, C, F) {
     'The check needs at least 3 named placeholders, one of them for the material, no unnamed blank such as ___, and no value of this case. A strong template: `solutions/ex5-strong-template.txt`.\n\n';
 
   // Quiz
-  s += '## The ten-question check\n\n| # | Objective | Best answer | Why |\n|---|---|---|---|\n';
+  const preview = CASE.quiz.filter((q) => q.objective === 'O5').map((q) => q.n);
+  s += '## The ten-question check\n\nTwo questions for each objective. Questions ' + preview.join(' and ') + ' are about templates (O5), which exercise 5 practises as homework in the 90-minute plan: in the session they are a preview.\n\n' +
+    '| # | Objective | Best answer | Why |\n|---|---|---|---|\n';
   for (const q of CASE.quiz) {
     const best = q.options.find((o) => o.correct);
     s += '| ' + q.n + ' | ' + q.objective + ' | ' + best.key + ': ' + cell(best.text) + ' | ' + cell(best.why) + ' |\n';

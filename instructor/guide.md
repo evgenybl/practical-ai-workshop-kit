@@ -265,7 +265,7 @@ If the room has an assistant, add: *"If you finish, copy your brief, send it, an
 
 **Say:**
 
-*"Ten questions, two for each skill we practised. Five minutes. Every option has an explanation, so read it even when you chose well."*
+*"Ten questions, two for each of the five skills. The last two are about templates, which you will practise in exercise 5, your homework: answer them now as a preview, or after the homework. Five minutes. Every option has an explanation, so read it even when you chose well."*
 
 When most are done, ask: *"Which question made you stop and think?"* Take one answer. Do not ask for scores, and do not collect them.
 

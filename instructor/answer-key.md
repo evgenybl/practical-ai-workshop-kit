@@ -241,6 +241,8 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 
 ## The ten-question check
 
+Two questions for each objective. Questions 9 and 10 are about templates (O5), which exercise 5 practises as homework in the 90-minute plan: in the session they are a preview.
+
 | # | Objective | Best answer | Why |
 |---|---|---|---|
 | 1 | O1 | D: The limits | Nothing says what the reply must not do: for example, not to accept a credit instead of a replacement, or not to threaten to change supplier. Without limits, the assistant decides those things for you. |

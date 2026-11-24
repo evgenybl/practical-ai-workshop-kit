@@ -60,3 +60,14 @@ test('the best answer is not given away by its length', () => {
   }).map((q) => q.n);
   assert.ok(longest.length <= 2, 'the best answer is the longest option in questions ' + longest.join(', '));
 });
+
+test('the last two questions are about templates, which exercise 5 practises as homework, and each page that sets the questions says so', () => {
+  const { lib } = require('./helpers');
+  assert.deepEqual(CASE.quiz.filter((q) => q.objective === 'O5').map((q) => q.n), [9, 10]);
+  assert.match(lib.readText('participant/workbook/index.html'), /<p>Ten questions, two for each of the five skills\. The last two are about templates, which exercise 5 practises as homework: answer them now as a preview, or after the homework\./);
+  const guide = lib.readText('instructor/guide.md');
+  assert.match(guide, /\*"Ten questions, two for each of the five skills\. The last two are about templates, which you will practise in exercise 5, your homework: answer them now as a preview, or after the homework\./);
+  assert.doesNotMatch(guide, /two for each skill we practised/);
+  assert.match(lib.readText('instructor/rubric.md'), /Questions 9 and 10 of the ten questions are about this objective\. In the 90-minute plan they come before the homework, as a preview: a wrong answer there is expected, and says nothing about a level\./);
+  assert.match(lib.readText('instructor/answer-key.md'), /Questions 9 and 10 are about templates \(O5\), which exercise 5 practises as homework in the 90-minute plan: in the session they are a preview\./);
+});

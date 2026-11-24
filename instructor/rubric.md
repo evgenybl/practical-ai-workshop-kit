@@ -49,7 +49,7 @@ Four levels for each of the five objectives, each described by **what you can se
 
 ## O5. Turn a request that worked into a template (exercise 5)
 
-Exercise 5 is homework in the 90-minute plan, and checks itself; you see this objective in the room only in the half-day variant.
+Exercise 5 is homework in the 90-minute plan, and checks itself; you see this objective in the room only in the half-day variant. Questions 9 and 10 of the ten questions are about this objective. In the 90-minute plan they come before the homework, as a preview: a wrong answer there is expected, and says nothing about a level.
 
 | Level | What you can see |
 |---|---|
