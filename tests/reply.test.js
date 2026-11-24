@@ -101,3 +101,11 @@ test('an empty box says so on every rule, and passes none', () => {
     }
   }
 });
+
+test('credit: a promise in the future tense is found, and a refusal, a doubt or a report of what the customer says is not', () => {
+  // The promise itself, so that the three sentences below are known to differ from it only in what they say.
+  assert.equal(status(C.checkReply(plus('We will reduce the invoice.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We will not take anything off your invoice.')), 'credit'), 'ok');
+  assert.equal(status(C.checkReply(plus('I do not know whether we will reduce the invoice.')), 'credit'), 'ok');
+  assert.equal(status(C.checkReply(plus('Mira says we will reduce the invoice.')), 'credit'), 'ok');
+});

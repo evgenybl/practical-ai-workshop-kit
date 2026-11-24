@@ -4,7 +4,7 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 240 tests, 240 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 241 tests, 241 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI. |
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
 | A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
 | An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
@@ -48,10 +48,10 @@ node --test "tests/*.test.js"
 
 <!-- pasted from: node --test --test-reporter=tap "tests/*.test.js" (the last lines) -->
 ```text
-1..240
-# tests 240
+1..241
+# tests 241
 # suites 0
-# pass 240
+# pass 241
 # fail 0
 # cancelled 0
 # skipped 0
