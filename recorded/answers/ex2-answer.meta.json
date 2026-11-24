@@ -1,0 +1,19 @@
+{
+  "exercise": "2",
+  "kind": "constructed",
+  "about": "An answer to the prepared summary request of exercise 2, for participants who have no assistant.",
+  "constructed_note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. It was written to contain two mistakes an assistant commonly makes with this thread: a customer's claim reported as a fact, and a figure cited to the wrong message. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
+  "model": null,
+  "date": null,
+  "route": null,
+  "request_file": "recorded/requests/ex2-request.txt",
+  "request_sha256": "dcffec22ed35f9e1efa3874c1389e67e643ab77eedfe6032c5c2e3d228bbe1ab",
+  "edits": null,
+  "check": {
+    "exercise": "2",
+    "expect": {
+      "numbers": "ok", "citations": "look", "fact-order": "ok", "fact-invoice": "ok", "fact-wrong": "ok",
+      "fact-amount": "ok", "fact-promised": "ok", "length": "ok", "credit": "look", "counts": "ok"
+    }
+  }
+}

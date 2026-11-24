@@ -1,0 +1,16 @@
+How to use this template: replace every part in square brackets, brackets included. Keep everything else. After you get the answer, check every figure against the message it names.
+
+## Situation
+I work at Larkfield Wholesale. Our [MANAGER'S ROLE], [MANAGER'S NAME], has to decide today on [THE DECISION, for example a customer's request for a credit]. They have not read the e-mails and have two minutes to read a summary.
+
+## Material
+[PASTE THE WHOLE E-MAIL THREAD HERE, with each message numbered: Message 1, Message 2, and so on]
+
+## Task
+Summarise the e-mail thread above for [MANAGER'S NAME].
+
+## Form
+At most 120 words, as short bullet points. Include [THE FACTS THE READER NEEDS, for example the order number, the invoice number, what went wrong, the amount in question, and what we did and did not promise]. After each fact, put the number of the message it comes from in brackets, like this: (msg 2).
+
+## Limits
+Use only the e-mails. Do not guess, and do not work out figures that are not in them. Where the customer says something we have not checked, write "[CUSTOMER'S FIRST NAME] says". If something is not in the e-mails, write "not stated".

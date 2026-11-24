@@ -1,0 +1,92 @@
+Write a reply to this customer.
+
+E-mail thread between Halden Street Bakery and Larkfield Wholesale (both invented)
+
+Message 1
+From: Mira Okafor, Halden Street Bakery <mira.okafor@example.com>
+To: Larkfield Wholesale, orders <orders@example.com>
+Date: Monday 3 March
+Subject: Order SO-20417 has not arrived
+
+Hello,
+
+Our order SO-20417, placed on 24 February, was due to be delivered on Friday 28 February. It has not arrived, and nobody has told us why. We have a catering job on Saturday 8 March and we need these cups and lids for it.
+
+Can you tell me today when the order will come?
+
+Mira Okafor
+Owner, Halden Street Bakery
+
+----------
+
+Message 2
+From: Tom Becker, Larkfield Wholesale <tom.becker@example.com>
+To: Mira Okafor <mira.okafor@example.com>
+Date: Monday 3 March
+Subject: Re: Order SO-20417 has not arrived
+
+Hi Mira,
+
+I am sorry for the delay, and that nobody let you know. Your order was held in our warehouse because the lids were out of stock. They came in this morning.
+
+Your order is 40 cartons of 12 oz paper cups and 20 cartons of lids. I can confirm that it will be delivered on Wednesday 5 March, before noon.
+
+Best regards,
+Tom Becker
+Customer service, Larkfield Wholesale
+
+----------
+
+Message 3
+From: Mira Okafor, Halden Street Bakery <mira.okafor@example.com>
+To: Tom Becker <tom.becker@example.com>
+Date: Wednesday 5 March
+Subject: Re: Order SO-20417 has not arrived - short and damaged
+
+Tom,
+
+The delivery came this morning at 10:30, thank you. But it is not right.
+
+We received 34 cartons of cups, not 40, so 6 are missing. And of the 34 that came, 6 were crushed and wet, and we cannot use them. The 20 cartons of lids are fine. I have attached photos of the damaged cartons.
+
+Your invoice INV-7731 charges us for the full order: $1,820.00.
+
+Please send the missing cartons before Saturday, and confirm that you will credit us for the damaged ones.
+
+Mira
+
+----------
+
+Message 4
+From: Tom Becker, Larkfield Wholesale <tom.becker@example.com>
+To: Mira Okafor <mira.okafor@example.com>
+Date: Thursday 6 March
+Subject: Re: Order SO-20417 has not arrived - short and damaged
+
+Hi Mira,
+
+I am sorry about this. I have checked with the warehouse: 6 cartons of cups were left behind when the van was loaded, and 6 were damaged on the way to you.
+
+I cannot get the missing cartons to you before Saturday: our van does not come to your area again until next week. I will confirm the day of that delivery by Friday 7 March.
+
+About the damaged cartons: a credit of this size has to be approved by our operations manager, Dana Liu. I sent her your photos and your request today, and I will let you know her decision.
+
+Tom
+
+----------
+
+Message 5
+From: Mira Okafor, Halden Street Bakery <mira.okafor@example.com>
+To: Tom Becker <tom.becker@example.com>
+Date: Tuesday 11 March
+Subject: Re: Order SO-20417 has not arrived - still waiting
+
+Tom,
+
+You said you would confirm a delivery day by Friday. It is now Tuesday, I have heard nothing, and the 6 missing cartons have still not arrived. For Saturday's job I had to buy cups at a cash-and-carry, for $312.00. The receipt is attached.
+
+I am also still waiting for the credit you promised for the 6 damaged cartons. At your price of $36.50 a carton, that is $219.00. With the $312.00 I had to spend, I am asking for a credit of $531.00 against invoice INV-7731.
+
+Please confirm this credit by Friday.
+
+Mira

@@ -1,0 +1,24 @@
+{
+  "exercise": "3",
+  "answer": "A",
+  "kind": "constructed",
+  "about": "One of the three answers of exercise 3: a reply drafted from the strong brief.",
+  "constructed_note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
+  "model": null,
+  "date": null,
+  "route": null,
+  "request_file": "recorded/requests/ex3-request.txt",
+  "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
+  "edits": null,
+  "check": {
+    "exercise": "reply",
+    "expect": { "numbers": "ok", "counts": "ok", "credit": "ok", "costs": "look", "date": "ok" }
+  },
+  "key": [
+    { "accept": ["fine"], "reason": "True: {staffFirst} promised to confirm a day by Friday (message 4) and did not (message 5). Owning the mistake first is right." },
+    { "accept": ["figure"], "reason": "{cupsDelivered} cartons were delivered, not {cupsOrdered}: {cupsOrdered} is what was ordered (message 3). The automatic check cannot see this, because {cupsOrdered} is in the thread with another meaning." },
+    { "accept": ["fine"], "reason": "True to the policy: a credit of this size needs the {managerRole}'s approval (rule 3), and it promises nothing." },
+    { "accept": ["policy"], "reason": "The policy does not allow paying for goods bought elsewhere without the {managerRole}'s agreement in writing, and says never to promise it by e-mail (rules 5 and 6). The figure is right; the promise is not allowed." },
+    { "accept": ["fine"], "reason": "A promise about {staffFirst}'s own action, which he can keep. It does not promise a delivery day." }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "exercise": "3",
+  "answer": "C",
+  "kind": "constructed",
+  "about": "One of the three answers of exercise 3: a reply drafted from the strong brief.",
+  "constructed_note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
+  "model": null,
+  "date": null,
+  "route": null,
+  "request_file": "recorded/requests/ex3-request.txt",
+  "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
+  "edits": null,
+  "check": {
+    "exercise": "reply",
+    "expect": { "numbers": "look", "counts": "look", "credit": "look", "costs": "ok", "date": "look" }
+  },
+  "key": [
+    { "accept": ["fine"], "reason": "An apology, and the order number is right (message 1)." },
+    { "accept": ["figure"], "reason": "{cupsCrushed} of the {cupsDelivered} were crushed (message 3). The other {cupsMissing} never arrived. The two groups count different cartons, and adding them does not give the number crushed." },
+    { "accept": ["policy"], "reason": "A credit of this size needs the {managerRole}'s approval (rule 3), and no credit may be promised before it is approved (rule 6). The figure is right; the promise is not allowed." },
+    { "accept": ["fine"], "reason": "It passes the request on and promises nothing. That is what the policy asks for (rule 5)." },
+    { "accept": ["policy", "material"], "reason": "No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date itself is nowhere in the thread. Either mark is right." }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "exercise": "1",
+  "kind": "constructed",
+  "about": "The answer to the one-line request of exercise 1, shown to participants as the starting point.",
+  "constructed_note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
+  "model": null,
+  "date": null,
+  "route": null,
+  "request_file": "recorded/requests/ex1-request.txt",
+  "request_sha256": "7905343d0eb0b303887f18cad3438b7b67585e6a7fbb0e689fe26da987f6f97e",
+  "edits": null,
+  "check": {
+    "exercise": "reply",
+    "expect": { "numbers": "look", "counts": "ok", "credit": "look", "costs": "look", "date": "look" }
+  },
+  "issues": [
+    "It promises the full credit she asked for. Only the {managerRole} can approve a credit of this size, and no credit may be promised by e-mail before it is approved (policy, rules 3 and 6).",
+    "It promises to pay for the cups she bought at the cash-and-carry. The policy does not allow that without the {managerRole}'s agreement in writing (rules 5 and 6).",
+    "It promises delivery tomorrow. No day has been confirmed, and {staffFirst} wrote that the van does not come to her area until next week (message 4).",
+    "It offers a discount that exists nowhere in the thread or the policy.",
+    "It does not answer what she is most upset about: {staffFirst} said he would confirm a delivery day by Friday, and did not (messages 4 and 5).",
+    "It is long and padded with stock phrases. She asked two plain questions; the reply gives her promises the company may not be able to keep."
+  ]
+}
