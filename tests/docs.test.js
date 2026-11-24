@@ -431,7 +431,7 @@ test('where the case is introduced, the README and the case folder say that its 
 test('the testing page says that the picture\'s tag was removed, and that a real capture was embedded later', () => {
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   const row = how.split('\n').find((l) => l.startsWith('| Blocker | The README embedded a picture that did not exist'));
-  assert.match(row, /\| The tag was removed, and a test now requires every embedded image to exist\. At commit 44eba61 a real capture of the page was added and embedded again \(see \*Opened in a real browser\*, below\); the real-browser pass by a person is still owed \|$/);
+  assert.match(row, /\| The tag was removed, and a test now requires every embedded image to exist\. At commit 44eba61 a real capture of the page was added and embedded again \(see \*Opened in a real browser\*, below\); the real-browser pass by a person is listed there as not yet done \|$/);
   assert.ok(lib.exists('docs/img/workbook.png'));
   assert.match(raw('README.md'), /!\[[^\]]*\]\(docs\/img\/workbook\.png\)/);
 });
