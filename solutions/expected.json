@@ -1,0 +1,13 @@
+{
+  "about": "What each model solution must give when run through tools/check.js. 'all-ok' means every rule says OK. tools/run-answers.js and CI check this.",
+  "files": {
+    "ex1-strong-brief.txt": { "exercise": "1", "expect": "all-ok" },
+    "ex1-strong-reply.txt": { "exercise": "reply", "expect": "all-ok" },
+    "ex2-strong-summary.txt": { "exercise": "2", "expect": "all-ok" },
+    "ex3-marks.txt": { "exercise": "3", "expect": "all-ok" },
+    "ex4-piles.txt": { "exercise": "4a", "expect": "all-ok" },
+    "ex4-extract.txt": { "exercise": "4b", "expect": "all-ok" },
+    "ex5-strong-template.txt": { "exercise": "5", "expect": "all-ok" },
+    "quiz-answers.txt": { "exercise": "quiz", "expect": "all-ok" }
+  }
+}

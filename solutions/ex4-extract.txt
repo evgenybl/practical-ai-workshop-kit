@@ -1,0 +1,34 @@
+| Order | Order date | Customer | Amount | Status |
+| --- | --- | --- | --- | --- |
+| SO-20398 | 3 Feb | Customer 01 | $640.50 | Paid |
+| SO-20399 | 3 Feb | Customer 02 | $1,184.00 | Paid |
+| SO-20400 | 4 Feb | Customer 03 | $236.40 | Paid |
+| SO-20401 | 5 Feb | Customer 04 | $512.75 | Paid |
+| SO-20402 | 6 Feb | Customer 05 | $389.00 | Paid |
+| SO-20403 | 7 Feb | Customer 06 | $822.60 | Paid |
+| SO-20404 | 10 Feb | Customer 07 | $145.90 | Paid |
+| SO-20405 | 10 Feb | Customer 08 | $455.00 | Paid |
+| SO-20406 | 11 Feb | Customer 09 | $298.30 | Paid |
+| SO-20407 | 12 Feb | Customer 10 | $671.20 | Paid |
+| SO-20408 | 13 Feb | Customer 11 | $934.00 | Invoiced |
+| SO-20409 | 14 Feb | Customer 12 | $187.50 | Paid |
+| SO-20410 | 17 Feb | Customer 13 | $263.80 | Invoiced |
+| SO-20411 | 17 Feb | Customer 01 | $412.00 | Paid |
+| SO-20412 | 18 Feb | Customer 14 | $1,348.00 | Invoiced |
+| SO-20413 | 19 Feb | Customer 15 | $156.25 | Paid |
+| SO-20414 | 20 Feb | Customer 16 | $703.40 | Invoiced |
+| SO-20415 | 21 Feb | Customer 17 | $342.10 | Invoiced |
+| SO-20416 | 21 Feb | Customer 18 | $498.00 | Invoiced |
+| SO-20417 | 24 Feb | Customer 01 | $1,820.00 | Part delivered |
+| SO-20418 | 25 Feb | Customer 19 | $129.60 | Invoiced |
+| SO-20419 | 26 Feb | Customer 02 | $1,962.00 | Invoiced |
+| SO-20420 | 27 Feb | Customer 20 | $1,105.50 | Delivered |
+| SO-20421 | 28 Feb | Customer 21 | $274.00 | Delivered |
+| SO-20422 | 3 Mar | Customer 22 | $588.90 | Delivered |
+| SO-20423 | 4 Mar | Customer 23 | $317.45 | Delivered |
+| SO-20424 | 5 Mar | Customer 24 | $846.00 | Open |
+| SO-20425 | 6 Mar | Customer 25 | $402.30 | Open |
+| SO-20426 | 7 Mar | Customer 26 | $98.75 | Open |
+| SO-20427 | 10 Mar | Customer 27 | $1,274.00 | Open |
+
+Which customers have ordered more than once, and what is the total of each one's orders? Which orders are not yet paid?
