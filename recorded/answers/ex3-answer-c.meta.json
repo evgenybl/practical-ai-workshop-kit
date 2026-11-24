@@ -29,6 +29,6 @@
     { "accept": ["policy", "material"], "reason": "Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right." },
     { "accept": ["fine"], "reason": "As in answer A: true to the policy (rule 3), and it promises nothing." },
     { "accept": ["figure"], "reason": "Planted. The damaged cartons come to {money:creditDamaged} ({cupsCrushed} at {money:cupPrice}, message 5); {money:localPurchase} is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning." },
-    { "accept": ["material", "fine"], "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only {staffFirst}'s own action. Fine once {staffFirst} has decided he can keep it." }
+    { "accept": ["material", "fine"], "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only {staffFirst}'s own action. Fine once {staffFirst} has decided he can keep it. As in answer A, the figure check does not flag \"12 March\": it reads 12 as a figure, and 12 is in the thread as the cup size ({cupSize} oz). It does flag \"13 March\" in C4: 13 is in neither the thread nor the policy." }
   ]
 }

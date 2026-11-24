@@ -105,7 +105,7 @@
               "material",
               "fine"
             ],
-            "reason": "Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only Tom's own action, which the policy allows. What tips it: it is fine once Tom has decided he can keep that date, and not before."
+            "reason": "Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only Tom's own action, which the policy allows. What tips it: it is fine once Tom has decided he can keep that date, and not before. The figure check does not flag \"12 March\": it reads 12 as a figure, and 12 is in the thread as the cup size (12 oz)."
           }
         ],
         "id": "A"
@@ -201,7 +201,7 @@
               "material",
               "fine"
             ],
-            "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it."
+            "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it. As in answer A, the figure check does not flag \"12 March\": it reads 12 as a figure, and 12 is in the thread as the cup size (12 oz). It does flag \"13 March\" in C4: 13 is in neither the thread nor the policy."
           }
         ],
         "id": "C"

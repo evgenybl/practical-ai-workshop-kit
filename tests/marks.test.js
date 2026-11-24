@@ -103,3 +103,23 @@ test('marks are read from text in several spellings', () => {
   assert.deepEqual(C.parseMarks('A1: fine\nA2 - wrong figure\nb4 not in the material\nC3: Against the policy\nC5 = nonsense'),
     { A1: 'fine', A2: 'figure', B4: 'material', C3: 'policy' });
 });
+
+test('the key says why the figure check passes "12 March" in answers A and C, as it does for the 12 of answer B', () => {
+  const { lib, F, CASE } = require('./helpers');
+  const key = lib.readText('instructor/answer-key.md');
+  for (const [id, n] of [['A', 7], ['C', 7]]) {
+    const a = REC.ex3.find((x) => x.id === id);
+    const sentence = C.numberedSentences(a.text)[n - 1];
+    assert.match(sentence, /Wednesday 12 March/, id + n);
+    assert.match(a.key[n - 1].reason, new RegExp('[Tt]he figure check does not flag "12 March": it reads 12 as a figure, and 12 is in the thread as the cup size \\(' + F.cupSize + ' oz\\)\\.'), id + n);
+    assert.ok(key.includes(a.key[n - 1].reason), id + n + ' in the answer key');
+    // And so it is: the sentence alone passes the figure check, 12 is a figure of the thread, and 12 March is not a date in it.
+    assert.equal(C.checkReply(sentence).rules.find((r) => r.id === 'numbers').status, 'ok', id + n);
+    assert.ok(C.threadNumbers.includes(12));
+    assert.ok(!/\b12 March\b/.test(CASE.threadText));
+  }
+  // In answer C, 13 March is flagged: 13 is nowhere in the thread or the policy.
+  const c = REC.ex3.find((x) => x.id === 'C');
+  assert.match(c.key[6].reason, /It does flag "13 March" in C4: 13 is in neither the thread nor the policy\./);
+  assert.ok(C.checkReply(c.text).rules.find((r) => r.id === 'numbers').items.some((i) => i.startsWith('13 is not in the material')));
+});
