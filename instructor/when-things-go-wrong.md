@@ -139,3 +139,11 @@ Or pair them with someone who is stuck, if both agree.
 **Do now:** treat it as "not in the material". Ask the person to add a limit: "Use only the e-mails below."
 
 **Lesson:** a fact from outside the material may be true, but it is not checkable against your material, and the reader cannot tell it from what the customer actually said.
+
+### 19. Someone has found the answers in the page's files
+
+**You see:** "The answers are in the page," or a participant who scores ten out of ten in a minute.
+
+**Do now:** say that this is by design. The workbook carries its own key so that it can check answers with no server; a participant who opens the page's source can read it. The kit is a practice tool, not an exam, and must not be used to grade people. Ask them to do the next exercise before opening the key, and to read the reason for each answer, not only the answer.
+
+**Lesson:** the point of every exercise is the reading and the deciding, which no key can do for you.

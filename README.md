@@ -89,9 +89,9 @@ After the session a participant can:
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 241 tests, 241 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 250 tests, 250 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run. |
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
-| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
+| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done twice, by separate AI agents: at commit 5059ae2, whose eleven points of friction were worked through in later commits, and at commit 2926752, whose seven points were worked through in the commits after it. Both are listed on the testing page. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first. |
 | An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
 | Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done by a person. Rendered once in a headless browser with no network, on 2026-11-24 at commit 5e38dfa: both copies loaded and looked the same, exercise 2's two buttons were clicked and the result appeared, and the console showed no message, no error and no blocked or attempted request. That run says nothing about keyboard use or a screen reader. |
 | Taught to a class of people | | Not done. |
@@ -112,6 +112,7 @@ node tools/run-answers.js
 - **The checker checks figures and stated facts, not style or judgment.** It looks for simple signs, says what they are, and says so on the page. It can miss an error, and it can flag a sentence that is fine: it points, and the participant decides.
 - **A figure written in words is not checked.** "Six" is not read; "6" is.
 - **The privacy sorting is a teaching key, not legal advice.** An employer's own policy on AI tools comes first.
+- **It is a practice tool, not an exam.** The workbook carries its own key so that it can check answers with no server; a participant who opens the page's source can read it. It must not be used to grade people.
 
 ## How this was built
 

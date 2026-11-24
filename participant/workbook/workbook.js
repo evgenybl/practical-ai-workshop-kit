@@ -38,6 +38,7 @@
     ['ex1-newreply', 'Exercise 1, step 3: the reply my brief produced'],
     ['ex2-request', 'Exercise 2, step 1: my request'],
     ['ex2-answer', 'Exercise 2: the answer'],
+    ['ex2-trust', 'Exercise 2, step 3: the three bullets I trust least'],
     ['ex2-final', 'Exercise 2: my corrected summary'],
     ['ex3-misses', 'Exercise 3: which errors the checker misses, and why'],
     ['ex4-extract', 'Exercise 4, part 2: the text I was about to paste'],

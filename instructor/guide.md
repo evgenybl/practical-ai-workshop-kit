@@ -19,6 +19,7 @@ Words in *italics* under **Say** are a script you can read as written or put in 
 - **A way to keep the case in view.** People compare answers with the e-mails and the policy all session. Print the case (`participant/case/customer-thread.txt` and `returns-policy.txt`), or ask people to open the workbook in a second window and keep that one on *The case*.
 - **An assistant, or none.** The assistant the participants' employer allows for work. If there is none, or it is blocked, every exercise has an answer ready in the workbook.
 - **Know what the ready answers are.** According to the author's record, they are one model's answers, obtained by giving a Claude Code subagent each request in `recorded/requests/` as its whole prompt, and saved as they came back, notes and all. Such a subagent also runs under its tool's own system prompt, so this was not a plain chat with no instructions, and it is not what your participants' assistants will write. Two answers in exercise 3, B and C, are answer A **edited by hand** to plant errors; the workbook says so above each, and the answer key lists every change. If someone asks, say so plainly.
+- **Know that the key is in the page.** The workbook carries its own key so that it can check answers with no server; a participant who opens the page's source can read it. The kit is a practice tool, not an exam, and must not be used to grade people. If someone finds the answers, see *when-things-go-wrong.md*, entry 19.
 - **A screen** for your laptop.
 - **The handout** (`participant/handout.html`), printed, one per person.
 
@@ -100,9 +101,9 @@ Then point at the notes under the reply: *"The assistant added its own notes. Di
 
 **Say before (step 2):**
 
-*"Now write the request again, in five parts. Write it to a capable new colleague who has never heard of this customer, and who will fill any gap you leave with a guess, as this reply did. The hint under each box says what goes there. For the material, press the button: it puts the whole thread in the box. When you are done, press Check. It tells you whether each part is there; it does not tell you whether it is good. Seven minutes."*
+*"Now write the request again, in five parts. Write it to a capable new colleague who has never heard of this customer, and who will fill any gap you leave with a guess, as this reply did. The hint under each box says what goes there. For the material, press the button: it puts the whole thread in the box; then add the policy, because your limits will rely on it. When you are done, press Check. The strong brief under the boxes is for reading afterwards. It tells you whether each part is there; it does not tell you whether it is good. Seven minutes."*
 
-If the room has an assistant, add: *"If you finish, copy your brief, send it, and paste the new reply in step 3. Compare it with the first one."*
+If the room has an assistant, add: *"If you finish, copy your brief, send it, and paste the new reply in step 3. Compare it with the first one."* Step 3 is marked on the page as one to skip when short of time.
 
 **While they work:** read the Limits boxes over people's shoulders. That is where the most useful help is.
 

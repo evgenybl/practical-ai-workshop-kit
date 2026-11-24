@@ -160,15 +160,21 @@ test('the README repeats the evidence table of How this kit was tested, word for
 
 test('the evidence table says what is done, what was done once, and what is owed', () => {
   assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
-  assert.match(evidenceState('A new-user test by an AI agent'), /^Done once, at commit 5059ae2, by a separate AI agent; .*listed on the testing page\. The test has not been repeated on the current version\.$/);
+  assert.match(evidenceState('A new-user test by an AI agent'), /^Done twice, by separate AI agents: at commit 5059ae2, .* and at commit 2926752, .*Both are listed on the testing page\. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first\.$/);
   assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent: .*listed on the testing page\. The review has not been repeated on the current version\.$/);
   assert.match(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), /^Not yet done by a person\. Rendered once in a headless browser .* says nothing about keyboard use or a screen reader\.$/);
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
   assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run\./);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
+  const newUser = how.slice(how.indexOf('## A new-user test by an AI agent'), how.indexOf('\n---', how.indexOf('## A new-user test by an AI agent')));
+  assert.match(newUser, /\*\*State: done twice, by separate AI agents: at commit 5059ae2, and at commit 2926752\.\*\*/);
+  for (const h of ['### The first pass, at commit 5059ae2', '### The second pass, at commit 2926752', '**Its own limit.**', '**Words to read, beside the planned minutes.**', 'These are counts, not measured times']) {
+    assert.ok(newUser.includes(h), h);
+  }
+  assert.match(newUser, /\| Start here, and the case \| 8 \| About 1,230 \|/);
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
-    assert.match(section, /\*\*State: done once, at commit 5059ae2, by a separate AI agent\. Not repeated on the current version\.\*\*/, h);
+    if (h === '## An independent review') { assert.match(section, /\*\*State: done once, at commit 5059ae2, by a separate AI agent\. Not repeated on the current version\.\*\*/, h); }
     assert.match(section, /What was changed/i, h);
     assert.doesNotMatch(section, /is owed/, h);
   }
@@ -258,8 +264,10 @@ test('the planned minutes agree: guide, run sheet, README and workbook, adding u
   const guide = raw('instructor/guide.md');
   const inGuide = [...guide.matchAll(/^## .*\((\d+) minutes\)$|^\*\*Planned: (\d+) minutes/gm)].map((m) => Number(m[1] || m[2]));
   assert.deepEqual(inGuide, FLOW);
+  // The page itself adds up to 90: the start section carries the opening's minutes.
   const page = [...raw('participant/workbook/index.html').matchAll(/Planned: (\d+) minutes/g)].map((m) => Number(m[1]));
-  assert.deepEqual(page, FLOW.slice(1));
+  assert.deepEqual(page, FLOW);
+  assert.match(raw('participant/workbook/index.html'), /<h2 id="start-h">Start here<\/h2>\n  <p class="meta">Planned: 8 minutes: read the case and the policy now\.<\/p>/);
   // Exercise 5 is homework everywhere, with no minutes in the session.
   assert.match(guide, /^## Exercise 5: Make it reusable \(homework\)$/m);
   assert.match(raw('instructor/run-sheet.md'), /Exercise 5, \*Make it reusable\*, is homework/);
@@ -300,4 +308,15 @@ test('the single-file workbook is what is sent by default', () => {
   assert.match(raw('instructor/variants.md'), /In every variant, send the single-file workbook/);
   assert.match(raw('participant/README.md'), /\*\*To start, open `workbook-single-file\.html` by double-clicking it\.\*\*/);
   assert.match(raw('instructor/when-things-go-wrong.md'), /### 12\. The page shows only a yellow line: "The workbook did not load"/);
+});
+
+test('the key in the page is said plainly: in the guide, when things go wrong, the testing page, the README and the page itself', () => {
+  const sentence = 'The workbook carries its own key so that it can check answers with no server; a participant who opens the page\'s source can read it.';
+  for (const f of ['instructor/guide.md', 'instructor/when-things-go-wrong.md', 'docs/HOW-THIS-WAS-TESTED.md', 'README.md']) {
+    const t = raw(f);
+    assert.ok(t.includes(sentence), f);
+    assert.match(t, /practice tool, not an exam/, f);
+    assert.match(t, /must not be used to grade people/, f);
+  }
+  assert.match(raw('participant/workbook/index.html'), /<strong>A practice tool, not an exam\.<\/strong> The workbook carries its own answer key/);
 });

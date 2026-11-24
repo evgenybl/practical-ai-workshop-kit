@@ -4,9 +4,9 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 241 tests, 241 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 250 tests, 250 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run. |
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
-| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
+| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done twice, by separate AI agents: at commit 5059ae2, whose eleven points of friction were worked through in later commits, and at commit 2926752, whose seven points were worked through in the commits after it. Both are listed on the testing page. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first. |
 | An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
 | Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done by a person. Rendered once in a headless browser with no network, on 2026-11-24 at commit 5e38dfa: both copies loaded and looked the same, exercise 2's two buttons were clicked and the result appeared, and the console showed no message, no error and no blocked or attempted request. That run says nothing about keyboard use or a screen reader. |
 | Taught to a class of people | | Not done. |
@@ -37,31 +37,33 @@ node --test "tests/*.test.js"
 | `tests/template.test.js` | Exercise 5: named placeholders both ways; a word such as [BRACKETED] and an ordinary "..." are not counted; each kind of value left from the case caught on its own. |
 | `tests/quiz.test.js` | Ten questions, two per objective, one best answer each, an explanation for every option, and the best answer not given away by its length; marking both ways. |
 | `tests/checker.test.js` | The checker's honesty: its sentences about its own limits are on every result that needs them; every pass is worded as what was not found; an empty box says so on every rule. |
-| `tests/workbook.test.js` | The page's own logic, run in a small fake page (`tests/fake-dom.js`): every exercise's buttons, the request check, columns that start on "Choose", saving and restoring answers in the browser's storage, clearing them, saving them as a text file. And the markup: a label for every box, unique ids, plain buttons, a visible focus style with an outline, a contrast ratio of at least 4.5 to 1 for every pair of text and background colours, the warning for a page opened without its folder, and the page's content security policy. |
+| `tests/workbook.test.js` | The page's own logic, run in a small fake page (`tests/fake-dom.js`): every exercise's buttons, the request check, columns that start on "Choose", saving and restoring answers in the browser's storage, clearing them, saving them as a text file. And the markup: a label for every box, unique ids, plain buttons, a visible focus style with an outline, a contrast ratio of at least 4.5 to 1 for every pair of text and background colours, the warning for a page opened without its folder, and the page's content security policy. And what a first-time participant needs: a gloss for each term where it first appears, no objective codes on the page, and the boxes and hints the second new-user pass asked for. |
 | `tests/offline.test.js` | No file of the participant folder contains a request call, a remote script, style, font or image, or any web address; the single-file copy loads nothing. |
 | `tests/generated.test.js` | Every generated file is current: the single-file workbook, the request files, the answer key (which therefore equals the workbook's own key, and a second, literal copy of the key in the test), the printable case and the generated solutions. |
 | `tests/answers.test.js` | Every answer in `recorded/` and every model answer in `solutions/`, run through the command-line checker, gives its expected result; every recorded answer and its request still have the sha256 the meta file states; every edited answer is exactly the recorded answer plus its declared edits. |
 | `tests/cli.test.js` | The command-line checker prints exactly what the page shows, with exit codes 0, 1 and 2, and its usage says what each exercise's file must hold. |
-| `tests/docs.test.js` | No absolute path; no letter outside English anywhere, and plain ASCII everywhere except in the unchanged recordings; LF line ends; no package files; every e-mail address at example.com; no claim of a class, a client or a session taught, and the "not taught" and "planned" lines in the README and every instructor page; links resolve, and every embedded image exists; the pasted output on these pages is current, and the test count in the table is the one pasted below; the README's evidence table equals this one; the minutes of the guide, the run sheet, the README and the workbook agree and add up to 90; each exercise's debrief question is the same in the guide and the run sheet. |
+| `tests/docs.test.js` | No absolute path; no letter outside English anywhere, and plain ASCII everywhere except in the unchanged recordings; LF line ends; no package files; every e-mail address at example.com; no claim of a class, a client or a session taught, and the "not taught" and "planned" lines in the README and every instructor page; links resolve, and every embedded image exists; the pasted output on these pages is current, and the test count in the table is the one pasted below; the README's evidence table equals this one; the minutes of the guide, the run sheet, the README and the workbook agree and add up to 90; each exercise's debrief question is the same in the guide and the run sheet; the workbook's carrying its own key is said in the guide, "when things go wrong", this page and the README. |
 
 **The last lines of the last run**, as printed. The run used the plain-text (TAP) reporter, whose output is plain ASCII like the rest of the kit; the tests are the same.
 
 <!-- pasted from: node --test --test-reporter=tap "tests/*.test.js" (the last lines) -->
 ```text
-1..241
-# tests 241
+1..250
+# tests 250
 # suites 0
-# pass 241
+# pass 250
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 3865.775
+# duration_ms 7944.098
 ```
 
 **What the automated tests do not cover.** No person has yet worked through the page in a browser; a headless browser has rendered it once (below). In the tests its logic runs in a fake page, which checks what the buttons do but not how the page looks, how it behaves with a keyboard alone, or how a screen reader reads it. The labels, the focus style and the colour contrast are checked in the markup only. The real-browser pass in the table above, not yet done, is where that is owed.
 
 **"Sends nothing."** Both copies of the workbook carry a content security policy in a `meta` tag: `connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'`. In a browser that enforces it, the page cannot open a connection, load an image other than an inline one, load media, a frame or a plug-in, or submit a form, so "sends nothing" is enforced by the browser, not only promised by the code. It leaves the page's own scripts and style alone. The tests check that the tag is in both copies; that a real browser enforces it on this page, and still runs the page, awaits the real-browser pass by a person. In the one headless run the page ran under the policy, and no request was blocked or attempted.
+
+**The key is in the page.** The workbook carries its own key so that it can check answers with no server; a participant who opens the page's source can read it. The kit is a practice tool, not an exam, and must not be used to grade people. The start page, the instructor guide, "when things go wrong" and the README say so too.
 
 **CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24. Its latest run is 45315987278, at commit 1038d84: it passed on all four (the first, 45300468336, was at commit 5059ae2). The badge at the top of the README shows the latest run; the runs on this page were made locally on Windows with Node 24.
 
@@ -106,7 +108,9 @@ as expected  solutions/quiz-answers.txt (exercise quiz, model solution): 10 rule
 
 ## A new-user test by an AI agent
 
-**State: done once, at commit 5059ae2, by a separate AI agent. Not repeated on the current version.**
+**State: done twice, by separate AI agents: at commit 5059ae2, and at commit 2926752.**
+
+### The first pass, at commit 5059ae2
 
 **What it was.** A fresh AI agent (a Claude model, with no part in building the kit) was told to act as a first-time participant who is not technical. It was given only the `participant/` folder. The instructor's pages, the solutions, the tests and this page were closed to it until its answers were saved. It could not open a browser, so it read the page's text from its files and pressed "Check my answer" through the command-line checker, which runs the same rules. It had no assistant of its own: where an exercise asks one, it wrote the answer itself or used the recorded answer the page offers, and said which.
 
@@ -136,6 +140,54 @@ as expected  solutions/quiz-answers.txt (exercise quiz, model solution): 10 rule
 | The command line | The usage text did not say what form exercise 1 expects | It does now |
 
 **What this test can and cannot show.** It shows where written instructions are ambiguous and where the checker's feedback cannot be acted on. It does not show how long a room of people takes, what they find hard, or whether they learn. An AI agent reads faster and tires less than a person, and it scored 18 of 18 and 10 of 10, which says the keys are consistent with the material, not that the exercises are easy.
+
+### The second pass, at commit 2926752
+
+**What it was.** A second fresh AI agent, also a Claude model with no part in building the kit, was told to act as a first-time participant and was given the `participant/` folder at commit 2926752. Its checks were made through the command-line checker, which runs the same rules as the page; its saved results are that checker's output. It had no assistant of its own, and used the recorded answers the page offers.
+
+**Its own limit.** Before answering, it read the page's script files, `case-data.js` and `recorded-answers.js`, which hold the keys in plain text (see *The key is in the page*, above). So its own answers to exercise 3, exercise 4 part 1 and the ten questions could not count as blind. Those marks were made again by a further agent that saw the material without the keys: the thread, the policy, the request behind exercise 3, answers A and B with their numbered sentences, the eight snippets and the ten questions. The results of exercises 1, 2, 4 part 2 and 5 are the second agent's own, and were not made blind.
+
+**What it did, and its results.** Every exercise and the ten questions, in order.
+
+| Exercise | Result |
+|---|---|
+| 1, its brief | 5 OK on the first check |
+| 1, the recorded reply, through the reply check | 3 OK, 2 to look at again, as the guide describes |
+| 2, the request with its added line | 2 OK |
+| 2, the recorded answer | 9 OK, 1 to look at again: the length, which is the one the exercise intends |
+| 2, its corrected summary | 10 OK |
+| 3, answers A and B, marked blind | Agreed with the key on 11 of 11 sentences |
+| 4 part 1, the eight snippets, sorted blind | 8 OK |
+| 4 part 2, its extract | 1 OK |
+| 5, its template | 2 OK |
+| The ten questions, answered blind | 10 of 10 |
+
+It found no contradiction on the page.
+
+**Words to read, beside the planned minutes.** The agent counted the words a participant reads in each block, on the page at commit 2926752. These are counts, not measured times: how long a person takes to read them is not known, and the page has changed a little since.
+
+| Block | Planned minutes | Words to read |
+|---|---|---|
+| Start here, and the case | 8 | About 1,230 |
+| Exercise 1 | 18 | 470 on the page, plus the 408-word reply |
+| Exercise 2 | 20 | 475 on the page, plus the 702-word request and the 214-word recorded answer |
+| Exercise 3 | 15 | 262 on the page, plus the 218-word request, answer A (279) and answer B (67); 11 marks |
+| Exercise 4 | 20 | 425 on the page, plus the 443 words of the eight snippets |
+| The ten questions | 9 | 619 |
+
+**Where it was unsure, and what was changed.**
+
+| Where | What happened | What was changed |
+|---|---|---|
+| The start page | The opening had no minutes on the page, so the exercises' planned minutes added to 82 | The start section says "Planned: 8 minutes: read the case and the policy now", and a test holds the page to 90 |
+| The whole page | The keys sit readable in the page's files, and nothing said so | The start page, the instructor guide, "when things go wrong", this page and the README say that the workbook carries its own key, that a participant can read it, and that the kit must not be used to grade people |
+| Exercise 2 | Step 3's "three bullets you trust least" had no place to write and no stated product, and the corrected summary had no frame; step 1 did not say where the Form part is | One line per bullet ("agrees", or "differs:" and what the message says) in a box that is not checked; a frame for the summary; step 1 says to scroll past the thread to the part just above Limits |
+| Exercise 3 | Nothing pointed to where the hard sentences hide; the command line did not list the marks | The task points at what answer A says was sent, and at its days and dates, without naming a sentence; the usage lists fine, figure, material and policy |
+| Exercise 4 | Part 1's piles did not cover a text written to be published but not yet public; part 2 named the no-assistant route only by the last box | Each pile is described in one line, the first covering text written to be published; step 3 names the no-assistant button where the step is |
+| Exercise 1 | Step 3 said nothing about time; adding the policy was optional; the model brief could be read first | Step 3 is marked to skip when short of time; the material's hint says to add the policy; the model brief is marked for reading afterwards |
+| Terms | "model", "brief", "Form part", "material", "cash-and-carry" and "oz" were used without a word of explanation, and objective codes such as "O1" showed on the page | Each has a one-line gloss where it first appears ("stand-in" already had one); the codes are gone from the participant's page and from the results of the ten questions, and stay in the instructor's pages |
+
+**What this pass can and cannot show.** The same as the first: where instructions are unclear and where feedback cannot be acted on, not how long people take or whether they learn. Its marks for exercise 3, exercise 4 part 1 and the questions say that the keys can be reached from the material alone; its other results say that a careful reader can pass every check, not that the exercises are easy.
 
 ---
 

@@ -50,3 +50,9 @@ test('the usage says what each exercise\'s file must hold, in the order of the s
   const ids = [...out.matchAll(/^  (\S+) +/gm)].map((m) => m[1]);
   assert.deepEqual(ids, ['1', 'reply', '2-request', '2', '3', '4a', '4b', '5', 'quiz']);
 });
+
+test('the usage for exercise 3 lists the four marks it accepts', () => {
+  const line = run().stdout.split('\n').find((l) => /^  3 /.test(l));
+  assert.match(line, /the marks are fine, figure, material and policy$/);
+  assert.deepEqual(C.LABELS.map((l) => l.id), ['fine', 'figure', 'material', 'policy']);
+});

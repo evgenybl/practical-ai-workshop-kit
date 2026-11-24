@@ -1159,7 +1159,7 @@
     CASE.quiz.forEach(function (q) {
       var mine = answers && answers[q.n];
       var best = q.options.filter(function (o) { return o.correct; })[0];
-      var name = 'Question ' + q.n + ' (' + q.objective + ')';
+      var name = 'Question ' + q.n;
       if (!mine) {
         rules.push(rule('q' + q.n, name, 'note', 'Not answered yet.'));
         return;
@@ -1210,7 +1210,7 @@
     'reply': { name: 'a reply to the customer, as plain text', run: checkReply },
     '2-request': { name: 'the request of exercise 2, with your line that asks for sources, as plain text', run: checkRequest },
     '2': { name: 'the summary for the manager, as plain text', run: checkSummary },
-    '3': { name: 'your marks for the three answers (lines such as "A2: figure")', run: function (t) { return checkMarks(parseMarks(t)); } },
+    '3': { name: 'your marks for the three answers: one line per sentence, such as "A2: figure"; the marks are fine, figure, material and policy', run: function (t) { return checkMarks(parseMarks(t)); } },
     '4a': { name: 'your piles for the eight snippets (lines such as "3: remove")', run: function (t) { return checkPiles(parsePiles(t)); } },
     '4b': { name: 'the text you are about to paste, as plain text', run: checkExtract },
     '5': { name: 'the template, as plain text', run: checkTemplate },

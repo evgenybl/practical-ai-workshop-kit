@@ -195,11 +195,13 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="start" aria-labelledby="start-h">
   <h2 id="start-h">Start here</h2>
+  <p class="meta">Planned: 8 minutes: read the case and the policy now.</p>
   <p>In this session you will work through one invented case in four short exercises, then answer ten questions. Exercise 5 is homework. The planned time is 90 minutes, with your instructor.</p>
   <p>One idea runs through all of it: <strong>the assistant drafts; you check; you decide.</strong> An assistant is fast at producing a first draft. It is not responsible for what you send. You are.</p>
   <ul>
     <li><strong>Keep the case in view.</strong> You will compare answers with the e-mails and the policy all session. Use the printed case from your instructor, or open this page in a second window and keep that one on <a href="#case">The case</a>.</li>
-    <li><strong>The assistant your employer allows, or none.</strong> If you have none, or are not allowed one, every exercise that needs an assistant's answer has one ready for you: one model's recorded answer. Two answers in exercise 3 are edited, and say so.</li>
+    <li><strong>The assistant your employer allows, or none.</strong> If you have none, or are not allowed one, every exercise that needs an assistant's answer has one ready for you: one model's recorded answer (a model is the AI system behind an assistant). Two answers in exercise 3 are edited, and say so.</li>
+    <li><strong>A practice tool, not an exam.</strong> The workbook carries its own answer key, so that it can check your answers on this computer with no server. Anyone who opens the page's files can read it. Nobody is graded.</li>
     <li><strong>Your answers stay here.</strong> What you type is kept in this browser, on this computer, and is sent nowhere. At the end, use <a href="#answers">Your answers</a> to save a copy as a text file, or to clear everything.</li>
     <li><strong>The checks are helpers.</strong> Each <em>Check</em> button looks for simple signs and says what it found. It can miss things, and it can flag things that are fine. It points; you decide.</li>
     <li><strong>If this page will not work,</strong> open <em>workbook-single-file.html</em>, next to this folder: the same workbook in one file. The case is also in the <em>case</em> folder as plain files you can open or print.</li>
@@ -212,6 +214,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <h2 id="case-h">The case</h2>
   <p>You are <span data-fact="staff"></span> (invented), in customer service at <span data-fact="supplier"></span> (invented), a small wholesale supplier of cups, lids and packaging to cafes and bakeries, with about a dozen staff. One of your customers, <span data-fact="contact"></span> of <span data-fact="customer"></span> (invented), has had a late, short and partly damaged delivery, and she is not happy.</p>
   <p>Everything the exercises need is below. Read the thread and the policy now; you will come back to them in every exercise.</p>
+  <p class="small">Two words in the thread: a <strong>cash-and-carry</strong> is a wholesale shop where a business pays at the till and takes the goods away itself; <strong>12 oz</strong> is the size of the cups, twelve fluid ounces, about 350 ml.</p>
 
   <details id="case-thread">
     <summary>The e-mail thread: five messages over nine days</summary>
@@ -248,8 +251,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="ex1" aria-labelledby="ex1-h">
   <h2 id="ex1-h">Exercise 1: From a wish to a brief</h2>
-  <p class="meta">Planned: 18 minutes. Objective O1: write a request as a five-part brief.</p>
-  <p class="goal"><strong>Goal:</strong> turn a one-line wish into a brief that an assistant can act on.</p>
+  <p class="meta">Planned: 18 minutes. You practise writing a request as a five-part brief.</p>
+  <p class="goal"><strong>Goal:</strong> turn a one-line wish into a brief that an assistant can act on. A <strong>brief</strong> is a request in five parts that gives the assistant everything it needs: the situation, the material (the text it works from), the task, the form of the answer, and the limits.</p>
 
   <h3>Step 1: See what a wish produces</h3>
   <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is what came back. It is polished and polite. Read it as if you were about to press Send, with the thread and the policy open beside it.</p>
@@ -281,7 +284,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   </div>
   <div class="part">
     <label for="ex1-material">2. Material</label>
-    <p class="hint" id="ex1-material-hint">Everything the assistant needs. Press the button to put the whole thread in this box; do not type a note in its place. If your limits rely on the policy, add the policy too.</p>
+    <p class="hint" id="ex1-material-hint">The <strong>material</strong> is the text the assistant works from. Press the button to put the whole thread in this box; do not type a note in its place. Then press <em>Add the policy</em>: your limits will rely on it, and the assistant cannot follow a rule it has not been given.</p>
     <div class="buttons">
       <button type="button" id="ex1-put-thread">Put the thread in this box</button>
       <button type="button" id="ex1-put-policy">Add the policy</button>
@@ -308,7 +311,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   </div>
   <div class="result" id="ex1-result" role="status" aria-live="polite" tabindex="-1"></div>
 
-  <h3>Step 3, if you have an assistant: try your brief</h3>
+  <h3>Step 3, if you have an assistant: try your brief (skip it if you are short of time)</h3>
   <p>Copy your brief as one text, send it, and paste the reply here. Check it, and compare it with the reply in step 1. What changed, and why?</p>
   <div class="buttons">
     <button type="button" id="ex1-copy">Copy my brief as one text</button>
@@ -322,8 +325,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <div class="result" id="ex1-newreply-result" role="status" aria-live="polite" tabindex="-1"></div>
 
   <details>
-    <summary>Compare with one strong brief</summary>
-    <p>One way to write it. Yours can differ and still be strong: what matters is that each part does its job.</p>
+    <summary>Compare with one strong brief: for reading afterwards</summary>
+    <p>Open this after you have written and checked your own brief, not before. It is one way to write it. Yours can differ and still be strong: what matters is that each part does its job.</p>
     <pre class="doc" id="ex1-model" tabindex="0" aria-label="One strong brief"></pre>
   </details>
 </section>
@@ -331,11 +334,11 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="ex2" aria-labelledby="ex2-h">
   <h2 id="ex2-h">Exercise 2: Summarise, and prove it</h2>
-  <p class="meta">Planned: 20 minutes. Objective O2: ask for an answer that can be checked, and check it.</p>
+  <p class="meta">Planned: 20 minutes. You practise asking for an answer that can be checked, and checking it.</p>
   <p class="goal"><strong>Goal:</strong> ask for a summary you can check, then check its figures and facts against the thread.</p>
 
   <h3>Step 1: Make the request checkable</h3>
-  <p>Your manager, <span data-fact="manager"></span>, has to decide today on the customer's request for a credit. This request for a summary is almost ready. Add <strong>one line</strong> to its Form part that asks the assistant to say, after each fact, which message the fact comes from. That one line turns checking from a search into a glance. Then press <em>Check my request</em>.</p>
+  <p>Your manager, <span data-fact="manager"></span>, has to decide today on the customer's request for a credit. This request for a summary is almost ready. Add <strong>one line</strong> to its <strong>Form part</strong>, the part of a brief that says how long the answer should be and in what shape. To find it, scroll down past the thread: Form is the part just above Limits, which is the last part. Your line asks the assistant to say, after each fact, which message the fact comes from. That one line turns checking from a search into a glance. Then press <em>Check my request</em>.</p>
   <label for="ex2-request">The request: add your line to the Form part</label>
   <textarea id="ex2-request" rows="12" data-save></textarea>
   <div class="buttons">
@@ -360,6 +363,9 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 
   <h3>Step 3: Read, decide, and correct</h3>
   <p>For each <em>Look again</em>, open the thread and decide: keep it, fix it, or take it out. Then pick the <strong>three bullets you trust least</strong> and read each one against the message it cites, word by word: a sentence can pass every check and still say the opposite of the thread.</p>
+  <p>Write one line for each of the three: the bullet's number, then "agrees", or "differs:" and what the message really says. For example: "4: differs: message 3 says ...". This box is for you; it is not checked.</p>
+  <label for="ex2-trust">The three bullets I trust least, read against their messages</label>
+  <textarea id="ex2-trust" rows="3" data-save></textarea>
   <p>Last, write the version you would really send. In at most <span data-fact="wordLimit"></span> words (message numbers in brackets are not counted), it must say:</p>
   <ul>
     <li>the order number and the invoice number;</li>
@@ -368,6 +374,12 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     <li>what was promised, including that <span data-fact="staffFirst"></span>'s promise to confirm a delivery day by <span data-fact="confirmBy"></span> was not kept, and that no credit was promised.</li>
   </ul>
   <p class="small">The check looks for words, not meaning: for example late, missing, damaged, promised, Friday, did not. A due date followed by a later delivery date also counts as late. It does not count a word after "not" or "nothing".</p>
+  <p>If you want a frame to start from, fill in this one, with the message numbers in brackets:</p>
+  <pre class="doc" id="ex2-frame" tabindex="0" aria-label="A frame for the corrected summary">- Order ... and invoice ... (msg ...).
+- What went wrong: due ..., delivered late on ...; ... cartons missing; ... arrived crushed (msg ...).
+- What we promised: ...; not kept: ... (msg ...). No credit was promised (msg ...).
+- Amount in question: ... (msg ...).
+- Your decision: ...</pre>
   <label for="ex2-final">My corrected summary</label>
   <textarea id="ex2-final" rows="8" data-save></textarea>
   <div class="buttons">
@@ -380,7 +392,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="ex3" aria-labelledby="ex3-h">
   <h2 id="ex3-h">Exercise 3: Find what is wrong</h2>
-  <p class="meta">Planned: 15 minutes. Objective O3: name what is wrong in an answer that looks right.</p>
+  <p class="meta">Planned: 15 minutes. You practise naming what is wrong in an answer that looks right.</p>
   <p class="goal"><strong>Goal:</strong> find the errors in replies that read well.</p>
   <p class="session"><strong>In the session: answers A and B, eleven sentences.</strong> Answer C, further down, is for those who finish early, or homework.</p>
   <p>Here are replies to <span data-fact="contactFirst"></span>'s last message, answering the strong brief of exercise 1. <strong>Answer A</strong> is one assistant's recorded reply, unchanged, with the assistant's own notes under it. <strong>Answer B</strong> is the same reply, edited to plant errors that A does not contain. The assistant's notes are not numbered, but read them. Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
@@ -391,6 +403,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     <li><strong>Against the policy:</strong> a promise or an offer the policy does not allow.</li>
   </ul>
   <p>Some sentences can be marked two ways. Pick the mark you can defend; the result says when the key accepts both.</p>
+  <p><strong>Where the hard ones hide:</strong> compare what answer A says was sent with messages 4 and 5, and check every day and date it gives against the thread.</p>
   <details>
     <summary>The request behind the replies</summary>
     <pre class="doc" id="ex3-request" tabindex="0" aria-label="The request behind the replies"></pre>
@@ -412,12 +425,18 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="ex4" aria-labelledby="ex4-h">
   <h2 id="ex4-h">Exercise 4: What must not go in</h2>
-  <p class="meta">Planned: 20 minutes. Objective O4: decide what must not be pasted into a public assistant, and prepare a table so that it can be.</p>
+  <p class="meta">Planned: 20 minutes. You practise deciding what must not be pasted into a public assistant, and preparing a table so that it can be.</p>
   <p class="goal"><strong>Goal:</strong> sort what may be pasted, and prepare a table so that nothing personal leaves this computer.</p>
   <p class="warn">Your employer's own policy on AI tools comes first. If it is stricter than anything in this exercise, follow it.</p>
 
   <h3>Part 1: Sort the eight snippets</h3>
-  <p>For each snippet, choose a pile: <strong>fine to paste</strong>, <strong>paste after removing details</strong>, or <strong>do not paste</strong>. Think about who could be harmed, and whether the question needs the detail at all. Some snippets can go in two piles; pick the one you can defend.</p>
+  <p>For each snippet, choose a pile:</p>
+  <ul>
+    <li><strong>Fine to paste:</strong> already public, or written to be published, even if it is not public yet, and holding nothing about a person.</li>
+    <li><strong>Paste after removing details:</strong> the question does not need the names, contacts or other details that point to a person or a customer; take them out first.</li>
+    <li><strong>Do not paste:</strong> what is left would still harm someone or break a promise of confidence, or nothing useful is left once the details are out.</li>
+  </ul>
+  <p>Think about who could be harmed, and whether the question needs the detail at all. Some snippets can go in two piles; pick the one you can defend.</p>
   <div id="ex4-snippets"></div>
   <div class="buttons">
     <button type="button" id="ex4a-check">Check my piles</button>
@@ -435,7 +454,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <ol>
     <li>For each column, choose: keep it, replace each value with a stand-in, or leave it out. Keep only what the question needs.</li>
     <li>Press <em>Prepare the extract</em>. Read the text and the question under it, then press <em>Check what I am about to paste</em>.</li>
-    <li>Paste the extract into your assistant. Paste its answer in the last box, and press <em>Put the real names back</em>.</li>
+    <li>Paste the extract into your assistant. Paste its answer in the last box, and press <em>Put the real names back</em>. No assistant? Press <em>No assistant? Use an example answer</em> under the last box: it puts in an answer that uses your stand-ins, and then <em>Put the real names back</em> works the same way.</li>
   </ol>
   <fieldset class="columns">
     <legend>What to do with each column</legend>
@@ -466,7 +485,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <!-- ======================================================================= -->
 <section id="ex5" aria-labelledby="ex5-h">
   <h2 id="ex5-h">Exercise 5: Make it reusable</h2>
-  <p class="meta">Homework, about eight minutes. Objective O5: turn a request that worked into a template a colleague can reuse.</p>
+  <p class="meta">Homework, about eight minutes. You practise turning a request that worked into a template a colleague can reuse.</p>
   <p class="goal"><strong>Goal:</strong> turn the request of exercise 2 into a template a colleague can fill in for any customer.</p>
   <ol>
     <li>Put the exercise 2 request in the box below.</li>
@@ -489,7 +508,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 <section id="quiz" aria-labelledby="quiz-h">
   <h2 id="quiz-h">The ten-question check</h2>
   <p class="meta">Planned: 9 minutes, with the close.</p>
-  <p>Ten questions, two for each objective. Choose the best answer to each, then check. Every option has an explanation, so a wrong choice still teaches you something.</p>
+  <p>Ten questions, two for each of the five skills. Choose the best answer to each, then check. Every option has an explanation, so a wrong choice still teaches you something.</p>
   <div id="quiz-questions"></div>
   <div class="buttons">
     <button type="button" id="quiz-check">Check my answers</button>
@@ -2465,7 +2484,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     CASE.quiz.forEach(function (q) {
       var mine = answers && answers[q.n];
       var best = q.options.filter(function (o) { return o.correct; })[0];
-      var name = 'Question ' + q.n + ' (' + q.objective + ')';
+      var name = 'Question ' + q.n;
       if (!mine) {
         rules.push(rule('q' + q.n, name, 'note', 'Not answered yet.'));
         return;
@@ -2516,7 +2535,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     'reply': { name: 'a reply to the customer, as plain text', run: checkReply },
     '2-request': { name: 'the request of exercise 2, with your line that asks for sources, as plain text', run: checkRequest },
     '2': { name: 'the summary for the manager, as plain text', run: checkSummary },
-    '3': { name: 'your marks for the three answers (lines such as "A2: figure")', run: function (t) { return checkMarks(parseMarks(t)); } },
+    '3': { name: 'your marks for the three answers: one line per sentence, such as "A2: figure"; the marks are fine, figure, material and policy', run: function (t) { return checkMarks(parseMarks(t)); } },
     '4a': { name: 'your piles for the eight snippets (lines such as "3: remove")', run: function (t) { return checkPiles(parsePiles(t)); } },
     '4b': { name: 'the text you are about to paste, as plain text', run: checkExtract },
     '5': { name: 'the template, as plain text', run: checkTemplate },
@@ -2593,6 +2612,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     ['ex1-newreply', 'Exercise 1, step 3: the reply my brief produced'],
     ['ex2-request', 'Exercise 2, step 1: my request'],
     ['ex2-answer', 'Exercise 2: the answer'],
+    ['ex2-trust', 'Exercise 2, step 3: the three bullets I trust least'],
     ['ex2-final', 'Exercise 2: my corrected summary'],
     ['ex3-misses', 'Exercise 3: which errors the checker misses, and why'],
     ['ex4-extract', 'Exercise 4, part 2: the text I was about to paste'],

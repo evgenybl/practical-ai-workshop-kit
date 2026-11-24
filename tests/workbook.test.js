@@ -285,3 +285,87 @@ test('both copies carry the content security policy, which blocks sending and le
     assert.ok(page.indexOf(CSP) < page.indexOf('<script'), f + ': the policy comes before any script');
   }
 });
+
+// ---- added with the second first-time-participant pass ---------------------------------
+
+const visible = () => {
+  // What a participant reads: the page's text without its tags, and the texts the script shows.
+  // Headings and the navigation name the exercises; a term is glossed where it is first used in a sentence.
+  return html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!--[\s\S]*?-->/g, '').replace(/<nav[\s\S]*?<\/nav>/g, '')
+    .replace(/<(h[1-6]|title)\b[^>]*>[\s\S]*?<\/\1>/g, '').replace(/<[^>]+>/g, ' ');
+};
+
+test('exercise 2, step 3: one line for each of the three bullets, in a box that is saved and not checked, and a frame for the summary', () => {
+  assert.match(html, /Write one line for each of the three: the bullet's number, then "agrees", or "differs:" and what the message really says\./);
+  assert.match(html, /This box is for you; it is not checked\./);
+  assert.match(html, /<label for="ex2-trust">The three bullets I trust least, read against their messages<\/label>\n  <textarea id="ex2-trust" rows="3" data-save><\/textarea>/);
+  const { $, page } = openPage(html);
+  assert.ok(page.FIELDS.some((f) => f[0] === 'ex2-trust'));
+  assert.ok(!/ex2-trust/.test(lib.readText('participant/workbook/workbook.js').replace(/\['ex2-trust'[^\]]*\]/, '')), 'no check reads the box');
+  assert.ok($('ex2-frame'), 'the frame is on the page');
+  const frame = html.match(/<pre class="doc" id="ex2-frame"[^>]*>([\s\S]*?)<\/pre>/)[1];
+  assert.match(frame, /^- Order \.\.\. and invoice \.\.\. \(msg \.\.\.\)\./);
+  for (const part of ['What went wrong:', 'What we promised:', 'Amount in question:', 'Your decision:']) { assert.ok(frame.includes(part), part); }
+});
+
+test('exercise 2, step 1 says where the Form part is, and it is where the page says', () => {
+  assert.match(html, /To find it, scroll down past the thread: Form is the part just above Limits, which is the last part\./);
+  const request = C.requestText('summary', { withoutCiteLine: true });
+  const heads = [...request.matchAll(/^## (\w+)$/gm)].map((m) => m[1]);
+  assert.deepEqual(heads.slice(-2), ['Form', 'Limits']);
+  assert.ok(request.indexOf('## Form') > request.indexOf('Message 5'), 'Form comes after the thread');
+});
+
+test('exercise 3 points at where the hard sentences hide, without naming one', () => {
+  assert.match(html, /<strong>Where the hard ones hide:<\/strong> compare what answer A says was sent with messages 4 and 5, and check every day and date it gives against the thread\./);
+  assert.doesNotMatch(html, /\bA[4-7]\b/);
+});
+
+test('exercise 4: each pile is described, the first covering text written to be published; step 3 names the no-assistant route', () => {
+  assert.match(html, /<strong>Fine to paste:<\/strong> already public, or written to be published, even if it is not public yet/);
+  assert.match(html, /<strong>Paste after removing details:<\/strong>/);
+  assert.match(html, /<strong>Do not paste:<\/strong>/);
+  assert.match(html, /<li>Paste the extract into your assistant\. [^<]*<em>Put the real names back<\/em>\. No assistant\? Press <em>No assistant\? Use an example answer<\/em>/);
+  // The news paragraph that is not yet public is in the pile the description covers.
+  const news = CASE.snippets.find((s) => /not yet published/.test(s.title));
+  assert.equal(news.pile, 'fine');
+});
+
+test('exercise 1: step 3 can be skipped, the policy goes in the material, and the model brief is for afterwards', () => {
+  assert.match(html, /<h3>Step 3, if you have an assistant: try your brief \(skip it if you are short of time\)<\/h3>/);
+  assert.match(html, /Then press <em>Add the policy<\/em>: your limits will rely on it/);
+  assert.match(html, /<summary>Compare with one strong brief: for reading afterwards<\/summary>/);
+  assert.ok(html.indexOf('id="ex1-model"') > html.indexOf('id="ex1-newreply-check"'), 'the model brief comes after the participant\'s own work');
+});
+
+test('each term has a one-line gloss where it first appears on the page', () => {
+  const text = visible();
+  const glosses = [
+    ['model', /one model's recorded answer \(a model is the AI system behind an assistant\)/],
+    ['brief', /A brief is a request in five parts that gives the assistant everything it needs/],
+    ['material', /the material \(the text it works from\)/],
+    ['Form part', /the part of a brief that says how long the answer should be and in what shape/],
+    ['cash-and-carry', /a cash-and-carry is a wholesale shop where a business pays at the till and takes the goods away itself/],
+    ['oz', /12 oz is the size of the cups, twelve fluid ounces, about 350 ml/],
+    ['stand-in', /Stand-in: a made-up label used instead of a real value/]
+  ];
+  const squash = (s) => s.replace(/\s+/g, ' ');
+  const flat = squash(text);
+  for (const [term, gloss] of glosses) {
+    const m = flat.match(gloss);
+    assert.ok(m, term + ': the gloss is on the page');
+    const first = flat.search(new RegExp('\\b' + term.replace(/[-]/g, '\\-') + '\\b', 'i'));
+    // The first use is the gloss itself, or comes at most a sentence before it.
+    assert.ok(m.index - first < 200, term + ': first used at ' + first + ', glossed at ' + m.index);
+  }
+});
+
+test('the participant\'s page and the results of the ten questions show no objective codes', () => {
+  assert.doesNotMatch(visible(), /\bO[1-5]\b|Objective/);
+  const answers = Object.fromEntries(CASE.quiz.map((q) => [q.n, 'A']));
+  const shown = C.formatResult(C.checkQuiz(answers));
+  assert.doesNotMatch(shown, /\bO[1-5]\b/);
+  // The instructor's pages keep them.
+  assert.match(lib.readText('instructor/answer-key.md'), /\| 1 \| O1 \|/);
+  assert.match(lib.readText('instructor/guide.md'), /Objective O1/);
+});
