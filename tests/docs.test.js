@@ -159,15 +159,17 @@ test('the README repeats the evidence table of How this kit was tested, word for
 
 test('the evidence table says what is done, what was done once, and what is owed', () => {
   assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
-  assert.match(evidenceState('A new-user test by an AI agent'), /^Done once, at commit 5059ae2, by a separate AI agent\..*write-up .* is owed/);
-  assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent\..*write-up .* is owed/);
+  assert.match(evidenceState('A new-user test by an AI agent'), /^Done once, at commit 5059ae2, by a separate AI agent; .*listed on the testing page\. The test has not been repeated on the current version\.$/);
+  assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent: .*listed on the testing page\. The review has not been repeated on the current version\.$/);
   assert.equal(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), 'Not yet done.');
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
-  assert.match(evidenceState('Automated tests'), /CI: run 45300468336 passed on Linux and Windows with Node 22 and 24, at commit 5059ae2; the commits since have not been through CI\./);
+  assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI\./);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
-    assert.match(section, /the write-up is owed/, h);
+    assert.match(section, /\*\*State: done once, at commit 5059ae2, by a separate AI agent\. Not repeated on the current version\.\*\*/, h);
+    assert.match(section, /What was changed/i, h);
+    assert.doesNotMatch(section, /is owed/, h);
   }
   const browser = how.slice(how.indexOf('## Opened in a real browser'), how.indexOf('\n---', how.indexOf('## Opened in a real browser')));
   assert.match(browser, /\*\*State: not yet done\.\*\*/);

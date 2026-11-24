@@ -4,10 +4,10 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 240 tests, 240 pass, 0 fail (Windows, Node 24). CI: run 45300468336 passed on Linux and Windows with Node 22 and 24, at commit 5059ae2; the commits since have not been through CI. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 240 tests, 240 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI. |
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
-| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent. Its findings were worked through in later commits. The write-up on the testing page is owed, and the test has not been repeated on the current version. |
-| An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent. Its findings were worked through in later commits. The write-up on the testing page is owed, and the review has not been repeated on the current version. |
+| A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
+| An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
 | Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done. |
 | Taught to a class of people | | Not done. |
 
@@ -63,13 +63,13 @@ node --test "tests/*.test.js"
 
 **"Sends nothing."** Both copies of the workbook carry a content security policy in a `meta` tag: `connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'`. In a browser that enforces it, the page cannot open a connection, load an image other than an inline one, load media, a frame or a plug-in, or submit a form, so "sends nothing" is enforced by the browser, not only promised by the code. It leaves the page's own scripts and style alone. The tests check that the tag is in both copies; that a real browser enforces it on this page, and still runs the page, awaits the real-browser pass.
 
-**CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24. It has run once, as run 45300468336, at commit 5059ae2: it passed on all four. The commits since have not been through CI; the runs on this page were made locally on Windows with Node 24.
+**CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24. Its latest run is 45315987278, at commit 1038d84: it passed on all four (the first, 45300468336, was at commit 5059ae2). The commits since have not been through CI; the runs on this page were made locally on Windows with Node 24.
 
 ---
 
 ## Recorded answers through the checker
 
-**State: done locally**, and in CI run 45300468336 at commit 5059ae2.
+**State: done locally**, and in CI run 45315987278 at commit 1038d84.
 
 | Answer | What it is | Its checker result, and where the guide describes it |
 |---|---|---|
@@ -106,13 +106,61 @@ as expected  solutions/quiz-answers.txt (exercise quiz, model solution): 10 rule
 
 ## A new-user test by an AI agent
 
-**State: done once, at commit 5059ae2, by a separate AI agent; the write-up is owed.** Its findings were worked through in the commits after 5059ae2. What the agent was given, what it did exercise by exercise, its answers through the checker, and every point where it was unsure with what was changed, are owed on this page. The test has not been repeated on the current version.
+**State: done once, at commit 5059ae2, by a separate AI agent. Not repeated on the current version.**
+
+**What it was.** A fresh AI agent (a Claude model, with no part in building the kit) was told to act as a first-time participant who is not technical. It was given only the `participant/` folder. The instructor's pages, the solutions, the tests and this page were closed to it until its answers were saved. It could not open a browser, so it read the page's text from its files and pressed "Check my answer" through the command-line checker, which runs the same rules. It had no assistant of its own: where an exercise asks one, it wrote the answer itself or used the recorded answer the page offers, and said which.
+
+**What it did.** Every exercise and the ten questions, in order; one improvement where the feedback asked for one; a friction log written at the moment of friction.
+
+| Exercise | First check | After one improvement |
+|---|---|---|
+| 1, the brief | 4 OK, 1 to look at again: it had typed a note instead of pasting the thread | 5 OK |
+| 2, the summary | The recorded answer: 9 OK, 1 to look at again (179 words against a limit of 120) | Its own shorter summary fitted the limit and lost two required facts: 8 OK, 2 to look at again |
+| 3, marking three answers | Agreed with the key on 18 of 18 sentences | |
+| 4, what may be pasted | 8 of 8 snippets; the extract accepted | |
+| 5, the template | 2 OK | |
+| The ten questions | 10 of 10 | |
+
+**Where it was unsure, and what was changed.**
+
+| Where | What happened | What was changed |
+|---|---|---|
+| Exercise 2 | The word limit and the required facts pulled against each other, and the page did not say what the check looks for | The task now names the facts that must be there and says that message numbers are not counted |
+| Exercise 2 | "Read every sentence against the message it cites" meant nine bullets | The task now says to pick the three bullets you trust least |
+| Exercise 3 | Eighteen sentences did not fit the planned minutes; nothing said which answers were for the session | Answers A and B are for the session and C for afterwards, said at the top; the exercise has 15 planned minutes; a box was added for "which errors does the checker miss, and why" |
+| Exercise 4, part 2 | Three words were used before they were explained; every choice started on "Keep" | Each word is explained where it first appears; every choice starts on "Choose"; a worked example was added |
+| Exercise 1 | The page did not say who the participant is, and one long question held two tasks | "You are Tom Becker, in customer service"; the question is split; the buttons say what they do |
+| Exercise 5 | "One line at the top" had no example | An example line was added; the exercise is homework by default |
+| The start page | The plain-file case and the single-file page were not mentioned | Both are mentioned |
+| The ten questions | The right answer was usually the longest | The options were made similar in length |
+| The command line | The usage text did not say what form exercise 1 expects | It does now |
+
+**What this test can and cannot show.** It shows where written instructions are ambiguous and where the checker's feedback cannot be acted on. It does not show how long a room of people takes, what they find hard, or whether they learn. An AI agent reads faster and tires less than a person, and it scored 18 of 18 and 10 of 10, which says the keys are consistent with the material, not that the exercises are easy.
 
 ---
 
 ## An independent review
 
-**State: done once, at commit 5059ae2, by a separate AI agent; the write-up is owed.** Its findings were worked through in the commits after 5059ae2. Who reviewed it, what they reviewed, what they found and what was changed are owed on this page. The review has not been repeated on the current version.
+**State: done once, at commit 5059ae2, by a separate AI agent. Not repeated on the current version.**
+
+**What it was.** A fresh AI agent (a Claude model, with no part in building the kit) was given the whole repository, the standard a training kit must meet, and what to try to break. It was given no opinion of the work. It read every file, ran the tests, read each recorded and edited answer against the thread and the policy, tried to make the checker pass wrong answers and fail right ones, and broke 30 rules in scratch copies to see whether a test fails. Its verdict: publish after the blockers and the majors are fixed.
+
+**What it confirmed.** The answer key for exercise 3 in all 18 cells and the snippet key in all 8; the case's figures and weekdays; that the page makes no network call and loads no remote resource; that 19 of its 30 deliberate breaks were caught by a test, including every checker rule it broke.
+
+| Severity | What it found | What was changed |
+|---|---|---|
+| Blocker | A statement about the recorded answer of exercise 1 was false: the kit said the assistant's notes say nothing about the invoice, and its first note names the corrected invoice | The statement was corrected, every other statement about a recorded or edited answer was read again against the answer, and five more were corrected |
+| Blocker | The hand-written model reply promised a call "by the end of today with the delivery day", which depends on the warehouse: the mistake the kit teaches against | The reply now promises only what its writer controls |
+| Blocker | The README embedded a picture that did not exist, and the page had never been opened in a browser | The tag was removed and a test requires every embedded image to exist; the real-browser pass is listed below as not yet done |
+| Major | The check for the planted trap passed the trap in the customer's own words, a negated fact, figures that occur only as message numbers, and an empty box | Each case was fixed and is a test; every pass now reads "I found no ...", since a check that matches words cannot know |
+| Major | The privacy check said "Nothing personal in it" about a name, an address and a phone number that are not in the table | The rule is named for what it knows, and text shaped like an e-mail address or a phone number is flagged |
+| Major | The guide and the run sheet gave different minutes, and exercise 1 could not fit | One flow everywhere, held by a test |
+| Major | The origin of the recordings was stated more firmly than the files support | The wording now says what the files support |
+| Major | Opened from inside a compressed folder, the page was silently empty | A visible line appears when the scripts did not load; the single-file copy is what is sent |
+| Major | "Every claim on this page is backed by a test" was more than the tests prove: 11 of 30 breaks survived | The sentence was softened, and tests were added for what survived |
+| Minor | Licences per file; an edited answer that contradicted itself; two inaccurate sentences about assistants; a slow pattern in the checker; a "saved" message when nothing was saved | All fixed |
+
+**What a review by an AI agent is and is not.** It is a careful second reading with experiments, by something that did not write the kit. It is not a review by a trainer who has stood in front of a room, and it could not open a browser.
 
 ---
 
