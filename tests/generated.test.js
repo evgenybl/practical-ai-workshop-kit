@@ -1,0 +1,48 @@
+'use strict';
+// Every generated file is current: the single-file workbook, the answer key, the request files, the case copies.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const { lib, REC, C } = require('./helpers');
+const build = require('../tools/build');
+
+const recorded = build.buildRecorded();
+const files = build.buildDocuments(recorded);
+
+for (const [rel, text] of Object.entries(files)) {
+  test('generated and current: ' + rel, () => {
+    assert.ok(lib.exists(rel), rel + ' exists');
+    assert.equal(lib.readText(rel), text, rel + ' is out of date: run node tools/build.js');
+  });
+}
+
+test('the answer key equals the workbook\'s own key, sentence by sentence and question by question', () => {
+  const key = lib.readText('instructor/answer-key.md');
+  for (const a of REC.ex3) {
+    a.key.forEach((k, i) => {
+      const label = k.accept.map((l) => C.LABELS.find((x) => x.id === l).label).join(' or ');
+      assert.ok(key.includes('| ' + a.id + (i + 1) + ' | ') && key.includes(' | ' + label + ' | ' + k.reason.replace(/\|/g, '\\|') + ' |'), a.id + (i + 1));
+    });
+  }
+  const { CASE } = require('./helpers');
+  for (const s of CASE.snippets) {
+    const pile = CASE.piles.find((p) => p.id === s.pile).label;
+    assert.ok(key.includes('| ' + s.n + ' | ' + s.title + ' | ' + pile + ' |'), 'snippet ' + s.n);
+  }
+  for (const q of CASE.quiz) {
+    const best = q.options.find((o) => o.correct);
+    assert.ok(key.includes('| ' + q.n + ' | ' + q.objective + ' | ' + best.key + ': '), 'question ' + q.n);
+  }
+});
+
+test('the single-file workbook carries the current page, style and scripts', () => {
+  const single = lib.readText('participant/workbook-single-file.html');
+  for (const f of ['style.css', 'case-data.js', 'recorded-answers.js', 'checker.js', 'workbook.js']) {
+    const body = lib.readText('participant/workbook/' + f).replace(/<\/script/gi, '<\\/script');
+    assert.ok(single.includes(body), f);
+  }
+});
+
+test('the request files are exactly what the workbook shows', () => {
+  assert.equal(lib.readText('recorded/requests/ex2-request.txt'), C.requestText('summary'));
+  assert.equal(lib.readText('recorded/requests/ex3-request.txt'), C.requestText('reply'));
+});

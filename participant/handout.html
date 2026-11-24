@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practical AI at Work: the three cards</title>
+<style>
+  @page { size: A4; margin: 10mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: #1a1a1a; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size: 10.5pt; line-height: 1.35; }
+  main { max-width: 190mm; margin: 0 auto; padding: 6mm; }
+  .head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1a1a1a; margin-bottom: 4mm; }
+  .head h1 { font-size: 14pt; margin: 0; }
+  .head p { margin: 0; font-weight: 600; }
+  .card { border: 1.5px solid #474747; border-radius: 4mm; padding: 3mm 5mm; margin-bottom: 4mm; page-break-inside: avoid; }
+  .card h2 { font-size: 12.5pt; margin: 0 0 1.5mm; }
+  .card p { margin: 1mm 0; }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.8mm 4mm; margin: 1mm 0; }
+  dt { font-weight: 700; }
+  dd { margin: 0; }
+  ol, ul { margin: 1mm 0; padding-left: 6mm; }
+  li { margin: 0.6mm 0; }
+  .tip { background: #f4f5f7; border-left: 3px solid #0b57d0; padding: 1.2mm 3mm; margin-top: 2mm; }
+  .piles { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+  .piles h3 { font-size: 10.5pt; margin: 0 0 1mm; }
+  .foot { font-size: 8.5pt; color: #474747; margin-top: 2mm; }
+  @media (max-width: 40rem) { .piles { grid-template-columns: 1fr; } dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="head">
+    <h1>Practical AI at Work</h1>
+    <p>The assistant drafts; you check; you decide.</p>
+  </div>
+
+  <section class="card" aria-labelledby="c1">
+    <h2 id="c1">1. The five-part brief</h2>
+    <dl>
+      <dt>Situation</dt><dd>Who you are, who will read the answer, what has happened, and why it matters now.</dd>
+      <dt>Material</dt><dd>Paste everything it needs, and nothing it does not. It knows only what you give it.</dd>
+      <dt>Task</dt><dd>One job, starting with a verb: draft, summarise, list.</dd>
+      <dt>Form</dt><dd>A length and a shape: "at most 150 words, in three short paragraphs". "Short" means different things to different people.</dd>
+      <dt>Limits</dt><dd>What it must not do, as plain sentences: "Do not promise a refund." "Use only the e-mails below."</dd>
+    </dl>
+    <p class="tip"><strong>Make it checkable:</strong> "After each fact, give the number of the message it comes from."</p>
+  </section>
+
+  <section class="card" aria-labelledby="c2">
+    <h2 id="c2">2. How to check an answer</h2>
+    <ol>
+      <li><strong>Find every figure in the material.</strong> Not there? It may be worked out, or made up. Check the sum, or take it out.</li>
+      <li><strong>Ask what each figure counts.</strong> The same number can mean two different things in one thread.</li>
+      <li><strong>Separate claims from facts.</strong> "She says she was promised" is not "we promised".</li>
+      <li><strong>Check every promise against your rules:</strong> money, dates, costs, anything that commits the company.</li>
+      <li><strong>Look for facts that are in neither the material nor your rules.</strong> Invented causes and offers read smoothly.</li>
+      <li><strong>A checker helps; it does not decide.</strong> A figure can be in the material and still be wrong. You send it, so you decide.</li>
+    </ol>
+  </section>
+
+  <section class="card" aria-labelledby="c3">
+    <h2 id="c3">3. What must not go in</h2>
+    <div class="piles">
+      <div>
+        <h3>Fine to paste</h3>
+        <ul>
+          <li>Text that is already public</li>
+          <li>Your own words, meant to be published</li>
+          <li>Questions in general words</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Paste after removing details</h3>
+        <ul>
+          <li>Replace names, contacts and numbers with stand-ins, such as Customer 01</li>
+          <li>Leave out what the question does not need</li>
+          <li>Keep the key on your own computer, and map the answer back yourself</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Do not paste</h3>
+        <ul>
+          <li>Health or other sensitive facts about a person</li>
+          <li>Lists that are nothing but personal details</li>
+          <li>Confidential terms, contracts, passwords</li>
+        </ul>
+      </div>
+    </div>
+    <p class="tip"><strong>Two questions before you paste:</strong> Does the question need this detail? Would the person it is about be comfortable seeing it here? <strong>Your employer's own policy comes first.</strong></p>
+  </section>
+
+  <p class="foot">Practical AI at Work, a workshop kit. Teaching text under Creative Commons Attribution-NonCommercial 4.0. This page is a teaching aid, not legal advice.</p>
+</main>
+</body>
+</html>
