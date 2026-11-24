@@ -7,7 +7,7 @@
  *   node tools/check.js <exercise> <answer file> [--json]
  *
  * Exit code: 0 when nothing needs another look, 1 when something does,
- * 2 when the command itself is wrong (unknown exercise, missing file).
+ * 2 when the command itself is wrong (unknown exercise, missing or empty file).
  */
 const fs = require('fs');
 const lib = require('./lib');
@@ -47,6 +47,10 @@ function main(argv) {
     text = fs.readFileSync(file, 'utf8');
   } catch (e) {
     console.error('Cannot read the answer file "' + file + '": ' + e.code);
+    return 2;
+  }
+  if (!text.trim()) {
+    console.error('The answer file "' + file + '" is empty. Put the answer in it, then run the check again.');
     return 2;
   }
   const result = C.runExercise(exercise, text);

@@ -56,3 +56,22 @@ test('the usage for exercise 3 lists the four marks it accepts', () => {
   assert.match(line, /the marks are fine, figure, material and policy$/);
   assert.deepEqual(C.LABELS.map((l) => l.id), ['fine', 'figure', 'material', 'policy']);
 });
+
+test('an empty answer file is an error, with a plain line and exit code 2, not a clean pass', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-kit-'));
+  try {
+    for (const [name, text] of [['empty.txt', ''], ['blank.txt', '  \n\n ']]) {
+      const f = path.join(dir, name);
+      fs.writeFileSync(f, text);
+      const r = run('reply', f);
+      assert.equal(r.status, 2, name);
+      assert.equal(r.stdout, '', name);
+      assert.match(r.stderr, /^The answer file ".*" is empty\. Put the answer in it, then run the check again\.\n$/, name);
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
