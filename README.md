@@ -70,7 +70,7 @@ After the session a participant can:
 | O4 | Decide what must not be pasted into a public assistant, and prepare a table so that it can be | Exercise 4 |
 | O5 | Turn a request that worked into a template a colleague can reuse | Exercise 5, homework |
 
-**The case.** One invented small business, used in every exercise: a wholesale supplier of cups and packaging, and a bakery owner whose delivery came late, short and partly damaged. Five e-mails over nine days, a one-page returns policy, a thirty-row orders table and eight snippets. The thread holds two traps that careless summaries fall into: a promise the customer asked for and was never given, and one figure that appears twice with two different meanings.
+**The case.** One invented small business, used in every exercise: a wholesale supplier of cups and packaging, and a bakery owner whose delivery came late, short and partly damaged. The business, the people and the customers are invented, and any resemblance of a name to a real business or person is a coincidence. Five e-mails over nine days, a one-page returns policy, a thirty-row orders table and eight snippets. The thread holds two traps that careless summaries fall into: a promise the customer asked for and was never given, and one figure that appears twice with two different meanings.
 
 **The lesson flow** (planned minutes):
 

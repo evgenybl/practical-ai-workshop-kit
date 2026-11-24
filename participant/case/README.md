@@ -1,6 +1,6 @@
 # The case, as plain files
 
-These files hold the same case as the workbook: print the thread and the policy to keep them in view during the session, or attach them to an assistant. Everything in them is invented.
+These files hold the same case as the workbook: print the thread and the policy to keep them in view during the session, or attach them to an assistant. Everything in them is invented. The business, the people and the customers are invented, and any resemblance of a name to a real business or person is a coincidence.
 
 | File | What it is |
 |---|---|

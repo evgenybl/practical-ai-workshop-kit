@@ -419,3 +419,11 @@ test('exercise 2, step 3: the decision on each flag and the line for each bullet
   assert.match(raw('instructor/guide.md'), /Last, if you have time, write the version you would really send your manager, and check it again; if not, finish it after the session\. The page lists what it must say\. Eleven minutes\./);
   assert.match(raw('instructor/run-sheet.md'), /\| 0:34 \| 0:41 \| Checks each flag; reads the three bullets they trust least against their messages; writes the corrected summary if there is time, or finishes it afterwards \|/);
 });
+
+test('where the case is introduced, the README and the case folder say that its names are invented, and any likeness a coincidence', () => {
+  const sentence = 'The business, the people and the customers are invented, and any resemblance of a name to a real business or person is a coincidence.';
+  const readme = raw('README.md');
+  const intro = readme.slice(readme.indexOf('**The case.**'), readme.indexOf('\n', readme.indexOf('**The case.**')));
+  assert.ok(intro.includes(sentence), 'README, the case');
+  assert.ok(raw('participant/case/README.md').split('\n\n')[1].includes(sentence), 'participant/case/README.md');
+});
