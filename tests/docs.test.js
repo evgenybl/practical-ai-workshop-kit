@@ -11,14 +11,26 @@ const files = lib.walk().filter((f) => !/\.png$/i.test(f));
 const docs = files.filter((f) => /\.(md|html)$/.test(f));
 const raw = (f) => fs.readFileSync(lib.abs(f), 'utf8');
 
-// Written in pieces so that this file does not match itself.
+// Any absolute path of a computer, in general: a Windows drive, a drive as Git Bash or WSL writes it, the
+// usual top folders of macOS and Linux, a home folder, and a file address. Written in pieces so that this
+// file does not match itself.
 const ABSOLUTE = [
   new RegExp('\\b[A-Za-z]:' + '[\\\\/][A-Za-z]'),
-  new RegExp('/' + 'Users/'),
-  new RegExp('/' + 'home/'),
-  new RegExp('fi' + 'le:/'),
-  new RegExp('/' + 'c/' + 'portfolio')
+  new RegExp('(^|[\\s"\'`(=\\[])/' + '[A-Za-z]/[A-Za-z]'),
+  new RegExp('/' + '(Users|home|root|private|tmp|var|mnt|Volumes|opt|srv)/'),
+  new RegExp('(^|[\\s"\'`(=\\[])~' + '/[A-Za-z]'),
+  new RegExp('fi' + 'le:/')
 ];
+
+test('the absolute-path patterns catch the paths of any computer, and not a relative path or a web address', () => {
+  const sep = String.fromCharCode(92);
+  const paths = ['C:' + sep + 'Users' + sep + 'me' + sep + 'kit', 'D:' + '/work/kit', 'see /' + 'c/work/kit', '/' + 'Users/me/kit', '/' + 'home/me/kit',
+    '/' + 'mnt/c/kit', '/' + 'private' + '/' + 'tmp' + '/kit', '/' + 'tmp/kit', '/' + 'Volumes/USB/kit', 'open ~' + '/kit', 'fi' + 'le:///kit/index.html'];
+  for (const p of paths) { assert.ok(ABSOLUTE.some((re) => re.test(p)), p); }
+  for (const p of ['participant/workbook/index.html', 'and/or', 'https://example.com/a/b/c', '[`LICENSE`](LICENSE)', '../tools/lib.js', 'a 1/2 share', 'by-nc/4.0/']) {
+    assert.ok(!ABSOLUTE.some((re) => re.test(p)), p);
+  }
+});
 
 test('no file holds an absolute path', () => {
   for (const f of files) {
