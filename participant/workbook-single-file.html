@@ -1557,10 +1557,14 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     hedge: /\b(not|no|never|cannot|can't|nothing|pending|await\w*|waiting|wait|until|once|if|unless|ask|asks|asked|asking|request\w*|want\w*|claim\w*|says|said she|writes|wrote|believes|thinks|according|review\w*|decid\w*|decision|approval|consider\w*|whether|must|need|needs|has to|have to|requir\w*)\b|n't\b/,
 
     // What a credit promise talks about, and the words that make a statement a promise.
-    creditTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the|your) (invoice|bill)\b/,
-    moneyTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount|invoice|bill|amount)\b|\$\s?\d/,
-    asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted|committed|commits|commit|offered|offers|offer)\b/g,
+    creditTopic: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the |your |this )?(invoice|bill)\b/,
+    moneyTopic: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back|discount|invoice|bill|amount)\b|\$\s?\d/,
+    asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted|committed|commits|commit|offered|offers|offer)\b|\bon (its|the|their) way\b/g,
     future: /\b(will|shall|we'll|i'll|you'll|they'll|she'll|can|am going to|are going to|is going to)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|receive|get|give|send you|cover|pay)\b/g,
+    // The same, in the present tense: "we are crediting", "we are taking $219.00 off".
+    present: /\b(am|are|is|i'm|we're)\s+((?:[a-z$.,']+\s+){0,2}?)(crediting|refunding|reimbursing|issuing|deducting|reducing|removing|correcting|waiving|giving you|sending you|taking(?=(?:\s+\S+){0,3}\s+off\b))\b/g,
+    // An amount stated as approved: "Dana has approved the full $531.00".
+    approvedAmount: /\b(approved|granted|authori[sz]ed)\b/g,
     // "Tom said he would credit the cartons": a promise reported in the words of the one who made it.
     saidWould: /\b(said|told \w+|wrote) (?:that )?(?:he|we|they|i) (?:would|will)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|give|cover|pay)\b/g,
     // "Promised: a delivery day, and a credit": a label that names promises, and one that says they were not made.
@@ -1579,9 +1583,15 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     costVerb: /\b(cover|covers|covered|covering|refund\w*|reimburs\w*|repay\w*|pay for|pay back|pay you|compensat\w*|credit|credited|crediting|include|includes|including)\b/g,
     costCommit: /\b(will|shall|we'll|i'll|can|confirm\w*|agree\w*|happy to|of course|glad to|going to)\b/g,
 
-    deliver: /\b(deliver\w*|arriv\w*|van|be with you|reach you|come to you|get (them|it|the cartons|the missing cartons|your order) to you)\b/,
+    deliver: /\b(deliver\w*|arriv\w*|van|be with you|reach you|come to you|get (them|it|the cartons|the missing cartons|your order) to you|have (them|it|the (missing |damaged )?cartons|your (order|cartons|cups)))\b/,
     deliverGoods: /\b(send|sent|ship\w*|dispatch\w*|bring)\b/,
     goods: /\b(cartons?|cups|lids|order|goods|them|missing)\b/,
+    scheduled: /\b(scheduled|booked|planned|due|set for)\b/,
+    // A delivery stated in the present tense, as a fact: "your cartons arrive on Thursday".
+    presentDelivery: /\b(arrive|arrives|is arriving|are arriving|reach|reaches|come|comes|is coming|are coming|go out|goes out|leave|leaves|ships|is due|are due|is scheduled|are scheduled|is booked|are booked)\b/g,
+    notPresent: /^(would|could|might|should|did|does|do|to|may|must|can|cannot|not|never|if|when|once|until|unless|will|shall)$/,
+    // A delivery that was made: a report of the past, not a promise.
+    pastDelivery: /\b(was|were|has been|have been|had been) (delivered|sent|shipped|dispatched)\b|\b(arrived|came)\b/,
     when: new RegExp('\\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|tomorrow|today|tonight|this (morning|afternoon|evening|week)|next week|within \\d+ (hours|days|working days)|\\d{1,2}(st|nd|rd|th)? (' + MONTHS + ')|(' + MONTHS + ') \\d{1,2})\\b'),
     dateCommit: /\b(will|shall|we'll|i'll|you'll|they'll|guarantee\w*|promis\w*|confirm\w*|arranged|booked|scheduled|definitely|certainly|going to|can (deliver|send|bring|get))\b/,
     dateHedge: /\b(not|no|never|cannot|can't|until|once|as soon as|if|unless|let you know|find out|check\w*|call you|ring you|phone you|write to you|tell you|update you|get back to you|be in touch|e-?mail you|will confirm|hope|try|aim|expect|ask\w*|whether)\b|n't\b|confirm (the|a) (\w+ )?day/,
@@ -1645,14 +1655,15 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   // Detectors for the three things a reply to this customer must never promise,
   // and for the trap of the two sixes. Each looks at one sentence.
   // ---------------------------------------------------------------------------
-  /** A credit, or money off, stated as promised, agreed or given; or promised for the future. */
+  /** A credit, or money off, stated as promised, agreed or given; or promised for the future, or as happening now. */
   function promisesCredit(sentence) {
     var clauses = splitClauses(sentence);
     return clauses.some(function (c, i) {
       if (RX.creditTopic.test(c) && liveMatch(c, RX.asserted, notACreditPromise)) { return true; }
+      if (/\$\s?\d/.test(c) && liveMatch(c, RX.approvedAmount)) { return true; }
       if (asPromisedBeside(clauses, i)) { return true; }
       if (!RX.moneyTopic.test(c)) { return false; }
-      return [RX.future].some(function (re) {
+      return [RX.future, RX.present].some(function (re) {
         var r = new RegExp(re.source, 'g');
         var m;
         while ((m = r.exec(c))) {
@@ -1711,12 +1722,26 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     }
     return false;
   }
-  /** A day or date given for a delivery of the cartons, as a commitment. */
+  /** A day or date given for a delivery of the cartons, as a commitment, or as a fact in the present tense. */
   function promisesDate(sentence) {
     return splitClauses(sentence).some(function (c) {
-      var delivery = RX.deliver.test(c) || (RX.deliverGoods.test(c) && RX.goods.test(c));
-      return delivery && RX.when.test(c) && RX.dateCommit.test(c) && !RX.dateHedge.test(c);
+      var delivery = RX.deliver.test(c) || (RX.goods.test(c) && (RX.deliverGoods.test(c) || RX.scheduled.test(c)));
+      if (!delivery || !RX.when.test(c) || RX.dateHedge.test(c)) { return false; }
+      var commits = c.match(new RegExp(RX.dateCommit.source, 'g')) || [];
+      var now = deliveryNow(c);
+      // "I can confirm that your order was delivered on Wednesday": a report of what happened.
+      if (!now && RX.pastDelivery.test(c) && commits.every(function (w) { return /^confirm/.test(w); })) { return false; }
+      return commits.length > 0 || now;
     });
+  }
+  /** "Your cartons arrive on Thursday": a delivery verb in the present tense, not after "would", "to" or "if". */
+  function deliveryNow(c) {
+    var r = new RegExp(RX.presentDelivery.source, 'g');
+    var m;
+    while ((m = r.exec(c))) {
+      if (!RX.notPresent.test(wordsBefore(c, m.index, 1)[0] || '')) { return true; }
+    }
+    return false;
   }
   /**
    * The thread uses one figure twice: cartons that never arrived, and cartons

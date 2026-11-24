@@ -120,3 +120,32 @@ test('credit: a request reported as passed on, or a promise to tell or to pass o
   assert.equal(status(C.checkReply(plus('I promise to credit your account today.')), 'credit'), 'look');
   assert.equal(status(C.checkReply(plus('We have offered you a credit of $219.00.')), 'credit'), 'look');
 });
+
+test('credit: a credit given, approved, on its way or taken off the invoice, said in the present tense, is flagged', () => {
+  for (const s of ['We are crediting your account with $531.00.', 'Dana has approved the full $531.00.',
+    'A credit note for $219.00 is on its way.', 'We are taking $219.00 off invoice INV-7731.']) {
+    assert.equal(status(C.checkReply(plus(s)), 'credit'), 'look', s);
+  }
+  // A request passed on, a credit that still needs approval, and a present tense about something else, are not.
+  for (const s of ['I am taking your request for a credit to Dana today.', 'A credit above $100.00 must be approved by our operations manager.',
+    'Dana has not approved the $531.00 yet.', 'We are taking this seriously.']) {
+    assert.equal(status(C.checkReply(plus(s)), 'credit'), 'ok', s);
+  }
+});
+
+test('delivery day: a day stated for the delivery, in the present tense or as "you will have them", is flagged', () => {
+  for (const s of ['Your 6 cartons arrive on Thursday.', 'You will have the missing cartons by Friday.', 'The cartons are scheduled for Thursday.']) {
+    assert.equal(status(C.checkReply(plus(s)), 'date'), 'look', s);
+  }
+  for (const s of ['I said the cartons would arrive on Wednesday 5 March.', 'Your order was due on Friday 28 February.',
+    'Please tell me if the cartons do not arrive by Friday.']) {
+    assert.equal(status(C.checkReply(plus(s)), 'date'), 'ok', s);
+  }
+});
+
+test('delivery day: a report that the order was delivered is not a promise of a day', () => {
+  assert.equal(status(C.checkReply(plus('I can confirm that your order was delivered on Wednesday.')), 'date'), 'ok');
+  // A promise in the same words is still one.
+  assert.equal(status(C.checkReply(plus('I can confirm that your cartons will be delivered on Thursday.')), 'date'), 'look');
+  assert.equal(status(C.checkReply(plus('I can confirm that the cartons were sent, and they arrive on Thursday.')), 'date'), 'look');
+});
