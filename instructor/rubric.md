@@ -25,9 +25,9 @@ Four levels for each of the five objectives, each described by **what you can se
 | Level | What you can see |
 |---|---|
 | **Not yet** | Reads the summary and accepts it. Does not open the thread. Takes the checker's "OK" as "correct". |
-| **Beginning** | Fixes only what the checker flags. Opens the thread, but does not check figures the checker passed. |
-| **Secure** | Uses the message numbers to check every figure against its message; corrects a wrong citation by reading the message; rewrites the customer's claim as her claim ("Mira says"). Writes a corrected summary inside the length. |
-| **Strong** | Finds the figure that appears twice with two meanings without being told; recomputes any figure that was worked out; explains why "in the material" is not the same as "right". |
+| **Beginning** | Fixes only what the checker flags (with the recorded answer, the length). Opens the thread, but does not read the sentences the checker passed. |
+| **Secure** | Uses the message numbers to read every sentence against its message, including those the checker passed, and finds the one that says the opposite of message 4. Keeps the customer's claims as hers ("Mira says"). Writes a corrected summary inside the length that still holds what the manager needs. |
+| **Strong** | Explains why the checker cannot catch that sentence; notices a citation that passes only by coincidence; recomputes any figure that was worked out; explains why "in the material" is not the same as "right". |
 
 ## O3. Name what is wrong in an answer that looks right (exercise 3)
 
@@ -35,8 +35,8 @@ Four levels for each of the five objectives, each described by **what you can se
 |---|---|
 | **Not yet** | Marks most sentences "Fine". Judges by tone and fluency. |
 | **Beginning** | Finds the wrong figures, but misses the facts that are not in the material and the breaches of the policy. |
-| **Secure** | Finds errors of all three kinds across the three answers, and gives each a reason that points to a message or a rule of the policy. |
-| **Strong** | Explains why the automatic check misses some errors (a figure in the thread with another meaning; an invented fact with no figure), says which error would cost the company most, and proposes a change to the brief that would prevent it. |
+| **Secure** | Finds the errors in answers A and B, of all three kinds, and gives each a reason that points to a message or a rule of the policy. |
+| **Strong** | Reads the assistant's own notes as well as the reply; explains why the automatic check misses some errors (a figure in the thread with another meaning; an invented fact with no figure); says which error would cost the company most, and proposes a change to the brief that would prevent it. |
 
 ## O4. Decide what must not be pasted, and prepare a table so that it can be (exercise 4)
 

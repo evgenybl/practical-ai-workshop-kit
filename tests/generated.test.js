@@ -17,16 +17,19 @@ for (const [rel, text] of Object.entries(files)) {
 
 test('the answer key equals the workbook\'s own key, sentence by sentence and question by question', () => {
   const key = lib.readText('instructor/answer-key.md');
+  const cell = (s) => String(s).replace(/\|/g, '\\|');
   for (const a of REC.ex3) {
+    const sentences = C.numberedSentences(a.text);
     a.key.forEach((k, i) => {
       const label = k.accept.map((l) => C.LABELS.find((x) => x.id === l).label).join(' or ');
-      assert.ok(key.includes('| ' + a.id + (i + 1) + ' | ') && key.includes(' | ' + label + ' | ' + k.reason.replace(/\|/g, '\\|') + ' |'), a.id + (i + 1));
+      const row = '| ' + a.id + (i + 1) + ' | ' + cell(sentences[i]) + ' | ' + label + ' | ' + cell(k.reason) + ' |';
+      assert.ok(key.includes(row), a.id + (i + 1));
     });
   }
   const { CASE } = require('./helpers');
   for (const s of CASE.snippets) {
-    const pile = CASE.piles.find((p) => p.id === s.pile).label;
-    assert.ok(key.includes('| ' + s.n + ' | ' + s.title + ' | ' + pile + ' |'), 'snippet ' + s.n);
+    const piles = s.accept.map((id) => CASE.piles.find((p) => p.id === id).label).join(' or ');
+    assert.ok(key.includes('| ' + s.n + ' | ' + cell(s.title) + ' | ' + piles + ' | ' + cell(s.reason) + ' |'), 'snippet ' + s.n);
   }
   for (const q of CASE.quiz) {
     const best = q.options.find((o) => o.correct);

@@ -17,7 +17,7 @@ Lids for 8 to 16 oz cups, carton of 1,000: $18.00
 Takeaway boxes, medium, carton of 250: $27.80
 ```
 
-**Why it goes here:** It is already public: anyone can read it on the website. Nothing in it is about a person, and nothing is secret.
+**Why:** It is already public: anyone can read it on the website. Nothing in it is about a person, and nothing is secret.
 
 ### Snippet 2: A paragraph for our website's news page, not yet published
 
@@ -27,7 +27,7 @@ Takeaway boxes, medium, carton of 250: $27.80
 From April, every carton we send will be made from recycled board. Customers can give empty cartons back to our drivers, and we will use them again.
 ```
 
-**Why it goes here:** It is your own text, written to be published. It names no one and holds nothing confidential.
+**Why:** It is your own text, written to be published. It names no one and holds nothing confidential.
 
 ## Paste after removing details
 
@@ -42,7 +42,9 @@ Subject: Re: Order SO-20417 has not arrived - short and damaged
 The delivery came this morning at 10:30, thank you. But it is not right. We received 34 cartons of cups, not 40, so 6 are missing. And of the 34 that came, 6 were crushed and wet, and we cannot use them. The 20 cartons of lids are fine. I have attached photos of the damaged cartons.
 ```
 
-**Why it goes here:** The wording of a reply does not depend on who she is. Replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply.
+**The key accepts:** Paste after removing details or Do not paste.
+
+**Why:** Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.
 
 ### Snippet 4: The orders table: thirty rows with business names, contact people, phones and e-mails
 
@@ -55,7 +57,7 @@ SO-20399 | 3 Feb | Copperleaf Catering | Jonas Arvidsen | 000-000-0102 | jonas.a
 (28 more rows)
 ```
 
-**Why it goes here:** The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that.
+**Why:** The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that.
 
 ### Snippet 5: The warehouse rota for next week, with staff names (invented)
 
@@ -68,7 +70,9 @@ Ola Petrova: Monday to Friday, 14:00 to 22:00
 Jakub Novak: Thursday to Saturday, 06:00 to 14:00 (back after sick leave, no lifting)
 ```
 
-**Why it goes here:** The pattern of shifts can be planned with Staff A, Staff B and Staff C. Take out the names, and take out the note about sick leave: it is health information about a person, and it does not change the question.
+**The key accepts:** Paste after removing details or Do not paste.
+
+**Why:** Two piles are defensible. The pattern of shifts can be planned with Staff A, Staff B and Staff C, once the names are out and the note about sick leave is out too: it is health information about a person, and it does not change the question. What would tip it to "do not paste": in a team this small, the pattern itself can still point to the one person who has just come back from sick leave.
 
 ## Do not paste
 
@@ -80,7 +84,7 @@ Jakub Novak: Thursday to Saturday, 06:00 to 14:00 (back after sick leave, no lif
 Fit note: Jakub Novak, warehouse. Lower back strain. Not fit for lifting over 10 kg until 31 March. Review in 3 weeks.
 ```
 
-**Why it goes here:** It is health information about a person. In a team of a dozen people, taking out the name does not hide who it is. Ask in general words instead: "How can a small warehouse plan duties for someone who cannot lift for a few weeks?"
+**Why:** It is health information about a person. In a team of a dozen people, taking out the name does not hide who it is. Ask in general words instead: "How can a small warehouse plan duties for someone who cannot lift for a few weeks?"
 
 ### Snippet 7: Our customer contact list: every contact name with a mobile number
 
@@ -93,7 +97,7 @@ Ravi Castellan, North Quay Deli, 000-000-0104
 (24 more rows)
 ```
 
-**Why it goes here:** The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself.
+**Why:** The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself.
 
 ### Snippet 8: The terms of a signed supply contract with our largest customer (invented)
 
@@ -103,5 +107,5 @@ Ravi Castellan, North Quay Deli, 000-000-0104
 Supply agreement with Juniper Hall Events. Prices fixed for 12 months. An 8% discount in any month above $5,000.00. A penalty of $250.00 for each late delivery. Both parties keep these terms confidential.
 ```
 
-**Why it goes here:** They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?"
+**Why:** They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?"
 

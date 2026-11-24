@@ -27,10 +27,29 @@ test('no file holds an absolute path', () => {
   }
 });
 
-test('every file is plain ASCII: no letter outside English, no hidden direction marks', () => {
+// Recordings are kept byte for byte, as the model returned them; they may hold a symbol such as a multiplication sign.
+const recordings = lib.listFiles('recorded/answers', (f) => f.endsWith('.meta.json'))
+  .filter((m) => JSON.parse(raw(m)).kind === 'recorded').map((m) => m.replace(/\.meta\.json$/, '.txt'));
+
+function isDirectionMark(code) {
+  return code === 0x200e || code === 0x200f || (code >= 0x202a && code <= 0x202e) || (code >= 0x2066 && code <= 0x2069);
+}
+
+test('no file holds a letter outside English, a hidden direction mark or a control character', () => {
+  assert.ok(recordings.length >= 3);
   for (const f of files) {
-    const t = raw(f);
-    const bad = [...t].findIndex((ch) => ch.charCodeAt(0) > 126 || (ch.charCodeAt(0) < 32 && ch !== '\n' && ch !== '\t' && ch !== '\r'));
+    const chars = [...raw(f)];
+    const bad = chars.findIndex((ch) => {
+      const code = ch.codePointAt(0);
+      return (code > 126 && /\p{L}/u.test(ch)) || isDirectionMark(code) || (code < 32 && ch !== '\n' && ch !== '\t');
+    });
+    assert.equal(bad, -1, f + ' has a forbidden character at position ' + bad);
+  }
+});
+
+test('every file except an unchanged recording is plain ASCII', () => {
+  for (const f of files.filter((x) => !recordings.includes(x))) {
+    const bad = [...raw(f)].findIndex((ch) => ch.codePointAt(0) > 126);
     assert.equal(bad, -1, f + ' has a character outside plain ASCII at position ' + bad);
   }
 });
@@ -125,7 +144,7 @@ test('the evidence table says what is owed: the new-user test and the review are
   assert.match(state('A new-user test by an AI agent'), /^Not yet done/);
   assert.match(state('An independent review'), /^Not yet done/);
   assert.match(state('Taught to a class of people'), /^Not done/);
-  assert.match(state('Recorded answers through the checker'), /^Not yet/);
+  assert.match(state('Recorded answers through the checker'), /^Done/);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));

@@ -139,9 +139,16 @@
     });
     return out;
   }
-  /** Only sentences that end with . ! or ? are numbered: greetings and sign-offs are not. */
+  /** The reply itself: everything above a line of three dashes, under which an assistant may add its own notes. */
+  function replyPart(text) {
+    return plain(text).split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/)[0];
+  }
+  /**
+   * Only sentences of the reply that end with . ! or ? are numbered: greetings, sign-offs and the
+   * assistant's own notes under a line of three dashes are not.
+   */
   function numberedSentences(text) {
-    return splitSentences(text).filter(function (s) { return /[.!?]["')\]]*$/.test(s); });
+    return splitSentences(replyPart(text)).filter(function (s) { return /[.!?]["')\]]*$/.test(s); });
   }
   var CLAUSE_SPLIT = /;\s+|,\s+|:\s+|\s-\s|\s(?:and|but|which|while|whereas|although|though|so)\s/i;
   function splitClauses(sentence) {
@@ -157,6 +164,7 @@
     short: /\b(missing|short|shortage|fewer|not delivered|undelivered|not (yet )?arrived|did not arrive|didn't arrive|never arrived|never came|left behind|left off|not sent|still to come|still owed)\b/,
     damage: /\b(damag\w*|crush\w*|wet|broken|unusable|cannot use|can't use|cannot be used|ruined|spoil\w*|unsellable)\b/,
     promise: /\b(promis\w*|agreed|agree|confirm\w*|commit\w*|undert\w*|said (he|she|they|we) would|guarantee\w*)\b/,
+    notKept: /\b(did not|didn't|not kept|no reply|not heard|heard nothing|has not|hasn't|missed|broke|broken|failed|not confirmed|never confirmed|not stated|still waiting)\b/,
 
     credit: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back)\b/,
     creditCommit: /\b(promis\w*|agreed|agrees?|approved|approves|confirm|confirms|confirmed|guarantee\w*|will|shall|we'll|i'll|you'll|has been|have been|is being|issued|issuing|credited|refunded|reimbursed)\b/,
@@ -543,20 +551,33 @@
 
     rules.push(factRule(facts[2], nums));
 
-    // What was promised
+    // What was promised: the promise word, the credit's status, and the promise that was not kept
     var saysPromise = RX.promise.test(lower);
     var creditStatus = splitSentences(t).some(function (s) {
       return splitClauses(s).some(function (c) { return RX.credit.test(c) && RX.hedge.test(c); });
     });
-    if (saysPromise && creditStatus) {
+    var confirmDay = F.dates.confirmBy;
+    var sentencesLower = splitSentences(t).map(function (s) { return { text: s, lower: stripCitations(s).toLowerCase() }; });
+    var mentionsPromise = sentencesLower.some(function (s) {
+      var byWhen = new RegExp('\\b(' + confirmDay.weekday.toLowerCase() + '|' + confirmDay.weekday.slice(0, 3).toLowerCase() + ')\\b').test(s.lower) ||
+        containsNumber(numberValues(s.text), confirmDay.day);
+      return /\bconfirm\w*/.test(s.lower) && /\b(day|date|delivery)\b/.test(s.lower) && byWhen;
+    });
+    var saysNotKept = sentencesLower.some(function (s) {
+      return RX.notKept.test(s.lower) && /\b(confirm\w*|reply|replied|heard|day|date)\b/.test(s.lower);
+    });
+    var unkept = mentionsPromise && saysNotKept;
+    if (saysPromise && creditStatus && unkept) {
       rules.push(rule('fact-promised', 'What was promised', 'ok',
-        'Found, as required: it says what was promised, and it describes the credit as asked for or awaiting a decision.'));
+        'Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by ' + confirmDay.weekday +
+        ', with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.'));
     } else {
       var lacks = [];
       if (!saysPromise) { lacks.push('a word such as promised, agreed or confirmed'); }
-      if (!creditStatus) { lacks.push('the credit described as asked for, or as waiting for a decision'); }
+      if (!unkept) { lacks.push(F.staffFirst + '\'s promise to confirm a delivery day by ' + CASE.format.wdm(confirmDay) + ', and that it was not kept (messages 4 and 5)'); }
+      if (!creditStatus) { lacks.push('the credit described as asked for, or as waiting for a decision (message 4)'); }
       rules.push(rule('fact-promised', 'What was promised', 'look',
-        'Required, and I could not find ' + lacks.join(', or ') + '. Look in messages 2 and 4 for what ' + F.staffFirst + ' promised, and what he did not.'));
+        'Required, and I could not find ' + lacks.join('; or ') + '. A manager deciding on a credit needs to know what the company has already promised, and which promise it broke.'));
     }
 
     var words = countWords(t);
@@ -607,15 +628,24 @@
     return marks;
   }
 
+  /** The answers marked in the session (A and B); the others are for those who finish early, or homework. */
+  function sessionAnswers() { return ex3Answers().filter(function (a) { return a.in_session !== false; }); }
+
   function checkMarks(marks) {
     var rules = [];
     var agreed = 0;
-    var total = 0;
+    var marked = 0;
     ex3Answers().forEach(function (a) {
+      var any = a.key.some(function (k, i) { return marks && marks[a.id + (i + 1)]; });
+      if (a.in_session === false && !any) {
+        rules.push(rule('answer-' + a.id, 'Answer ' + a.id, 'note',
+          'For those who finish early, or as homework. Not marked: mark it the same way, then check again.'));
+        return;
+      }
       a.key.forEach(function (k, i) {
         var id = a.id + (i + 1);
-        total++;
         var mine = marks && marks[id];
+        if (mine) { marked++; }
         var keyText = k.accept.map(function (l) { return LABEL_NAMES[l]; }).join(' or ');
         var name = 'Answer ' + a.id + ', sentence ' + (i + 1);
         if (!mine) {
@@ -630,7 +660,8 @@
     });
     return {
       exercise: '3', title: 'Find what is wrong', rules: rules,
-      notes: ['You agree with the key on ' + agreed + ' of ' + total + ' sentences. Where you disagree, read the reason, then find the place in the thread or the policy it names.']
+      notes: ['You agree with the key on ' + agreed + ' of the ' + plural(marked, 'sentence') + ' you marked. Where you disagree, read the reason, then find the place in the thread or the policy it names.',
+        'Where the key accepts two marks, both are defensible, and the reason says what would tip it.']
     };
   }
 
@@ -660,13 +691,14 @@
     CASE.snippets.forEach(function (s) {
       var mine = piles && piles[s.n];
       var name = 'Snippet ' + s.n + ': ' + s.title;
+      var keyText = s.accept.map(function (p) { return PILE_NAMES[p]; }).join(' or ');
       if (!mine) {
-        rules.push(rule('snippet-' + s.n, name, 'note', 'Not sorted yet. The key: ' + PILE_NAMES[s.pile] + '. ' + s.reason));
-      } else if (mine === s.pile) {
+        rules.push(rule('snippet-' + s.n, name, 'note', 'Not sorted yet. The key: ' + keyText + '. ' + s.reason));
+      } else if (s.accept.indexOf(mine) !== -1) {
         agreed++;
-        rules.push(rule('snippet-' + s.n, name, 'ok', 'You chose: ' + PILE_NAMES[mine] + '. The key agrees. ' + s.reason));
+        rules.push(rule('snippet-' + s.n, name, 'ok', 'You chose: ' + PILE_NAMES[mine] + '. The key agrees' + (s.accept.length > 1 ? ' (it accepts ' + keyText + ')' : '') + '. ' + s.reason));
       } else {
-        rules.push(rule('snippet-' + s.n, name, 'look', 'You chose: ' + PILE_NAMES[mine] + '. The key says: ' + PILE_NAMES[s.pile] + '. ' + s.reason));
+        rules.push(rule('snippet-' + s.n, name, 'look', 'You chose: ' + PILE_NAMES[mine] + '. The key says: ' + keyText + '. ' + s.reason));
       }
     });
     return {

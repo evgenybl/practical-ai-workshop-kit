@@ -350,7 +350,8 @@
       purpose: 'To ask for help with the wording of a reply.',
       text: 'From: ' + m3.from + '\nSubject: ' + m3.subject + '\n\n' + m3.body[1] + ' ' + m3.body[2],
       pile: 'remove',
-      reason: 'The wording of a reply does not depend on who she is. Replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply.'
+      accept: ['remove', 'never'],
+      reason: 'Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer\'s policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.'
     },
     {
       n: 4,
@@ -370,7 +371,8 @@
       purpose: 'To ask for a fairer pattern of early shifts.',
       text: 'Week of 10 March\nSam Ridley: Monday to Wednesday, 06:00 to 14:00\nOla Petrova: Monday to Friday, 14:00 to 22:00\nJakub Novak: Thursday to Saturday, 06:00 to 14:00 (back after sick leave, no lifting)',
       pile: 'remove',
-      reason: 'The pattern of shifts can be planned with Staff A, Staff B and Staff C. Take out the names, and take out the note about sick leave: it is health information about a person, and it does not change the question.'
+      accept: ['remove', 'never'],
+      reason: 'Two piles are defensible. The pattern of shifts can be planned with Staff A, Staff B and Staff C, once the names are out and the note about sick leave is out too: it is health information about a person, and it does not change the question. What would tip it to "do not paste": in a team this small, the pattern itself can still point to the one person who has just come back from sick leave.'
     },
     {
       n: 6,
@@ -397,6 +399,8 @@
       reason: 'They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?"'
     }
   ];
+  // The piles the key accepts: one, or two where both are defensible (the reason then says what tips it).
+  snippets.forEach(function (s) { s.accept = s.accept || [s.pile]; });
 
   // ---------------------------------------------------------------------------
   // The prepared requests (briefs). Exercise 2 uses the summary brief. The reply
@@ -440,21 +444,21 @@
   var quiz = [
     {
       n: 1, objective: 'O1',
-      text: 'A colleague writes: "I run a small bakery. Our supplier sent us damaged goods. The e-mails are below. Write a reply to the supplier, in under 100 words." Which part of a five-part brief is missing?',
+      text: 'A colleague writes: "I own a small bakery. Our packaging supplier delivered our order late and partly damaged, and I want the damaged cartons replaced before the weekend. The whole e-mail thread with them is pasted below. Draft my reply to their last message, in at most 100 words and two short paragraphs." Which part of a five-part brief is missing?',
       options: [
-        { text: 'The situation', why: 'It is there: "I run a small bakery. Our supplier sent us damaged goods."' },
-        { text: 'The material', why: 'It is there: "The e-mails are below."' },
-        { text: 'The form', why: 'It is there: "in under 100 words" names a length.' },
-        { text: 'The limits', correct: true, why: 'Nothing says what the reply must not do: for example, not to accept a lower credit, or not to threaten to leave. Without limits, the assistant decides those things for you.' }
+        { text: 'The situation', why: 'It is there: who is writing, to whom, what happened, and what she wants.' },
+        { text: 'The material', why: 'It is there: the whole e-mail thread is pasted below the request.' },
+        { text: 'The form', why: 'It is there: "at most 100 words and two short paragraphs" names a length and a structure.' },
+        { text: 'The limits', correct: true, why: 'Nothing says what the reply must not do: for example, not to accept a credit instead of a replacement, or not to threaten to change supplier. Without limits, the assistant decides those things for you.' }
       ]
     },
     {
       n: 2, objective: 'O1',
-      text: 'A one-line request, "Write a reply to this customer", produced a reply that promised the customer the credit she asked for. Which line in a brief would most likely have prevented that?',
+      text: 'In exercise 1, the reply to the one-line request promised the customer a corrected invoice that nobody had decided on. Which line in a brief would most likely have prevented that?',
       options: [
         { text: '"Be professional."', why: 'A promise can be perfectly professional in tone. This line says nothing about what may be promised.' },
-        { text: '"Do not promise a credit or any amount: credits above the limit need the manager\'s approval."', correct: true, why: 'It names the exact thing not to do, and gives the reason, so the assistant can also word the reply around it.' },
-        { text: '"Keep it short."', why: 'A short reply can still promise a credit. Length and limits are different parts of the brief.' },
+        { text: '"Do not promise anything the thread and the policy do not already commit us to: no credit, no change to the invoice, no delivery day."', correct: true, why: 'It names exactly what not to do, and where the boundary comes from, so the assistant can word the reply around it.' },
+        { text: '"Keep it short."', why: 'A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.' },
         { text: '"Write in a friendly tone."', why: 'A friendly tone makes a promise more likely, not less.' }
       ]
     },

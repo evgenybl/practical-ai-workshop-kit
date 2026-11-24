@@ -31,8 +31,8 @@ Generated files are rebuilt by `node tools/build.js`; CI fails if one is out of 
 
 **The summary (exercise 2).** Every figure carries the number of the message it comes from, and every citation is right. It keeps the two groups of cartons apart. It says plainly that no credit was promised, and reports the customer's claim as her claim. It puts the decision the manager has to make last, in one line, and stays inside the word limit.
 
-**The marks (exercise 3).** Each mark has a reason that points to a message or a rule of the policy. Where an error is of two kinds at once (a delivery day that is both promised against the policy and found nowhere in the thread), the key accepts either mark.
+**The marks (exercise 3).** Each mark has a reason that points to a message or a rule of the policy. Where two marks are defensible, the key accepts both and the reason says what tips it: a delivery day both promised against the policy and found nowhere in the thread; a date the assistant chose itself, which is fine only once the writer has decided he can keep it; and "next week", which meant this week when the thread said it.
 
-**The piles and the extract (exercise 4).** The extract keeps the four columns the question needs, replaces each business with a stand-in, and leaves out the contact person, the phone and the e-mail. Leaving out is stronger than any stand-in.
+**The piles and the extract (exercise 4).** Two snippets, the complaint and the rota, have two defensible piles, and their reasons say what would tip each one to "do not paste". The extract keeps the four columns the question needs, replaces each business with a stand-in, and leaves out the contact person, the phone and the e-mail. Leaving out is stronger than any stand-in.
 
 **The template (exercise 5).** Named placeholders for the material, the manager, the decision, the facts needed and the customer; nothing left from this case; the form and the limits kept, because they hold the company's rules. A first line tells the colleague what to fill in and what to check afterwards.

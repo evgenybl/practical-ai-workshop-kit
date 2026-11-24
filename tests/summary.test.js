@@ -69,6 +69,30 @@ test('required: what was promised, both ways', () => {
   assert.equal(status(C.checkSummary(none), 'fact-promised'), 'look');
 });
 
+const unkeptSentence = 'He promised to confirm a day for the missing cartons by Friday 7 March, and did not (msg 4, 5).';
+
+test('required: the unkept promise to confirm a delivery day; a summary that never mentions it is flagged', () => {
+  const without = swap(' ' + unkeptSentence, '');
+  const r = C.checkSummary(without);
+  assert.equal(status(r, 'fact-promised'), 'look');
+  assert.match(rule(r, 'fact-promised').message, /promise to confirm a delivery day by Friday 7 March, and that it was not kept/);
+});
+
+test('required: mentioning the promise without saying it was not kept is flagged too', () => {
+  const kept = swap(unkeptSentence, 'He promised to confirm a day for the missing cartons by Friday 7 March (msg 4).');
+  assert.equal(status(C.checkSummary(kept), 'fact-promised'), 'look');
+});
+
+test('required: the unkept promise also counts when said in other words', () => {
+  const other = swap(unkeptSentence, 'Tom said he would confirm a delivery date by Fri 7 Mar (msg 4); Mira has heard nothing since (msg 5).');
+  assert.equal(status(C.checkSummary(other), 'fact-promised'), 'ok');
+});
+
+test('the recorded answer passes every rule but the length, which the request set and the assistant ignored', () => {
+  const r = C.checkSummary(lib.readText('recorded/answers/ex2-answer.txt'));
+  for (const x of r.rules) { assert.equal(x.status, x.id === 'length' ? 'look' : 'ok', x.id); }
+});
+
 test('length: at most 120 words passes; more fails', () => {
   assert.equal(status(C.checkSummary(strong), 'length'), 'ok');
   const long = strong + '- More: ' + 'word '.repeat(60) + '\n';

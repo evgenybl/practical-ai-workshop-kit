@@ -8,34 +8,38 @@ For each exercise: what a good answer holds, what the checker finds in the answe
 
 ## Exercise 1: From a wish to a brief
 
-### What is wrong with the answer to "Write a reply to this customer."
+### The reply to "Write a reply to this customer."
 
-The request is in `recorded/requests/ex1-request.txt`.
+The request is in `recorded/requests/ex1-request.txt`; the reply, in full, in `recorded/answers/ex1-answer.txt`.
 
-> **Not a recording.** Constructed for the build as a stand-in. No assistant produced this text from the request file. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.
+> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
 
-1. It promises the full credit she asked for. Only the operations manager can approve a credit of this size, and no credit may be promised by e-mail before it is approved (policy, rules 3 and 6).
-2. It promises to pay for the cups she bought at the cash-and-carry. The policy does not allow that without the operations manager's agreement in writing (rules 5 and 6).
-3. It promises delivery tomorrow. No day has been confirmed, and Tom wrote that the van does not come to her area until next week (message 4).
-4. It offers a discount that exists nowhere in the thread or the policy.
-5. It does not answer what she is most upset about: Tom said he would confirm a delivery day by Friday, and did not (messages 4 and 5).
-6. It is long and padded with stock phrases. She asked two plain questions; the reply gives her promises the company may not be able to keep.
+**What it gets right**
 
-### What the checker finds in that answer
+- It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.
+- Its figures are right, and it does not promise the credit: it says the amount is the operations manager's decision.
+
+**What is wrong with it** (the workbook shows this list as "the instructor's list")
+
+1. It decides something nobody asked it to decide: "We will issue a corrected invoice that removes those cartons." That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.
+2. It says "I have also sent her your receipt". Nobody has: in message 4, Tom sent the operations manager the photos and the request; the receipt arrived only in message 5.
+3. It promises an answer "the same day" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.
+4. It commits the operations manager to a decision by a date ("Dana will give you her decision by [date ...]"): a promise made on someone else's behalf.
+5. It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.
+6. Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the $531.00, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give ("14 March"): right by the calendar, but worked out, so check it.
+
+### What the checker finds in that reply
 
 ```text
 A reply to the customer
-1 OK, 4 to look at again.
+4 OK, 1 to look at again.
 
 [Look again] The figures: 1 figure in this answer is not in the thread or the policy. If a figure was worked out from others, check the sum yourself. If you cannot tell where it came from, take it out until you can.
-    - 15 is not in the material: check it. It appears here: "...ience, I would like to offer you a 15% discount on your next order. Onc..."
+    - 14 is not in the material: check it. It appears here: "...s. Mira's deadline is "by Friday" (14 March), so Dana's decision date ne..."
 [OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. Nothing here merges the two.
-[Look again] No credit promised: This reply seems to promise a credit, or an amount. Under the policy, a credit above $100.00 must be approved by the operations manager, and no credit may be promised by e-mail before it is approved (rules 3 and 6).
-    - Read this sentence: "I am pleased to confirm that we will issue a full credit of $531.00 against invoice INV-7731, covering the 6 damaged cartons and the $312.00 you spent at the cash-and-carry."
-[Look again] No offer to pay other costs: This reply seems to offer to pay the customer's other costs. The policy says we do not pay for goods bought elsewhere unless the operations manager agrees in writing, and that this is never promised by e-mail (rules 5 and 6).
-    - Read this sentence: "I am pleased to confirm that we will issue a full credit of $531.00 against invoice INV-7731, covering the 6 damaged cartons and the $312.00 you spent at the cash-and-carry."
-[Look again] No delivery day promised: This reply seems to promise a delivery day. No day has been confirmed by the warehouse (message 4), and the policy says never to promise one that is not confirmed (rule 6).
-    - Read this sentence: "I have also arranged for the 6 missing cartons to be delivered to you tomorrow morning."
+[OK] No credit promised: Nothing here promises a credit or an amount. Under the policy, a credit above $100.00 needs the operations manager's approval first (rules 3 and 6).
+[OK] No offer to pay other costs: Nothing here offers to pay for the cups bought elsewhere. Under the policy, that needs the operations manager's agreement in writing (rules 5 and 6).
+[OK] No delivery day promised: Nothing here promises a day for the missing cartons. The warehouse has not confirmed one, and Tom wrote that the van does not come until next week (message 4).
 
 The checks for promises look for words that usually mean a promise. They can miss one, or flag a sentence that is fine. Read each flagged sentence yourself and decide.
 Figures written in words, such as "six", are not checked.
@@ -75,27 +79,38 @@ It checks presence, not quality, and says so on the page.
 1. **The promise that was never given.** Mira asks for a credit (message 3) and later writes "the credit you promised" (message 5). Tom never promised one (message 4). A summary that reports her claim as a fact misleads the manager about what the company has already committed to.
 2. **One figure, two meanings.** 6 cartons never arrived, and 6 of those delivered arrived crushed. A summary that says "6 cartons were missing or damaged" halves the problem; one that says "12 cartons were crushed" doubles the damage.
 
-### What the checker finds in the answer participants are given
+### The answer participants are given
 
-> **Not a recording.** Constructed for the build as a stand-in. No assistant produced this text from the request file. It was written to contain two mistakes an assistant commonly makes with this thread: a customer's claim reported as a fact, and a figure cited to the wrong message. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.
+> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
+
+The answer, in full: `recorded/answers/ex2-answer.txt`.
+
+**What it gets right**
+
+- It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.
+- It keeps the two groups of 6 apart, cites a message for every fact, and writes "Not stated" where the thread is silent, as the request asked.
+
+**What is wrong with it**
+
+1. It ignores the word limit the request set. The checker counts the words.
+2. "6 cartons were left on the van at loading" says the opposite of message 4, where they were left behind when the van was loaded. It passes every automatic check: the figure is in the thread, the citation is right, and nothing is merged. Only a person who reads message 4 catches it.
+3. A smaller one: "no reply since 6 Mar" is cited to message 5, but the date is the date of message 4. The citation check passes it only because the same figure also appears in message 5.
+
+**What the checker finds in it**
 
 ```text
 Exercise 2: Summarise, and prove it
-8 OK, 2 to look at again.
+9 OK, 1 to look at again.
 
-[OK] The figures: Every figure in this answer (13 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
-[Look again] Message numbers: 3 figures cannot be found in the message cited for them. Open that message and the one named below, and correct the citation or the figure.
-    - $312.00 is cited to message 4, but it is in message 5.
-    - $531.00 is cited to message 4, but it is in message 5.
-    - 7731 is cited to message 4, but it is in messages 3 and 5.
+[OK] The figures: Every figure in this answer (22 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
+[OK] Message numbers: Each figure is in the message its citation names (11 citations checked).
 [OK] The order number: Found, as required.
 [OK] The invoice number: Found, as required.
 [OK] What went wrong: Found, as required: it says the order was late, that cartons were missing, and that cartons were damaged.
 [OK] The amount in question: Found, as required.
-[OK] What was promised: Found, as required: it says what was promised, and it describes the credit as asked for or awaiting a decision.
-[OK] Length: I counted 97 words; the limit is 120. Message numbers in brackets are not counted.
-[Look again] The promise that was never given: This answer says a credit was promised or agreed. Tom never promised one: he wrote that it must be approved by the operations manager (message 4). Mira writes "the credit you promised" (message 5), but that is her claim, not a promise. Write "Mira says", or say plainly that no credit was promised.
-    - Read this sentence: "Tom promised a credit for the 6 damaged cartons (msg 5) and said he would confirm a delivery day for the missing cartons by Friday 7 March, which he did not do (msg 4)."
+[OK] What was promised: Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by Friday, with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.
+[Look again] Length: I counted 179 words; the limit is 120. A manager with two minutes needs the short version. Message numbers in brackets are not counted.
+[OK] The promise that was never given: Nothing here says that a credit was promised or agreed. In the thread, Tom passed the request to the operations manager and promised no credit (message 4).
 [OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. Nothing here merges the two.
 
 Figures written in words, such as "six", are not checked.
@@ -108,25 +123,46 @@ A strong summary: `solutions/ex2-strong-summary.txt`.
 
 ## Exercise 3: Find what is wrong
 
-The request behind the three answers is `recorded/requests/ex3-request.txt`. The annotated answers, in full, are in `solutions/ex3-annotated-answers.md`.
+The request behind the three answers is `recorded/requests/ex3-request.txt`. Answer A is a real answer, exactly as it came back; answers B and C are the same answer, edited to plant the errors this exercise teaches, and each says exactly what was changed. Answers A and B are marked in the session; answer C is for those who finish early, or homework. The answers in full, annotated, are in `solutions/ex3-annotated-answers.md`. Where the key accepts two marks, both are defensible, and the reason says what tips it.
+
+### Answer A: in the session
+
+> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
 
 | # | Sentence | Key | Why |
 |---|---|---|---|
-| A1 | I am sorry that I did not confirm a delivery day by Friday, as I said I would. | Fine | True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning the mistake first is right. |
-| A2 | I understand that 6 of the 40 cartons we delivered were crushed, and that you had to buy cups elsewhere for Saturday. | A wrong figure | 34 cartons were delivered, not 40: 40 is what was ordered (message 3). The automatic check cannot see this, because 40 is in the thread with another meaning. |
-| A3 | Your request for a credit of $531.00 needs the approval of our operations manager, Dana Liu, and I am passing it to her today. | Fine | True to the policy: a credit of this size needs the operations manager's approval (rule 3), and it promises nothing. |
-| A4 | In the meantime, I can confirm that we will cover the $312.00 you spent at the cash-and-carry. | Against the policy | The policy does not allow paying for goods bought elsewhere without the operations manager's agreement in writing, and says never to promise it by e-mail (rules 5 and 6). The figure is right; the promise is not allowed. |
-| A5 | I will call you today to agree a delivery day for the 6 missing cartons. | Fine | A promise about Tom's own action, which he can keep. It does not promise a delivery day. |
-| B1 | Thank you for your patience, and I am sorry you have had to chase us again. | Fine | An apology, and true: she has had to write again (message 5). |
-| B2 | Our driver has told me the damage happened because your cartons were loaded under heavier boxes. | Not in the material | Nothing in the thread or the policy mentions the driver or how the cartons were loaded. Message 4 says only that they were damaged on the way. A made-up cause can also start an argument the company cannot win. |
-| B3 | The 6 damaged cartons come to $219.00 at $36.50 a carton, and our operations manager, Dana Liu, will decide on your request for that amount and for the $312.00 you spent. | Fine | The figures match message 5, and it says the operations manager will decide: it promises no credit. |
-| B4 | As a regular customer, you also qualify for our loyalty discount on your next order. | Not in the material | There is no loyalty discount in the thread or the policy. An invented offer is also a promise the company may not keep. |
-| B5 | I will call you this afternoon to confirm the day we can deliver the 6 missing cartons. | Fine | A promise about Tom's own action, which he can keep. It does not promise a delivery day. |
-| C1 | I am very sorry for all the trouble with order SO-20417. | Fine | An apology, and the order number is right (message 1). |
-| C2 | You received 34 cartons of cups, and 12 of them were crushed and wet. | A wrong figure | 6 of the 34 were crushed (message 3). The other 6 never arrived. The two groups count different cartons, and adding them does not give the number crushed. |
-| C3 | I have approved a credit of $219.00 for the damaged cartons, which will appear on your next invoice. | Against the policy | A credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). The figure is right; the promise is not allowed. |
-| C4 | I will pass your request for the $312.00 to Dana Liu, our operations manager, today. | Fine | It passes the request on and promises nothing. That is what the policy asks for (rule 5). |
-| C5 | The 6 missing cartons will be delivered on Monday 17 March. | Against the policy or Not in the material | No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date itself is nowhere in the thread. Either mark is right. |
+| A1 | I am sorry we did not confirm a delivery day by Friday, as I said we would. | Fine | True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning it first is right. |
+| A2 | You should have heard from us, and you did not. | Fine | True (message 5), and it owns the failure without an excuse. |
+| A3 | The six missing cartons are still not with you. | Fine | True (message 5). The figure is written in words, so the figure check does not read it. |
+| A4 | Our van does not come to your area until next week, and I do not yet have a confirmed day for them. | Fine or Not in the material | Two marks are defensible. On Thursday 6 March, message 4 said the van comes "next week": the week this reply is written in. Written on Tuesday 11 March, "until next week" now means the week after: a new delay that nothing in the thread supports. Read as a repeat of message 4, it is fine. What tips it: whether the warehouse has said anything since. The second half, no confirmed day, is true. |
+| A5 | For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. | Fine | True to the policy (rule 3), and it promises nothing. |
+| A6 | I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today. | Not in the material | Message 4 says Tom sent the photos and the request. The receipt, and the full request with the cash-and-carry cost, arrived only in message 5, and nothing says they were passed on. The assistant's own notes under the reply say so too. The second half, no amount and no decision today, is fine. |
+| A7 | I will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands. | Not in the material or Fine | Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only Tom's own action, which the policy allows. What tips it: it is fine once Tom has decided he can keep that date, and not before. |
+
+### Answer B: in the session
+
+> **A real answer, edited to plant the errors this exercise teaches.** Edited from `recorded/answers/ex3-answer-a.txt` (claude-haiku-5-5, recorded on 2026-11-24). Four changes to the recorded answer A. (1) Planted a wrong figure: in "The six missing cartons are still not with you.", "six" became "12". (2) Removed the sentence "Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences "For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today." became the one sentence "For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request." (4) Removed the closing paragraph ("I will write to you again by Wednesday 12 March, ...") and the assistant's notes under the reply, which describe the original wording.
+
+| # | Sentence | Key | Why |
+|---|---|---|---|
+| B1 | I am sorry we did not confirm a delivery day by Friday, as I said we would. | Fine | As in answer A: true, and owning it first is right. |
+| B2 | You should have heard from us, and you did not. | Fine | As in answer A: true (message 5). |
+| B3 | The 12 missing cartons are still not with you. | A wrong figure | Planted. 6 cartons are missing (message 3); 12 adds the 6 that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size (12 oz); the check of the two groups catches it. |
+| B4 | For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request. | Against the policy | Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval. |
+
+### Answer C: for those who finish early, or as homework
+
+> **A real answer, edited to plant the errors this exercise teaches.** Edited from `recorded/answers/ex3-answer-a.txt` (claude-haiku-5-5, recorded on 2026-11-24). Three changes to the recorded answer A. (1) Planted a breach of the policy: "Our van does not come to your area until next week, and I do not yet have a confirmed day for them." became "Our van will bring them to you on Thursday 13 March." (2) Planted a wrong figure: "I have sent her your photos, your full request and the receipt you sent, and" became "I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and". (3) Removed the assistant's notes under the reply, which describe the original wording.
+
+| # | Sentence | Key | Why |
+|---|---|---|---|
+| C1 | I am sorry we did not confirm a delivery day by Friday, as I said we would. | Fine | As in answer A: true, and owning it first is right. |
+| C2 | You should have heard from us, and you did not. | Fine | As in answer A: true (message 5). |
+| C3 | The six missing cartons are still not with you. | Fine | As in answer A: true (message 5). |
+| C4 | Our van will bring them to you on Thursday 13 March. | Against the policy or Not in the material | Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right. |
+| C5 | For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. | Fine | As in answer A: true to the policy (rule 3), and it promises nothing. |
+| C6 | I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today. | A wrong figure | Planted. The damaged cartons come to $219.00 (6 at $36.50, message 5); $312.00 is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning. |
+| C7 | I will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands. | Not in the material or Fine | As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it. |
 
 ### What the automatic reply check finds in each answer
 
@@ -134,9 +170,9 @@ Use this in the debrief: the check catches some errors and misses others, which 
 
 | Answer | The figures | The two groups of 6 | No credit promised | No offer to pay other costs | No delivery day promised |
 |---|---|---|---|---|---|
-| A | OK | OK | OK | Look again | OK |
-| B | OK | OK | OK | OK | OK |
-| C | Look again | Look again | Look again | OK | Look again |
+| A | OK | OK | OK | OK | OK |
+| B | OK | Look again | Look again | OK | OK |
+| C | Look again | OK | OK | OK | Look again |
 
 ## Exercise 4: What must not go in
 
@@ -146,9 +182,9 @@ Use this in the debrief: the check catches some errors and misses others, which 
 |---|---|---|---|
 | 1 | Our price list, as published on our website | Fine to paste | It is already public: anyone can read it on the website. Nothing in it is about a person, and nothing is secret. |
 | 2 | A paragraph for our website's news page, not yet published | Fine to paste | It is your own text, written to be published. It names no one and holds nothing confidential. |
-| 3 | A customer's complaint, with her name, e-mail address and order number | Paste after removing details | The wording of a reply does not depend on who she is. Replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. |
+| 3 | A customer's complaint, with her name, e-mail address and order number | Paste after removing details or Do not paste | Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone. |
 | 4 | The orders table: thirty rows with business names, contact people, phones and e-mails | Paste after removing details | The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that. |
-| 5 | The warehouse rota for next week, with staff names (invented) | Paste after removing details | The pattern of shifts can be planned with Staff A, Staff B and Staff C. Take out the names, and take out the note about sick leave: it is health information about a person, and it does not change the question. |
+| 5 | The warehouse rota for next week, with staff names (invented) | Paste after removing details or Do not paste | Two piles are defensible. The pattern of shifts can be planned with Staff A, Staff B and Staff C, once the names are out and the note about sick leave is out too: it is health information about a person, and it does not change the question. What would tip it to "do not paste": in a team this small, the pattern itself can still point to the one person who has just come back from sick leave. |
 | 6 | A note from an employee's doctor (invented) | Do not paste | It is health information about a person. In a team of a dozen people, taking out the name does not hide who it is. Ask in general words instead: "How can a small warehouse plan duties for someone who cannot lift for a few weeks?" |
 | 7 | Our customer contact list: every contact name with a mobile number | Do not paste | The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself. |
 | 8 | The terms of a signed supply contract with our largest customer (invented) | Do not paste | They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?" |
@@ -202,8 +238,8 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 
 | # | Objective | Best answer | Why |
 |---|---|---|---|
-| 1 | O1 | D: The limits | Nothing says what the reply must not do: for example, not to accept a lower credit, or not to threaten to leave. Without limits, the assistant decides those things for you. |
-| 2 | O1 | B: "Do not promise a credit or any amount: credits above the limit need the manager's approval." | It names the exact thing not to do, and gives the reason, so the assistant can also word the reply around it. |
+| 1 | O1 | D: The limits | Nothing says what the reply must not do: for example, not to accept a credit instead of a replacement, or not to threaten to change supplier. Without limits, the assistant decides those things for you. |
+| 2 | O1 | B: "Do not promise anything the thread and the policy do not already commit us to: no credit, no change to the invoice, no delivery day." | It names exactly what not to do, and where the boundary comes from, so the assistant can word the reply around it. |
 | 3 | O2 | A: Find the figures in the thread that the credit is made of, and add them yourself. | The thread is the authority. If the parts are there, you can rebuild the total and see whether it is right: here it is not. |
 | 4 | O2 | C: "After each fact, write the number of the message it comes from." | Now each figure points to the place to look. Checking takes seconds per fact, and a fact with no source stands out. |
 | 5 | O3 | A: It merges two groups: 12 cartons were affected, not 6. | The same number appears twice with two meanings. Merging them halves the problem the manager has to decide on. |
@@ -215,21 +251,21 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 
 ### Why each other option is wrong
 
-**Question 1.** A colleague writes: "I run a small bakery. Our supplier sent us damaged goods. The e-mails are below. Write a reply to the supplier, in under 100 words." Which part of a five-part brief is missing?
+**Question 1.** A colleague writes: "I own a small bakery. Our packaging supplier delivered our order late and partly damaged, and I want the damaged cartons replaced before the weekend. The whole e-mail thread with them is pasted below. Draft my reply to their last message, in at most 100 words and two short paragraphs." Which part of a five-part brief is missing?
 
 - **A: The situation**  
-  Why not: It is there: "I run a small bakery. Our supplier sent us damaged goods."
+  Why not: It is there: who is writing, to whom, what happened, and what she wants.
 - **B: The material**  
-  Why not: It is there: "The e-mails are below."
+  Why not: It is there: the whole e-mail thread is pasted below the request.
 - **C: The form**  
-  Why not: It is there: "in under 100 words" names a length.
+  Why not: It is there: "at most 100 words and two short paragraphs" names a length and a structure.
 
-**Question 2.** A one-line request, "Write a reply to this customer", produced a reply that promised the customer the credit she asked for. Which line in a brief would most likely have prevented that?
+**Question 2.** In exercise 1, the reply to the one-line request promised the customer a corrected invoice that nobody had decided on. Which line in a brief would most likely have prevented that?
 
 - **A: "Be professional."**  
   Why not: A promise can be perfectly professional in tone. This line says nothing about what may be promised.
 - **C: "Keep it short."**  
-  Why not: A short reply can still promise a credit. Length and limits are different parts of the brief.
+  Why not: A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.
 - **D: "Write in a friendly tone."**  
   Why not: A friendly tone makes a promise more likely, not less.
 

@@ -53,11 +53,11 @@ test('exercise 1: the recorded reply can be checked, and the instructor\'s list 
   assert.equal($('ex1-issues-show').getAttribute('aria-expanded'), 'true');
 });
 
-test('exercise 2: the stand-in answer is labelled and checked like any other', () => {
+test('exercise 2: the recorded answer is labelled with its model and date, and checked like any other', () => {
   const { $ } = openPage(html);
-  $('ex2-use-standin').click();
+  $('ex2-use-recorded').click();
   assert.equal($('ex2-answer').value, REC.ex2.text);
-  assert.match($('ex2-standin').textContent, /not produced by an assistant/);
+  assert.match($('ex2-record').textContent, new RegExp('^A real answer, exactly as it came back: ' + REC.ex2.model + ', recorded on ' + REC.ex2.recorded_on));
   $('ex2-check').click();
   assert.ok($('ex2-result').textContent.startsWith(C.summaryLine(C.checkSummary(REC.ex2.text))));
 });
@@ -68,7 +68,17 @@ test('exercise 3: one radio group per numbered sentence, marked against the key'
   assert.equal(doc.querySelectorAll('input[data-choice]').filter((e) => e.name.startsWith('mark-')).length, groups * C.LABELS.length);
   REC.ex3.forEach((a) => a.key.forEach((k, i) => choose(doc, 'mark-' + a.id + (i + 1), k.accept[0])));
   $('ex3-check').click();
-  assert.match($('ex3-result').textContent, new RegExp('You agree with the key on ' + groups + ' of ' + groups));
+  assert.match($('ex3-result').textContent, new RegExp('You agree with the key on ' + groups + ' of the ' + groups + ' sentences you marked'));
+});
+
+test('exercise 3: each answer says where it came from, and the optional answer sits under its own heading', () => {
+  const { doc, $ } = openPage(html);
+  const text = $('ex3-answers').textContent;
+  assert.match(text, /A real answer, exactly as it came back/);
+  assert.match(text, /A real answer, edited to plant the errors this exercise teaches/);
+  assert.match(text, /For those who finish early, or as homework/);
+  assert.ok(text.indexOf('For those who finish early') > text.indexOf('Answer B'));
+  assert.equal(doc.querySelectorAll('[data-fact]').length > 0, true);
 });
 
 test('exercise 4: the stand-in helper, the check, the example answer and the map-back', () => {

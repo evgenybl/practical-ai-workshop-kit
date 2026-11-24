@@ -20,6 +20,24 @@ test('part 1: a wrong pile fails, with the key and the reason', () => {
   assert.match(rule(r, 'snippet-' + health.n).message, /The key says: Do not paste\. It is health information/);
 });
 
+test('part 1: where two piles are defensible, both pass, and the reason says what tips it', () => {
+  const two = CASE.snippets.filter((s) => s.accept.length > 1);
+  assert.deepEqual(two.map((s) => s.n), [3, 5]);
+  for (const s of two) {
+    assert.match(s.reason, /^Two piles are defensible\./);
+    assert.match(s.reason, /What would tip it/);
+    for (const p of s.accept) {
+      const piles = keyPiles();
+      piles[s.n] = p;
+      assert.equal(status(C.checkPiles(piles), 'snippet-' + s.n), 'ok', s.n + ' ' + p);
+    }
+    const wrong = CASE.piles.map((p) => p.id).find((p) => !s.accept.includes(p));
+    const piles = keyPiles();
+    piles[s.n] = wrong;
+    assert.equal(status(C.checkPiles(piles), 'snippet-' + s.n), 'look');
+  }
+});
+
 test('part 1: the result says that an employer\'s own policy comes first', () => {
   assert.ok(C.checkPiles(keyPiles()).notes.some((n) => /employer's own policy/.test(n) && /comes first/.test(n)));
 });

@@ -56,8 +56,9 @@ button:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
 .small { font-size: 0.92rem; color: var(--muted); }
 .hint { font-size: 0.92rem; color: var(--muted); margin: 0.1rem 0 0.35rem; }
 .warn { background: var(--warn-bg); color: var(--warn-text); padding: 0.5rem 0.75rem; border-radius: 4px; }
-.standin { background: var(--warn-bg); color: var(--warn-text); padding: 0.4rem 0.75rem; border-radius: 4px; font-size: 0.92rem; margin: 0.5rem 0; }
-.standin:empty { display: none; }
+.record { background: var(--note-bg); color: var(--note-text); padding: 0.4rem 0.75rem; border-radius: 4px; font-size: 0.92rem; margin: 0.5rem 0; }
+.record:empty { display: none; }
+h3.later { border-top: 1px dashed var(--line); padding-top: 1rem; }
 
 label { display: block; font-weight: 600; margin: 0.9rem 0 0.25rem; }
 textarea, select {
@@ -244,10 +245,10 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <p class="goal"><strong>Goal:</strong> turn a one-line wish into a brief that an assistant can act on.</p>
 
   <h3>Step 1: See what a wish produces</h3>
-  <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is a reply to that request.</p>
-  <div class="standin" id="ex1-standin"></div>
+  <p>A colleague pasted the whole thread into an assistant, with one line above it: <q data-fact="wishLine"></q> Below is what came back. It is polished and polite. Read it as if you were about to press Send.</p>
+  <div class="record" id="ex1-record"></div>
   <pre class="answer" id="ex1-answer" tabindex="0" aria-label="The reply to the one-line request"></pre>
-  <label for="ex1-notes">What is wrong with this reply? List everything you would not send, and why. Use the thread and the policy.</label>
+  <label for="ex1-notes">Would you send it? With the thread and the policy open, note everything the reply says or decides that nobody asked it to, anything it claims that did not happen, and anything that stops you sending it as it is.</label>
   <textarea id="ex1-notes" rows="5" data-save></textarea>
   <div class="buttons">
     <button type="button" id="ex1-reply-check">Run the checker on this reply</button>
@@ -329,11 +330,11 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   </div>
 
   <h3>Step 2: Get an answer, and check it</h3>
-  <p>Send the request to your assistant and paste its answer below. No assistant, or not allowed one? Use the stand-in answer.</p>
+  <p>Send the request to your assistant and paste its answer below. No assistant, or not allowed one? Use the recorded answer: a real assistant's answer to this exact request.</p>
   <div class="buttons">
-    <button type="button" id="ex2-use-standin">Use the stand-in answer</button>
+    <button type="button" id="ex2-use-recorded">Use the recorded answer</button>
   </div>
-  <div class="standin" id="ex2-standin" hidden></div>
+  <div class="record" id="ex2-record" hidden></div>
   <label for="ex2-answer">The answer</label>
   <textarea id="ex2-answer" rows="10" data-save></textarea>
   <div class="buttons">
@@ -343,7 +344,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <p class="small">What the check reads: every figure written in digits, compared as a number, so 1,250.00 and 1250 are the same figure, and a date counts as its parts. Message numbers in brackets, such as (msg 3), are read as citations, not as figures. <strong>A figure written in words, such as "six", is not checked.</strong></p>
 
   <h3>Step 3: Decide, and correct</h3>
-  <p>For each <em>Look again</em>, open the thread, find the message, and decide: keep it, fix it, or take it out. Then write the version you would really send your manager, and check it again.</p>
+  <p>For each <em>Look again</em>, open the thread, find the message, and decide: keep it, fix it, or take it out. Then read every sentence against the message it cites, including the sentences the check passed: a sentence can pass every check and still be wrong. Last, write the version you would really send your manager, and check it again.</p>
   <label for="ex2-final">My corrected summary</label>
   <textarea id="ex2-final" rows="8" data-save></textarea>
   <div class="buttons">
@@ -357,7 +358,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   <h2 id="ex3-h">Exercise 3: Find what is wrong</h2>
   <p class="meta">Planned: 12 minutes. Objective O3: name what is wrong in an answer that looks right.</p>
   <p class="goal"><strong>Goal:</strong> find the errors in three replies that read well.</p>
-  <p>Here are three replies to <span data-fact="contactFirst"></span>'s last message, each answering the same strong brief (the one in exercise 1). Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
+  <p>Here are replies to <span data-fact="contactFirst"></span>'s last message, answering the strong brief of exercise 1. <strong>Answer A</strong> is a real assistant's reply, exactly as it came back, with the assistant's own notes under it. <strong>Answer B</strong> is the same reply, edited to plant errors that A does not contain. Mark every numbered sentence of A and B; the assistant's notes are not numbered, but read them. Keep the thread and the policy open. For each numbered sentence, choose one mark:</p>
   <ul>
     <li><strong>Fine:</strong> true to the thread, and allowed by the policy.</li>
     <li><strong>A wrong figure:</strong> a number that is wrong, or used with the wrong meaning.</li>
@@ -833,7 +834,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
       purpose: 'To ask for help with the wording of a reply.',
       text: 'From: ' + m3.from + '\nSubject: ' + m3.subject + '\n\n' + m3.body[1] + ' ' + m3.body[2],
       pile: 'remove',
-      reason: 'The wording of a reply does not depend on who she is. Replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply.'
+      accept: ['remove', 'never'],
+      reason: 'Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer\'s policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.'
     },
     {
       n: 4,
@@ -853,7 +855,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
       purpose: 'To ask for a fairer pattern of early shifts.',
       text: 'Week of 10 March\nSam Ridley: Monday to Wednesday, 06:00 to 14:00\nOla Petrova: Monday to Friday, 14:00 to 22:00\nJakub Novak: Thursday to Saturday, 06:00 to 14:00 (back after sick leave, no lifting)',
       pile: 'remove',
-      reason: 'The pattern of shifts can be planned with Staff A, Staff B and Staff C. Take out the names, and take out the note about sick leave: it is health information about a person, and it does not change the question.'
+      accept: ['remove', 'never'],
+      reason: 'Two piles are defensible. The pattern of shifts can be planned with Staff A, Staff B and Staff C, once the names are out and the note about sick leave is out too: it is health information about a person, and it does not change the question. What would tip it to "do not paste": in a team this small, the pattern itself can still point to the one person who has just come back from sick leave.'
     },
     {
       n: 6,
@@ -880,6 +883,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
       reason: 'They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?"'
     }
   ];
+  // The piles the key accepts: one, or two where both are defensible (the reason then says what tips it).
+  snippets.forEach(function (s) { s.accept = s.accept || [s.pile]; });
 
   // ---------------------------------------------------------------------------
   // The prepared requests (briefs). Exercise 2 uses the summary brief. The reply
@@ -923,21 +928,21 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   var quiz = [
     {
       n: 1, objective: 'O1',
-      text: 'A colleague writes: "I run a small bakery. Our supplier sent us damaged goods. The e-mails are below. Write a reply to the supplier, in under 100 words." Which part of a five-part brief is missing?',
+      text: 'A colleague writes: "I own a small bakery. Our packaging supplier delivered our order late and partly damaged, and I want the damaged cartons replaced before the weekend. The whole e-mail thread with them is pasted below. Draft my reply to their last message, in at most 100 words and two short paragraphs." Which part of a five-part brief is missing?',
       options: [
-        { text: 'The situation', why: 'It is there: "I run a small bakery. Our supplier sent us damaged goods."' },
-        { text: 'The material', why: 'It is there: "The e-mails are below."' },
-        { text: 'The form', why: 'It is there: "in under 100 words" names a length.' },
-        { text: 'The limits', correct: true, why: 'Nothing says what the reply must not do: for example, not to accept a lower credit, or not to threaten to leave. Without limits, the assistant decides those things for you.' }
+        { text: 'The situation', why: 'It is there: who is writing, to whom, what happened, and what she wants.' },
+        { text: 'The material', why: 'It is there: the whole e-mail thread is pasted below the request.' },
+        { text: 'The form', why: 'It is there: "at most 100 words and two short paragraphs" names a length and a structure.' },
+        { text: 'The limits', correct: true, why: 'Nothing says what the reply must not do: for example, not to accept a credit instead of a replacement, or not to threaten to change supplier. Without limits, the assistant decides those things for you.' }
       ]
     },
     {
       n: 2, objective: 'O1',
-      text: 'A one-line request, "Write a reply to this customer", produced a reply that promised the customer the credit she asked for. Which line in a brief would most likely have prevented that?',
+      text: 'In exercise 1, the reply to the one-line request promised the customer a corrected invoice that nobody had decided on. Which line in a brief would most likely have prevented that?',
       options: [
         { text: '"Be professional."', why: 'A promise can be perfectly professional in tone. This line says nothing about what may be promised.' },
-        { text: '"Do not promise a credit or any amount: credits above the limit need the manager\'s approval."', correct: true, why: 'It names the exact thing not to do, and gives the reason, so the assistant can also word the reply around it.' },
-        { text: '"Keep it short."', why: 'A short reply can still promise a credit. Length and limits are different parts of the brief.' },
+        { text: '"Do not promise anything the thread and the policy do not already commit us to: no credit, no change to the invoice, no delivery day."', correct: true, why: 'It names exactly what not to do, and where the boundary comes from, so the assistant can word the reply around it.' },
+        { text: '"Keep it short."', why: 'A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.' },
         { text: '"Write in a friendly tone."', why: 'A friendly tone makes a promise more likely, not less.' }
       ]
     },
@@ -1058,159 +1063,198 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   var data = {
     "ex1": {
       "file": "recorded/answers/ex1-answer.txt",
-      "kind": "constructed",
-      "note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-      "model": null,
-      "date": null,
-      "route": null,
-      "edits": null,
-      "text": "Subject: Re: Order SO-20417 has not arrived - still waiting\n\nDear Mira,\n\nThank you for your message, and please accept our sincere apologies for the difficulties you have experienced with order SO-20417. You are absolutely right to be frustrated, and I want to put this right for you straight away.\n\nI am pleased to confirm that we will issue a full credit of $531.00 against invoice INV-7731, covering the 6 damaged cartons and the $312.00 you spent at the cash-and-carry. You will see this on your account within the next few days.\n\nI have also arranged for the 6 missing cartons to be delivered to you tomorrow morning.\n\nWe value your business greatly and, to make up for the inconvenience, I would like to offer you a 15% discount on your next order.\n\nOnce again, I am truly sorry for the inconvenience. Please do not hesitate to contact me if there is anything else I can do.\n\nKind regards,\nTom Becker\nCustomer Service\nLarkfield Wholesale\n",
+      "kind": "recorded",
+      "model": "claude-haiku-5-5",
+      "recorded_on": "2026-11-24",
+      "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+      "edits": "none",
+      "edited_from": null,
+      "in_session": true,
+      "text": "**Subject:** Re: Order SO-20417 has not arrived - still waiting\n\nHi Mira,\n\nYou are right, and I am sorry. I told you I would confirm a delivery day for the missing cartons by Friday 7 March, and I did not. You should have heard from me, and I should not have let that date pass in silence.\n\n**The 6 missing cartons.** [Tom: confirm the delivery day and time with our transport team before sending, and replace this line with it. If no date is set yet, say so and give the date by which you will confirm it.]\n\n**Invoice INV-7731.** You were billed for the full order, including the 6 cartons that never left our warehouse. [Billing: confirm the corrected invoice amount and when it will be issued.] We will issue a corrected invoice that removes those cartons.\n\n**The damaged cartons.** Thank you for the photos. They are clear, and I have them with your request. The 6 damaged cartons come to $219.00 at $36.50 a carton, and that credit is with our operations manager, Dana Liu. I have also sent her your receipt for the $312.00 you spent on cups at the cash-and-carry, so she has the full request in front of her. I cannot approve the $531.00 myself, and I do not want to promise an amount before she has decided. Dana will give you her decision by [date, to be confirmed by Dana before sending].\n\nI know the Saturday job has already been affected, and I am sorry for the trouble this has caused your business. If you need anything else from me in the meantime, reply to this email and I will answer the same day.\n\nBest regards,\nTom Becker\nCustomer service, Larkfield Wholesale\n\n---\n\nBefore sending, check these points:\n\n- The three bracketed items are facts I do not have: the delivery day for the 6 missing cartons, the corrected invoice amount, and Dana Liu's decision date. Do not send with them still in brackets.\n- The $219.00 figure is correct (6 \u00d7 $36.50). The $531.00 total is Mira's request, and the thread does not show that anyone at Larkfield has agreed to any part of it.\n- The apology covers the missed Friday confirmation, which is the one thing Larkfield clearly committed to and did not do.\n- I have not sent this. Mira's deadline is \"by Friday\" (14 March), so Dana's decision date needs to be settled before this goes out.",
       "issues": [
-        "It promises the full credit she asked for. Only the operations manager can approve a credit of this size, and no credit may be promised by e-mail before it is approved (policy, rules 3 and 6).",
-        "It promises to pay for the cups she bought at the cash-and-carry. The policy does not allow that without the operations manager's agreement in writing (rules 5 and 6).",
-        "It promises delivery tomorrow. No day has been confirmed, and Tom wrote that the van does not come to her area until next week (message 4).",
-        "It offers a discount that exists nowhere in the thread or the policy.",
-        "It does not answer what she is most upset about: Tom said he would confirm a delivery day by Friday, and did not (messages 4 and 5).",
-        "It is long and padded with stock phrases. She asked two plain questions; the reply gives her promises the company may not be able to keep."
+        "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
+        "It says \"I have also sent her your receipt\". Nobody has: in message 4, Tom sent the operations manager the photos and the request; the receipt arrived only in message 5.",
+        "It promises an answer \"the same day\" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.",
+        "It commits the operations manager to a decision by a date (\"Dana will give you her decision by [date ...]\"): a promise made on someone else's behalf.",
+        "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.",
+        "Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the $531.00, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
+      ],
+      "strengths": [
+        "It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.",
+        "Its figures are right, and it does not promise the credit: it says the amount is the operations manager's decision."
       ]
     },
     "ex2": {
       "file": "recorded/answers/ex2-answer.txt",
-      "kind": "constructed",
-      "note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. It was written to contain two mistakes an assistant commonly makes with this thread: a customer's claim reported as a fact, and a figure cited to the wrong message. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-      "model": null,
-      "date": null,
-      "route": null,
-      "edits": null,
-      "text": "Summary for Dana: order SO-20417 (msg 1), invoice INV-7731 (msg 3)\n\n- The order was due on 28 February (msg 1) and arrived late, on 5 March (msg 3).\n- 34 of the 40 cartons of cups arrived; 6 were crushed and wet and cannot be used (msg 3). The other 6 have still not arrived (msg 5).\n- Tom promised a credit for the 6 damaged cartons (msg 5) and said he would confirm a delivery day for the missing cartons by Friday 7 March, which he did not do (msg 4).\n- Mira bought replacement cups for $312.00 and now asks for a credit of $531.00 against INV-7731 (msg 4).\n- Decision needed: whether to approve the credit.\n"
+      "kind": "recorded",
+      "model": "claude-haiku-5-5",
+      "recorded_on": "2026-11-24",
+      "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+      "edits": "none",
+      "edited_from": null,
+      "in_session": true,
+      "text": "**Dana: Order SO-20417 and invoice INV-7731 (Halden Street Bakery)**\n\n- Order SO-20417 (cups, lids) was due 28 Feb. It was held because the lids were out of stock (msg 1, msg 2).\n- Delivered 5 Mar: 34 of 40 cup cartons. 6 cartons are missing and 6 of the 34 are crushed and wet. Lids are fine (msg 3, msg 4).\n- Tom's cause: 6 cartons were left on the van at loading, and 6 were damaged in transit (msg 4).\n- Invoice INV-7731 charges the full order: $1,820.00 (msg 3).\n- Promised: delivery on 5 Mar (msg 2), and a confirmed day for the missing cartons by Fri 7 Mar (msg 4).\n- Not promised: the missing cartons before Saturday, since the van returns next week (msg 4).\n- Credit not promised: Tom sent the request to you for approval (msg 4). Mira says a credit was promised (msg 5).\n- Mira asks for a $531.00 credit on INV-7731, made up of $312.00 she spent on cups at a cash-and-carry (receipt attached) and 6 cartons at $36.50 (msg 5). Mira says she has had no reply since 6 Mar, and she wants confirmation by Friday (msg 5).\n- Not stated: a delivery day for the missing cartons, and your decision on the credit.",
+      "issues": [
+        "It ignores the word limit the request set. The checker counts the words.",
+        "\"6 cartons were left on the van at loading\" says the opposite of message 4, where they were left behind when the van was loaded. It passes every automatic check: the figure is in the thread, the citation is right, and nothing is merged. Only a person who reads message 4 catches it.",
+        "A smaller one: \"no reply since 6 Mar\" is cited to message 5, but the date is the date of message 4. The citation check passes it only because the same figure also appears in message 5."
+      ],
+      "strengths": [
+        "It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.",
+        "It keeps the two groups of 6 apart, cites a message for every fact, and writes \"Not stated\" where the thread is silent, as the request asked."
+      ]
     },
     "ex3": [
       {
         "file": "recorded/answers/ex3-answer-a.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Dear Mira,\n\nI am sorry that I did not confirm a delivery day by Friday, as I said I would. I understand that 6 of the 40 cartons we delivered were crushed, and that you had to buy cups elsewhere for Saturday. Your request for a credit of $531.00 needs the approval of our operations manager, Dana Liu, and I am passing it to her today. In the meantime, I can confirm that we will cover the $312.00 you spent at the cash-and-carry. I will call you today to agree a delivery day for the 6 missing cartons.\n\nBest regards,\nTom Becker\n",
+        "kind": "recorded",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "none",
+        "edited_from": null,
+        "in_session": true,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van does not come to your area until next week, and I do not yet have a confirmed day for them. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\n\nTom Becker\n\n---\n\nNotes for you before sending:\n\n- **Wednesday 12 March is my proposal.** It is not in the thread. Change it if you can keep a different date.\n- **Check the delivery day with the warehouse before sending** if you can. If they have confirmed one, the second paragraph should name it. If not, the draft is accurate as written.\n- **Dana's decision on the damaged cartons is pending.** Please check that she has the request, including the $312.00 receipt. Message 4 says only the photos and request went to her. The receipt is new in message 5.\n- **The draft promises no credit, no amount, no delivery day and no payment of the cash-and-carry cost.** Under policy point 5, that cost needs the operations manager's written agreement.\n- **Policy point 7 asks for a reply within one working day.** Send this today.",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning the mistake first is right."
-          },
-          {
-            "accept": [
-              "figure"
-            ],
-            "reason": "34 cartons were delivered, not 40: 40 is what was ordered (message 3). The automatic check cannot see this, because 40 is in the thread with another meaning."
+            "reason": "True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "True to the policy: a credit of this size needs the operations manager's approval (rule 3), and it promises nothing."
-          },
-          {
-            "accept": [
-              "policy"
-            ],
-            "reason": "The policy does not allow paying for goods bought elsewhere without the operations manager's agreement in writing, and says never to promise it by e-mail (rules 5 and 6). The figure is right; the promise is not allowed."
+            "reason": "True (message 5), and it owns the failure without an excuse."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "A promise about Tom's own action, which he can keep. It does not promise a delivery day."
+            "reason": "True (message 5). The figure is written in words, so the figure check does not read it."
+          },
+          {
+            "accept": [
+              "fine",
+              "material"
+            ],
+            "reason": "Two marks are defensible. On Thursday 6 March, message 4 said the van comes \"next week\": the week this reply is written in. Written on Tuesday 11 March, \"until next week\" now means the week after: a new delay that nothing in the thread supports. Read as a repeat of message 4, it is fine. What tips it: whether the warehouse has said anything since. The second half, no confirmed day, is true."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "True to the policy (rule 3), and it promises nothing."
+          },
+          {
+            "accept": [
+              "material"
+            ],
+            "reason": "Message 4 says Tom sent the photos and the request. The receipt, and the full request with the cash-and-carry cost, arrived only in message 5, and nothing says they were passed on. The assistant's own notes under the reply say so too. The second half, no amount and no decision today, is fine."
+          },
+          {
+            "accept": [
+              "material",
+              "fine"
+            ],
+            "reason": "Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only Tom's own action, which the policy allows. What tips it: it is fine once Tom has decided he can keep that date, and not before."
           }
         ],
         "id": "A"
       },
       {
         "file": "recorded/answers/ex3-answer-b.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Hi Mira,\n\nThank you for your patience, and I am sorry you have had to chase us again. Our driver has told me the damage happened because your cartons were loaded under heavier boxes. The 6 damaged cartons come to $219.00 at $36.50 a carton, and our operations manager, Dana Liu, will decide on your request for that amount and for the $312.00 you spent. As a regular customer, you also qualify for our loyalty discount on your next order. I will call you this afternoon to confirm the day we can deliver the 6 missing cartons.\n\nKind regards,\nTom\n",
+        "kind": "edited",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "Four changes to the recorded answer A. (1) Planted a wrong figure: in \"The six missing cartons are still not with you.\", \"six\" became \"12\". (2) Removed the sentence \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences \"For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.\" became the one sentence \"For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request.\" (4) Removed the closing paragraph (\"I will write to you again by Wednesday 12 March, ...\") and the assistant's notes under the reply, which describe the original wording.",
+        "edited_from": "recorded/answers/ex3-answer-a.txt",
+        "in_session": true,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe 12 missing cartons are still not with you. For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request.\n\nTom Becker",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "An apology, and true: she has had to write again (message 5)."
-          },
-          {
-            "accept": [
-              "material"
-            ],
-            "reason": "Nothing in the thread or the policy mentions the driver or how the cartons were loaded. Message 4 says only that they were damaged on the way. A made-up cause can also start an argument the company cannot win."
+            "reason": "As in answer A: true, and owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "The figures match message 5, and it says the operations manager will decide: it promises no credit."
+            "reason": "As in answer A: true (message 5)."
           },
           {
             "accept": [
-              "material"
+              "figure"
             ],
-            "reason": "There is no loyalty discount in the thread or the policy. An invented offer is also a promise the company may not keep."
+            "reason": "Planted. 6 cartons are missing (message 3); 12 adds the 6 that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size (12 oz); the check of the two groups catches it."
           },
           {
             "accept": [
-              "fine"
+              "policy"
             ],
-            "reason": "A promise about Tom's own action, which he can keep. It does not promise a delivery day."
+            "reason": "Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval."
           }
         ],
         "id": "B"
       },
       {
         "file": "recorded/answers/ex3-answer-c.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Dear Mira,\n\nI am very sorry for all the trouble with order SO-20417. You received 34 cartons of cups, and 12 of them were crushed and wet. I have approved a credit of $219.00 for the damaged cartons, which will appear on your next invoice. I will pass your request for the $312.00 to Dana Liu, our operations manager, today. The 6 missing cartons will be delivered on Monday 17 March.\n\nBest wishes,\nTom\n",
+        "kind": "edited",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "Three changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) Removed the assistant's notes under the reply, which describe the original wording.",
+        "edited_from": "recorded/answers/ex3-answer-a.txt",
+        "in_session": false,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van will bring them to you on Thursday 13 March. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\n\nTom Becker",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "An apology, and the order number is right (message 1)."
-          },
-          {
-            "accept": [
-              "figure"
-            ],
-            "reason": "6 of the 34 were crushed (message 3). The other 6 never arrived. The two groups count different cartons, and adding them does not give the number crushed."
-          },
-          {
-            "accept": [
-              "policy"
-            ],
-            "reason": "A credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). The figure is right; the promise is not allowed."
+            "reason": "As in answer A: true, and owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "It passes the request on and promises nothing. That is what the policy asks for (rule 5)."
+            "reason": "As in answer A: true (message 5)."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "As in answer A: true (message 5)."
           },
           {
             "accept": [
               "policy",
               "material"
             ],
-            "reason": "No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date itself is nowhere in the thread. Either mark is right."
+            "reason": "Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "As in answer A: true to the policy (rule 3), and it promises nothing."
+          },
+          {
+            "accept": [
+              "figure"
+            ],
+            "reason": "Planted. The damaged cartons come to $219.00 (6 at $36.50, message 5); $312.00 is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning."
+          },
+          {
+            "accept": [
+              "material",
+              "fine"
+            ],
+            "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it."
           }
         ],
         "id": "C"
@@ -1363,9 +1407,16 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     });
     return out;
   }
-  /** Only sentences that end with . ! or ? are numbered: greetings and sign-offs are not. */
+  /** The reply itself: everything above a line of three dashes, under which an assistant may add its own notes. */
+  function replyPart(text) {
+    return plain(text).split(/\n[ \t]*-{3,}[ \t]*(?:\n|$)/)[0];
+  }
+  /**
+   * Only sentences of the reply that end with . ! or ? are numbered: greetings, sign-offs and the
+   * assistant's own notes under a line of three dashes are not.
+   */
   function numberedSentences(text) {
-    return splitSentences(text).filter(function (s) { return /[.!?]["')\]]*$/.test(s); });
+    return splitSentences(replyPart(text)).filter(function (s) { return /[.!?]["')\]]*$/.test(s); });
   }
   var CLAUSE_SPLIT = /;\s+|,\s+|:\s+|\s-\s|\s(?:and|but|which|while|whereas|although|though|so)\s/i;
   function splitClauses(sentence) {
@@ -1381,6 +1432,7 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     short: /\b(missing|short|shortage|fewer|not delivered|undelivered|not (yet )?arrived|did not arrive|didn't arrive|never arrived|never came|left behind|left off|not sent|still to come|still owed)\b/,
     damage: /\b(damag\w*|crush\w*|wet|broken|unusable|cannot use|can't use|cannot be used|ruined|spoil\w*|unsellable)\b/,
     promise: /\b(promis\w*|agreed|agree|confirm\w*|commit\w*|undert\w*|said (he|she|they|we) would|guarantee\w*)\b/,
+    notKept: /\b(did not|didn't|not kept|no reply|not heard|heard nothing|has not|hasn't|missed|broke|broken|failed|not confirmed|never confirmed|not stated|still waiting)\b/,
 
     credit: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back)\b/,
     creditCommit: /\b(promis\w*|agreed|agrees?|approved|approves|confirm|confirms|confirmed|guarantee\w*|will|shall|we'll|i'll|you'll|has been|have been|is being|issued|issuing|credited|refunded|reimbursed)\b/,
@@ -1767,20 +1819,33 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 
     rules.push(factRule(facts[2], nums));
 
-    // What was promised
+    // What was promised: the promise word, the credit's status, and the promise that was not kept
     var saysPromise = RX.promise.test(lower);
     var creditStatus = splitSentences(t).some(function (s) {
       return splitClauses(s).some(function (c) { return RX.credit.test(c) && RX.hedge.test(c); });
     });
-    if (saysPromise && creditStatus) {
+    var confirmDay = F.dates.confirmBy;
+    var sentencesLower = splitSentences(t).map(function (s) { return { text: s, lower: stripCitations(s).toLowerCase() }; });
+    var mentionsPromise = sentencesLower.some(function (s) {
+      var byWhen = new RegExp('\\b(' + confirmDay.weekday.toLowerCase() + '|' + confirmDay.weekday.slice(0, 3).toLowerCase() + ')\\b').test(s.lower) ||
+        containsNumber(numberValues(s.text), confirmDay.day);
+      return /\bconfirm\w*/.test(s.lower) && /\b(day|date|delivery)\b/.test(s.lower) && byWhen;
+    });
+    var saysNotKept = sentencesLower.some(function (s) {
+      return RX.notKept.test(s.lower) && /\b(confirm\w*|reply|replied|heard|day|date)\b/.test(s.lower);
+    });
+    var unkept = mentionsPromise && saysNotKept;
+    if (saysPromise && creditStatus && unkept) {
       rules.push(rule('fact-promised', 'What was promised', 'ok',
-        'Found, as required: it says what was promised, and it describes the credit as asked for or awaiting a decision.'));
+        'Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by ' + confirmDay.weekday +
+        ', with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.'));
     } else {
       var lacks = [];
       if (!saysPromise) { lacks.push('a word such as promised, agreed or confirmed'); }
-      if (!creditStatus) { lacks.push('the credit described as asked for, or as waiting for a decision'); }
+      if (!unkept) { lacks.push(F.staffFirst + '\'s promise to confirm a delivery day by ' + CASE.format.wdm(confirmDay) + ', and that it was not kept (messages 4 and 5)'); }
+      if (!creditStatus) { lacks.push('the credit described as asked for, or as waiting for a decision (message 4)'); }
       rules.push(rule('fact-promised', 'What was promised', 'look',
-        'Required, and I could not find ' + lacks.join(', or ') + '. Look in messages 2 and 4 for what ' + F.staffFirst + ' promised, and what he did not.'));
+        'Required, and I could not find ' + lacks.join('; or ') + '. A manager deciding on a credit needs to know what the company has already promised, and which promise it broke.'));
     }
 
     var words = countWords(t);
@@ -1831,15 +1896,24 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     return marks;
   }
 
+  /** The answers marked in the session (A and B); the others are for those who finish early, or homework. */
+  function sessionAnswers() { return ex3Answers().filter(function (a) { return a.in_session !== false; }); }
+
   function checkMarks(marks) {
     var rules = [];
     var agreed = 0;
-    var total = 0;
+    var marked = 0;
     ex3Answers().forEach(function (a) {
+      var any = a.key.some(function (k, i) { return marks && marks[a.id + (i + 1)]; });
+      if (a.in_session === false && !any) {
+        rules.push(rule('answer-' + a.id, 'Answer ' + a.id, 'note',
+          'For those who finish early, or as homework. Not marked: mark it the same way, then check again.'));
+        return;
+      }
       a.key.forEach(function (k, i) {
         var id = a.id + (i + 1);
-        total++;
         var mine = marks && marks[id];
+        if (mine) { marked++; }
         var keyText = k.accept.map(function (l) { return LABEL_NAMES[l]; }).join(' or ');
         var name = 'Answer ' + a.id + ', sentence ' + (i + 1);
         if (!mine) {
@@ -1854,7 +1928,8 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     });
     return {
       exercise: '3', title: 'Find what is wrong', rules: rules,
-      notes: ['You agree with the key on ' + agreed + ' of ' + total + ' sentences. Where you disagree, read the reason, then find the place in the thread or the policy it names.']
+      notes: ['You agree with the key on ' + agreed + ' of the ' + plural(marked, 'sentence') + ' you marked. Where you disagree, read the reason, then find the place in the thread or the policy it names.',
+        'Where the key accepts two marks, both are defensible, and the reason says what would tip it.']
     };
   }
 
@@ -1884,13 +1959,14 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     CASE.snippets.forEach(function (s) {
       var mine = piles && piles[s.n];
       var name = 'Snippet ' + s.n + ': ' + s.title;
+      var keyText = s.accept.map(function (p) { return PILE_NAMES[p]; }).join(' or ');
       if (!mine) {
-        rules.push(rule('snippet-' + s.n, name, 'note', 'Not sorted yet. The key: ' + PILE_NAMES[s.pile] + '. ' + s.reason));
-      } else if (mine === s.pile) {
+        rules.push(rule('snippet-' + s.n, name, 'note', 'Not sorted yet. The key: ' + keyText + '. ' + s.reason));
+      } else if (s.accept.indexOf(mine) !== -1) {
         agreed++;
-        rules.push(rule('snippet-' + s.n, name, 'ok', 'You chose: ' + PILE_NAMES[mine] + '. The key agrees. ' + s.reason));
+        rules.push(rule('snippet-' + s.n, name, 'ok', 'You chose: ' + PILE_NAMES[mine] + '. The key agrees' + (s.accept.length > 1 ? ' (it accepts ' + keyText + ')' : '') + '. ' + s.reason));
       } else {
-        rules.push(rule('snippet-' + s.n, name, 'look', 'You chose: ' + PILE_NAMES[mine] + '. The key says: ' + PILE_NAMES[s.pile] + '. ' + s.reason));
+        rules.push(rule('snippet-' + s.n, name, 'look', 'You chose: ' + PILE_NAMES[mine] + '. The key says: ' + keyText + '. ' + s.reason));
       }
     });
     return {
@@ -2442,11 +2518,13 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     $('copy-policy').addEventListener('click', function () { copyText(CASE.policyText, $('copy-policy-status')); });
   }
 
-  function standInText(entry) {
+  /** The label above an answer: where it came from, and whether it was changed. */
+  function recordText(entry) {
     if (!entry) { return ''; }
-    return entry.kind === 'constructed'
-      ? 'Stand-in answer: written for this kit to show typical mistakes, not produced by an assistant. A recorded answer will replace it.'
-      : 'Recorded answer: ' + entry.model + ', ' + entry.date + '.' + (entry.edits ? ' Edited for the exercise: ' + entry.edits : '');
+    if (entry.kind === 'edited') {
+      return 'A real answer, edited to plant the errors this exercise teaches (answer A, ' + entry.model + ', recorded on ' + entry.recorded_on + ', with changes).';
+    }
+    return 'A real answer, exactly as it came back: ' + entry.model + ', recorded on ' + entry.recorded_on + '. Anything under a line of three dashes is the assistant\'s own note to you.';
   }
 
   // --- a radio group -------------------------------------------------------------
@@ -2473,11 +2551,16 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
 
   // --- exercises -----------------------------------------------------------------
   function setupEx1() {
-    $('ex1-standin').textContent = standInText(REC.ex1);
+    $('ex1-record').textContent = recordText(REC.ex1);
     $('ex1-answer').textContent = REC.ex1.text;
     $('ex1-model').textContent = C.requestText('reply');
     var issues = $('ex1-issues');
     issues.appendChild(el('p', {}, 'What the instructor\'s key lists. Did you find these, or others?'));
+    issues.appendChild(el('h4', {}, 'What it gets right'));
+    var ul = el('ul');
+    (REC.ex1.strengths || []).forEach(function (t) { ul.appendChild(el('li', {}, t)); });
+    issues.appendChild(ul);
+    issues.appendChild(el('h4', {}, 'What is wrong with it'));
     var ol = el('ol');
     REC.ex1.issues.forEach(function (t) { ol.appendChild(el('li', {}, t)); });
     issues.appendChild(ol);
@@ -2509,9 +2592,9 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   function setupEx2() {
     $('ex2-request').value = C.requestText('summary');
     $('ex2-copy').addEventListener('click', function () { copyText($('ex2-request').value, $('ex2-copy-status')); });
-    $('ex2-use-standin').addEventListener('click', function () {
-      $('ex2-standin').textContent = standInText(REC.ex2);
-      $('ex2-standin').hidden = false;
+    $('ex2-use-recorded').addEventListener('click', function () {
+      $('ex2-record').textContent = recordText(REC.ex2);
+      $('ex2-record').hidden = false;
       $('ex2-answer').value = REC.ex2.text;
       remember($('ex2-answer'));
       $('ex2-answer').focus();
@@ -2524,9 +2607,13 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     $('ex3-request').textContent = C.requestText('reply');
     var box = $('ex3-answers');
     REC.ex3.forEach(function (a) {
+      if (!a.in_session) {
+        box.appendChild(el('h3', { class: 'later' }, 'For those who finish early, or as homework'));
+        box.appendChild(el('p', {}, 'Mark answer ' + a.id + ' the same way, then check again.'));
+      }
       var art = el('article', { class: 'answer-block' });
       art.appendChild(el('h3', {}, 'Answer ' + a.id));
-      art.appendChild(el('div', { class: 'standin' }, standInText(a)));
+      art.appendChild(el('div', { class: 'record' }, recordText(a)));
       art.appendChild(el('pre', { class: 'answer', tabindex: '0', 'aria-label': 'Answer ' + a.id + ', in full' }, a.text));
       C.numberedSentences(a.text).forEach(function (s, i) {
         art.appendChild(radioGroup('mark-' + a.id + (i + 1), a.id + (i + 1) + '. ' + s, C.LABELS, 'sentence'));

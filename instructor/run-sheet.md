@@ -28,11 +28,11 @@ Minute by minute: what the room does, what you do, and what is on the screen. Al
 | 0:20 | 0:22 | Listens | Set up exercise 2; point at the line that asks for message numbers | Exercise 2, step 1 |
 | 0:22 | 0:27 | Sends the request or uses the stand-in; pastes; checks | Walk the room; look for anyone who stops at the checker's verdict | Exercise 2, step 2 |
 | 0:27 | 0:34 | Checks each flag against the thread; writes the corrected summary | Walk the room; ask "what does this figure count?" | Exercise 2, step 3 |
-| 0:34 | 0:40 | Debrief | Ask: "What did you change before you would send this, and how did you find it?"; name the two traps | The stand-in answer's check result |
-| 0:40 | 0:41 | Listens | Set up exercise 3: the four marks | Exercise 3: the four marks |
-| 0:41 | 0:48 | Marks every numbered sentence, then checks | Walk the room; watch for "everything is fine" | Exercise 3 |
-| 0:48 | 0:50 | Runs the automatic check on each answer | Ask: "What does the machine miss?" | Exercise 3: the automatic check of answer B |
-| 0:50 | 0:52 | Debrief | Ask: "Which error would have cost the company most, and why?" | Exercise 3: the result |
+| 0:34 | 0:40 | Debrief | Ask: "What would you change before you sent this, and how did you find it?"; read the sentence about the loading against message 4 | The recorded answer's check result |
+| 0:40 | 0:41 | Listens | Set up exercise 3: answers A and B, the four marks; answer C for anyone who finishes early | Exercise 3: the four marks |
+| 0:41 | 0:47 | Marks the eleven numbered sentences of A and B, then checks | Walk the room; watch for "everything in A is fine" | Exercise 3 |
+| 0:47 | 0:49 | Runs the automatic check on A and on B | Ask: "What does the machine miss?" | Exercise 3: the automatic check of answer A |
+| 0:49 | 0:52 | Debrief | Ask: "Which sentence would have cost the company most, and why?" | Exercise 3: the result |
 | 0:52 | 0:53 | Listens | Set up part 1; say that the employer's policy comes first | Exercise 4: the line about the employer's policy |
 | 0:53 | 0:59 | Sorts the eight snippets and checks | Walk the room | Exercise 4, part 1 |
 | 0:59 | 1:01 | Short debrief | Ask: "Which snippet did you disagree with the key on?" | Exercise 4, part 1: the result |
@@ -49,5 +49,6 @@ Minute by minute: what the room does, what you do, and what is on the screen. Al
 ## If you are running late
 
 - **Cut first:** exercise 5 becomes homework (it checks itself). That gives back 8 minutes.
-- **Cut second:** in exercise 2, give everyone the stand-in answer instead of waiting for assistants. About 3 minutes.
+- **Cut second:** in exercise 2, give everyone the recorded answer instead of waiting for assistants. About 3 minutes.
+- **Already out of the plan:** answer C of exercise 3 is for those who finish early, or homework.
 - **Never cut:** the debriefs. They are where the lesson lands.

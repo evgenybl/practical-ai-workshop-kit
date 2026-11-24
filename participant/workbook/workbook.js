@@ -221,11 +221,13 @@
     $('copy-policy').addEventListener('click', function () { copyText(CASE.policyText, $('copy-policy-status')); });
   }
 
-  function standInText(entry) {
+  /** The label above an answer: where it came from, and whether it was changed. */
+  function recordText(entry) {
     if (!entry) { return ''; }
-    return entry.kind === 'constructed'
-      ? 'Stand-in answer: written for this kit to show typical mistakes, not produced by an assistant. A recorded answer will replace it.'
-      : 'Recorded answer: ' + entry.model + ', ' + entry.date + '.' + (entry.edits ? ' Edited for the exercise: ' + entry.edits : '');
+    if (entry.kind === 'edited') {
+      return 'A real answer, edited to plant the errors this exercise teaches (answer A, ' + entry.model + ', recorded on ' + entry.recorded_on + ', with changes).';
+    }
+    return 'A real answer, exactly as it came back: ' + entry.model + ', recorded on ' + entry.recorded_on + '. Anything under a line of three dashes is the assistant\'s own note to you.';
   }
 
   // --- a radio group -------------------------------------------------------------
@@ -252,11 +254,16 @@
 
   // --- exercises -----------------------------------------------------------------
   function setupEx1() {
-    $('ex1-standin').textContent = standInText(REC.ex1);
+    $('ex1-record').textContent = recordText(REC.ex1);
     $('ex1-answer').textContent = REC.ex1.text;
     $('ex1-model').textContent = C.requestText('reply');
     var issues = $('ex1-issues');
     issues.appendChild(el('p', {}, 'What the instructor\'s key lists. Did you find these, or others?'));
+    issues.appendChild(el('h4', {}, 'What it gets right'));
+    var ul = el('ul');
+    (REC.ex1.strengths || []).forEach(function (t) { ul.appendChild(el('li', {}, t)); });
+    issues.appendChild(ul);
+    issues.appendChild(el('h4', {}, 'What is wrong with it'));
     var ol = el('ol');
     REC.ex1.issues.forEach(function (t) { ol.appendChild(el('li', {}, t)); });
     issues.appendChild(ol);
@@ -288,9 +295,9 @@
   function setupEx2() {
     $('ex2-request').value = C.requestText('summary');
     $('ex2-copy').addEventListener('click', function () { copyText($('ex2-request').value, $('ex2-copy-status')); });
-    $('ex2-use-standin').addEventListener('click', function () {
-      $('ex2-standin').textContent = standInText(REC.ex2);
-      $('ex2-standin').hidden = false;
+    $('ex2-use-recorded').addEventListener('click', function () {
+      $('ex2-record').textContent = recordText(REC.ex2);
+      $('ex2-record').hidden = false;
       $('ex2-answer').value = REC.ex2.text;
       remember($('ex2-answer'));
       $('ex2-answer').focus();
@@ -303,9 +310,13 @@
     $('ex3-request').textContent = C.requestText('reply');
     var box = $('ex3-answers');
     REC.ex3.forEach(function (a) {
+      if (!a.in_session) {
+        box.appendChild(el('h3', { class: 'later' }, 'For those who finish early, or as homework'));
+        box.appendChild(el('p', {}, 'Mark answer ' + a.id + ' the same way, then check again.'));
+      }
       var art = el('article', { class: 'answer-block' });
       art.appendChild(el('h3', {}, 'Answer ' + a.id));
-      art.appendChild(el('div', { class: 'standin' }, standInText(a)));
+      art.appendChild(el('div', { class: 'record' }, recordText(a)));
       art.appendChild(el('pre', { class: 'answer', tabindex: '0', 'aria-label': 'Answer ' + a.id + ', in full' }, a.text));
       C.numberedSentences(a.text).forEach(function (s, i) {
         art.appendChild(radioGroup('mark-' + a.id + (i + 1), a.id + (i + 1) + '. ' + s, C.LABELS, 'sentence'));

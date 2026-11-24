@@ -8,15 +8,15 @@ Practical fixes for a room that does not go to plan. Each entry says what you wi
 
 **You see:** assistants will not load; some people say the workbook "won't work".
 
-**Do now:** the workbook needs no internet. Say so, and switch the whole room to the stand-in answers: each exercise has a *Use the stand-in answer* button or shows its answer directly. Run exercise 2 with the stand-in for everyone, and in exercise 4, use *No assistant? Use an example answer* for the map-back.
+**Do now:** the workbook needs no internet. Say so, and switch the whole room to the recorded answers: each exercise shows its answer directly or has a *Use the recorded answer* button. Run exercise 2 with the recorded answer for everyone, and in exercise 4, use *No assistant? Use an example answer* for the map-back.
 
-**Lesson:** nothing is lost. The skills are briefing, checking and deciding, and the stand-in answers were written to contain the mistakes worth finding.
+**Lesson:** nothing is lost. The skills are briefing, checking and deciding, and the recorded answers are real answers with real mistakes worth finding.
 
 ### 2. An assistant refuses, or the employer blocks it
 
 **You see:** "This site is blocked", a sign-in wall, or an assistant that declines the request.
 
-**Do now:** do not try to get around a block: it is the employer's decision, and working around it in a training session sends the wrong message. Move those people to the stand-in answers. If an assistant refuses a request, ask the person to read the refusal aloud; then use the stand-in.
+**Do now:** do not try to get around a block: it is the employer's decision, and working around it in a training session sends the wrong message. Move those people to the recorded answers. If an assistant refuses a request, ask the person to read the refusal aloud; then use the recorded answer.
 
 **Lesson:** a block is the employer's policy at work, which is exercise 4's first rule. Say: "That is exactly what we mean by 'your employer's policy comes first'."
 
@@ -51,7 +51,7 @@ Practical fixes for a room that does not go to plan. Each entry says what you wi
 **Do now:** give them a stretch task for the exercise:
 - **Exercise 1:** send the brief, then try to break it: change one limit and see what the assistant does.
 - **Exercise 2:** write the summary for a different reader: the customer instead of the manager. What must change?
-- **Exercise 3:** rewrite the brief so that each error in answer C becomes impossible.
+- **Exercise 3:** mark answer C, then rewrite the brief so that each of its errors becomes impossible.
 - **Exercise 4:** write the three-line rule for their own team: what may go in, what must be cleaned, what never.
 - **Exercise 5:** make a second template for a task they do every week.
 
@@ -61,7 +61,7 @@ Or pair them with someone who is stuck, if both agree.
 
 **You see:** a blank screen, a blank box, or a person who has stopped.
 
-**Do now:** go to them, crouch to their level, and ask "Where are you?" rather than "Are you lost?". Point to the step number. If they are far behind, give them the stand-in answer and tell them to skip to the step the room is on: the debrief will catch them up.
+**Do now:** go to them, crouch to their level, and ask "Where are you?" rather than "Are you lost?". Point to the step number. If they are far behind, give them the recorded answer and tell them to skip to the step the room is on: the debrief will catch them up.
 
 **Lesson:** for the person, not the room: "You don't need to finish every step. The step we discuss next is the one that matters."
 
@@ -77,13 +77,13 @@ Or pair them with someone who is stuck, if both agree.
 
 **Do now:** in the opening, say that the session is about checking and deciding, which is new for everyone, however much they have used the tools. Seat or pair experienced users with beginners for exercises 3 and 4. Use the stretch tasks (entry 6) for the fast ones.
 
-**Lesson:** experienced users often make the confident mistakes, such as trusting a fluent answer. Ask them to explain in the debrief why answer B passes every automatic check.
+**Lesson:** experienced users often make the confident mistakes, such as trusting a fluent answer. Ask them to explain in the debrief why answer A of exercise 3 passes every automatic check and is still wrong.
 
 ### 10. A participant insists the assistant is always right
 
 **You see:** "Mine got it right, so I don't need to check", or "These tools don't make mistakes any more".
 
-**Do now:** do not argue in general. Make it specific. Ask them to find, in the thread, the source of every figure in their assistant's answer, or to run answer B of exercise 3 through the automatic check and explain why it passes. Then ask: "Who signs the reply?"
+**Do now:** do not argue in general. Make it specific. Ask them to find, in the thread, the source of every figure in their assistant's answer, or to explain why the sentence about the loading in exercise 2 passes every check and is still wrong. Then ask: "Who signs the reply?"
 
 **Lesson:** "Maybe your assistant was right today. Checking is how you know it was right, and you only find out it wasn't when you check."
 
@@ -118,7 +118,7 @@ Or pair them with someone who is stuck, if both agree.
 
 ### 15. You are running late
 
-**Do now:** in this order: make exercise 5 homework; give everyone the stand-in answer in exercise 2; shorten the part 1 debrief in exercise 4. Never cut the debriefs of exercises 2 and 3: they carry the lesson. See the run sheet, "If you are running late".
+**Do now:** in this order: make exercise 5 homework; give everyone the recorded answer in exercise 2; shorten the part 1 debrief in exercise 4. Never cut the debriefs of exercises 2 and 3: they carry the lesson. See the run sheet, "If you are running late".
 
 ### 16. Someone challenges the privacy key
 
