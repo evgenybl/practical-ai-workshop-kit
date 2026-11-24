@@ -4,10 +4,10 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally: 250 tests, 250 pass, 0 fail (Windows, Node 24). CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run. |
-| Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally on macOS (arm64), with Node 24.22.3 and with Node 22.23.5: 296 tests, 296 pass, 0 fail with each. Earlier, at commit 16fa097: 250 tests, 250 pass, 0 fail, locally on Windows with Node 24. In CI, on Linux and Windows with Node 22 and 24: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84, both passed. CI runs on every push; the badge at the top of the README shows the result of the last run. |
+| Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes, and a test reads the guide's counts to check it. Also in CI: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84. |
 | A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done twice, by separate AI agents: at commit 5059ae2, whose eleven points of friction were worked through in later commits, and at commit 2926752, whose seven points were worked through in the commits after it. Both are listed on the testing page. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first. |
-| An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
+| An independent review | A reviewer with no part in the build | Done twice, by separate AI agents: at commit 5059ae2 (3 blockers, 6 majors and a list of minors) and at commit 16fa097 (no blocker, 1 major, and minors and notes), each worked through in the commits after it. Both are listed on the testing page. Not repeated after that. |
 | Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done by a person. Rendered once in a headless browser with no network, on 2026-11-24 at commit 5e38dfa: both copies loaded and looked the same, exercise 2's two buttons were clicked and the result appeared, and the console showed no message, no error and no blocked or attempted request. That run says nothing about keyboard use or a screen reader. |
 | Taught to a class of people | | Not done. |
 
@@ -27,38 +27,38 @@ node --test "tests/*.test.js"
 
 | Test file | What it proves |
 |---|---|
-| `tests/case.test.js` | The case meets its specification: five messages over nine days; at least twelve distinct figures; the figures add up; the weekdays agree with the dates; the two traps are there; two delivery dates promised and one kept; thirty orders with two repeat customers; invented people at example.com with placeholder phones; eight snippets from harmless to never. |
+| `tests/case.test.js` | The case meets its specification: five messages over nine days; at least twelve distinct figures; the figures add up, each compared with a number written in the test; the weekdays agree with the dates; the two traps are there; two delivery dates promised and one kept; thirty orders with two repeat customers; invented people at example.com with placeholder phones; eight snippets from harmless to never. |
 | `tests/numbers.test.js` | How figures are read: 1,250.00 and 1250 are the same figure; a date written with figures only, such as 28/02, is read as a date; message labels, rule numbers and list numbers are pointers, not figures; a figure in words is not read; citations such as (msg 3) are not figures, and a long unclosed citation is read in a few milliseconds; a decimal point does not end a sentence. |
 | `tests/brief.test.js` | Exercise 1: each of the five signs, with an answer that passes and one that fails; the check says it checks presence, not quality. |
-| `tests/reply.test.js` | The reply check: each of its five rules, both ways, including typographic apostrophes, money off an invoice, a negated promise word, a day for something other than a delivery, and an empty box. |
-| `tests/summary.test.js` | Exercise 2: the request check both ways; each of the summary's ten rules, both ways, including the two traps, the unkept promise to confirm a delivery day, "not late" read as not late, a promise word after "waiting" or "asked", and a date cited to the right message; the recorded answer passes every rule but the length. |
-| `tests/marks.test.js` | Exercise 3: marks that agree and disagree with the key, including entries that accept two marks; a key entry and a reason for every numbered sentence; the assistant's own notes not numbered; about ten marks in the session, with answer C optional; the recorded answer A unchanged, and B and C planting the kinds of error A lacks. |
-| `tests/privacy.test.js` | Exercise 4: the piles both ways, and both piles where two are defensible; every kind of personal value caught on its own; anything shaped like an e-mail address or a phone number caught; the rule named for what it knows; the recommended extract passes, and agrees with the key of part 1; stand-ins are consistent; the map-back. |
+| `tests/reply.test.js` | The reply check: each of its five rules, both ways, including typographic apostrophes, money off an invoice, a negated promise word, a day for something other than a delivery, and an empty box; a credit or a delivery day stated in the present tense; a report of what happened, a request passed on and a promise to tell, which are not promises; a test for each condition of the checker that had none; and the model reply, whose every commitment is written out in the test and promises nothing that depends on someone else. |
+| `tests/summary.test.js` | Exercise 2: the request check both ways; each of the summary's ten rules, both ways, including the two traps, the unkept promise to confirm a delivery day, "not late" read as not late, a promise word after "waiting" or "asked", and a date cited to the right message; a promised credit in a list under "Promised:", or said as "said he would", "committed", "offered" or "as promised", and a promise to tell or to pass on, which is not one; the wordings the guide gives for the two traps; the recorded answer passes every rule but the length. |
+| `tests/marks.test.js` | Exercise 3: marks that agree and disagree with the key, including entries that accept two marks; a key entry and a reason for every numbered sentence; the assistant's own notes not numbered; about ten marks in the session, with answer C optional; the recorded answer A unchanged, and B and C planting the kinds of error A lacks; why the figure check passes "12 March", as the key says. |
+| `tests/privacy.test.js` | Exercise 4: the piles both ways, and both piles where two are defensible; every kind of personal value caught on its own; anything shaped like an e-mail address or a phone number caught; the rule named for what it knows; the recommended extract passes, and agrees with the key of part 1; stand-ins are consistent; the map-back, and the stand-ins it could not put back; a long run shaped almost like an e-mail address read in linear time. |
 | `tests/template.test.js` | Exercise 5: named placeholders both ways; a word such as [BRACKETED] and an ordinary "..." are not counted; each kind of value left from the case caught on its own. |
-| `tests/quiz.test.js` | Ten questions, two per objective, one best answer each, an explanation for every option, and the best answer not given away by its length; marking both ways. |
+| `tests/quiz.test.js` | Ten questions, two per objective, one best answer each, an explanation for every option, and the best answer not given away by its length; marking both ways; the last two, about templates, introduced as a preview of the homework on every page that sets them. |
 | `tests/checker.test.js` | The checker's honesty: its sentences about its own limits are on every result that needs them; every pass is worded as what was not found; an empty box says so on every rule. |
-| `tests/workbook.test.js` | The page's own logic, run in a small fake page (`tests/fake-dom.js`): every exercise's buttons, the request check, columns that start on "Choose", saving and restoring answers in the browser's storage, clearing them, saving them as a text file. And the markup: a label for every box, unique ids, plain buttons, a visible focus style with an outline, a contrast ratio of at least 4.5 to 1 for every pair of text and background colours, the warning for a page opened without its folder, and the page's content security policy. And what a first-time participant needs: a gloss for each term where it first appears, no objective codes on the page, and the boxes and hints the second new-user pass asked for. |
+| `tests/workbook.test.js` | The page's own logic, run in a small fake page (`tests/fake-dom.js`): every exercise's buttons, the request check, columns that start on "Choose", saving and restoring answers in the browser's storage, clearing them, saving them as a text file. And the markup: a label for every box, unique ids, plain buttons, a visible focus style with an outline, a contrast ratio of at least 4.5 to 1 for every pair of text and background colours, the warning for a page opened without its folder, and the page's content security policy. And what a first-time participant needs: a gloss for each term where it first appears, no objective codes on the page, and the boxes and hints the second new-user pass asked for; the label of an edited answer, and what "the amount in question" is. |
 | `tests/offline.test.js` | No file of the participant folder contains a request call, a remote script, style, font or image, or any web address; the single-file copy loads nothing; every link on the page leads to a place on the page. |
 | `tests/generated.test.js` | Every generated file is current: the single-file workbook, the request files, the answer key (which therefore equals the workbook's own key, and a second, literal copy of the key in the test), the printable case and the generated solutions. |
-| `tests/answers.test.js` | Every answer in `recorded/` and every model answer in `solutions/`, run through the command-line checker, gives its expected result; every recorded answer and its request still have the sha256 the meta file states; every edited answer is exactly the recorded answer plus its declared edits. |
+| `tests/answers.test.js` | Every answer in `recorded/` and every model answer in `solutions/`, run through the command-line checker, gives its expected result; every recorded answer and its request still have the sha256 the meta file states; every edited answer is exactly the recorded answer plus its declared edits; what the model answers page says of the reply to the one-line wish and of the model summary. |
 | `tests/guide.test.js` | What the instructor guide, this page, the README, the variants and "when things go wrong" say each recorded and edited answer gives through the checker (how many *OK* and *Look again*, and which sentence or figure is flagged) is read from the page and compared with a run. |
-| `tests/cli.test.js` | The command-line checker prints exactly what the page shows, with exit codes 0, 1 and 2, and its usage says what each exercise's file must hold. |
+| `tests/cli.test.js` | The command-line checker prints exactly what the page shows, with exit codes 0, 1 and 2, an empty answer file an error, and its usage says what each exercise's file must hold. |
 | `tests/stray-files.test.js` | Files a computer adds by itself, such as `.DS_Store`, `Thumbs.db` and `desktop.ini`, are skipped by the tests and listed in `.gitignore`; a copy of the kit with such files in it passes every other test. |
-| `tests/docs.test.js` | No absolute path; no letter outside English anywhere, and plain ASCII everywhere except in the unchanged recordings; LF line ends; no package files; every e-mail address at example.com; no claim of a class, a client or a session taught, and the "not taught" and "planned" lines in the README and every instructor page; links resolve, and every embedded image exists; the pasted output on these pages is current, and the test count in the table is the one pasted below; the README's evidence table equals this one; the minutes of the guide, the run sheet, the README and the workbook agree and add up to 90; each exercise's debrief question is the same in the guide and the run sheet; the workbook's carrying its own key is said in the guide, "when things go wrong", this page and the README. |
+| `tests/docs.test.js` | No absolute path; no letter outside English anywhere, and plain ASCII everywhere except in the unchanged recordings; LF line ends; no package files; every e-mail address at example.com; no claim of a class, a client or a session taught, and the "not taught" and "planned" lines in the README and every instructor page; links resolve, and every embedded image exists; the pasted output on these pages is current, and the test count in the table is the one pasted below; the README's evidence table equals this one; the minutes of the guide, the run sheet, the README and the workbook agree and add up to 90; each exercise's debrief question is the same in the guide and the run sheet; the workbook's carrying its own key is said in the guide, "when things go wrong", this page and the README; the run sheet's minute rows agree with its blocks; the licence table row by row, the footers of the files that are sent alone, and the participant folder's credit line; what the security policy does and does not forbid; every CI run cited with its commit; the word counts of the files beside the planned minutes. |
 
-**The last lines of the last run**, as printed. The run used the plain-text (TAP) reporter, whose output is plain ASCII like the rest of the kit; the tests are the same.
+**The last lines of the run with Node 24.22.3 on macOS (arm64)**, as printed. The run used the plain-text (TAP) reporter, whose output is plain ASCII like the rest of the kit; the tests are the same.
 
 <!-- pasted from: node --test --test-reporter=tap "tests/*.test.js" (the last lines) -->
 ```text
-1..250
-# tests 250
+1..296
+# tests 296
 # suites 0
-# pass 250
+# pass 296
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 7944.098
+# duration_ms 1402.416125
 ```
 
 **What the automated tests do not cover.** No person has yet worked through the page in a browser; a headless browser has rendered it once (below). In the tests its logic runs in a fake page, which checks what the buttons do but not how the page looks, how it behaves with a keyboard alone, or how a screen reader reads it. The labels, the focus style and the colour contrast are checked in the markup only. The real-browser pass in the table above, not yet done, is where that is owed.
@@ -67,13 +67,13 @@ node --test "tests/*.test.js"
 
 **The key is in the page.** The workbook carries its own key so that it can check answers with no server; a participant who opens the page's source can read it. The kit is a practice tool, not an exam, and must not be used to grade people. The start page, the instructor guide, "when things go wrong" and the README say so too.
 
-**CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24. Its latest run is 45315987278, at commit 1038d84: it passed on all four (the first, 45300468336, was at commit 5059ae2). The badge at the top of the README shows the latest run; the runs on this page were made locally on Windows with Node 24.
+**CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24, on every push. Two runs are cited on this page, each with its commit: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84; each passed on all four. The badge at the top of the README shows the result of the last run. The output pasted on this page was printed on macOS (arm64) by Node 24.22.3; Node 22.23.5 gave the same counts and the same answer runs.
 
 ---
 
 ## Recorded answers through the checker
 
-**State: done locally**, and in CI run 45315987278 at commit 1038d84.
+**State: done locally**, and in CI: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84.
 
 | Answer | What it is | Its checker result, and where the guide describes it |
 |---|---|---|
@@ -195,7 +195,9 @@ It found no contradiction on the page.
 
 ## An independent review
 
-**State: done once, at commit 5059ae2, by a separate AI agent. Not repeated on the current version.**
+**State: done twice, by separate AI agents: at commit 5059ae2, and at commit 16fa097. Not repeated after that.**
+
+### The first, at commit 5059ae2
 
 **What it was.** A fresh AI agent (a Claude model, with no part in building the kit) was given the whole repository, the standard a training kit must meet, and what to try to break. It was given no opinion of the work. It read every file, ran the tests, read each recorded and edited answer against the thread and the policy, tried to make the checker pass wrong answers and fail right ones, and broke 30 rules in scratch copies to see whether a test fails. Its verdict: publish after the blockers and the majors are fixed.
 
@@ -213,6 +215,33 @@ It found no contradiction on the page.
 | Major | Opened from inside a compressed folder, the page was silently empty | A visible line appears when the scripts did not load; the single-file copy is what is sent |
 | Major | "Every claim on this page is backed by a test" was more than the tests prove: 11 of 30 breaks survived | The sentence was softened, and tests were added for what survived |
 | Minor | Licences per file; an edited answer that contradicted itself; two inaccurate sentences about assistants; a slow pattern in the checker; a "saved" message when nothing was saved | All fixed |
+
+### The second, at commit 16fa097
+
+**What it was.** Another fresh AI agent, also a Claude model with no part in building the kit, was given a fresh clone of the repository at commit 16fa097 and the standard a training project must meet. It was given no conclusion about the work.
+
+**What it did.** It ran the tests, the build check and the answer runner on macOS (arm64) with Node 24.22.3 and with Node 22.23.5, and compared every count and every pasted output on these pages with its runs. It ran about 200 inputs through the checker, made 43 changes to the code to see whether a test fails, and read every statement about what a recorded or edited answer says or does against the answer files. Its verdict: publish after named fixes, with no blocker.
+
+**What it confirmed.** Every count quoted on these pages, and every pasted output, matched its runs; each answer and each request still has the sha256 its meta file states, and the requests have not changed since the commit that added them, 8a5e3f9; the case's dates, weekdays and sums agree with one another and with the keys; the page makes no network call and loads no remote resource.
+
+| Severity | What it found | What was changed |
+|---|---|---|
+| Major | A statement about the recorded answer of exercise 1 was false: the model answers page said that each limit of the strong brief would have prevented one of the problems in the reply to the one-line wish, which promised no delivery day and offered no payment for other costs | The page now says which problems the limits rule out, and which mistakes that reply did not make; every statement about a recorded or edited answer was read again; three more were made exact (the guide's closing words for exercise 1, the reason given for an option of question 2, and the description of answer C), and those a test can hold are tested |
+| Minor | The pages said that each recorded answer gives the result the guide describes, but no test read the guide | A test reads each count and each flag from the guide, this page and the README, and compares it with a run |
+| Minor | The check for the trap passed a promised credit in a list ("Promised: ..., and a credit for the damaged cartons") and in four other wordings, and flagged four true sentences in summaries and two in replies | Each case is a test now: the promises are flagged, and the true sentences pass |
+| Minor | The reply check missed a credit or a delivery day stated in the present tense | Seven such sentences are flagged now, each a test |
+| Minor | This page and the workbook's footer said more about the security policy than it does | Both say what it forbids and what it does not; the policy is unchanged |
+| Minor | `recorded-answers.js` was listed as MIT code though it holds teaching text, and the single-file workbook and the handout named no author | The licence table, both footers and the participant folder's credit line say who wrote what, under which licence; tests hold them |
+| Minor | Questions 9 and 10 are about templates, which the session leaves as homework after them | The page, the guide, the rubric and the answer key say they are a preview |
+| Minor | A `.DS_Store` file in the folder made a test fail | The tests skip such files, and `.gitignore` lists them |
+| Minor | A sentence about CI would go stale at the next push, and the two CI runs were cited unevenly | Each run is cited with its commit, the same way in the README and here |
+| Minor | The guide's question for exercise 4 differed from the page's, and the run sheet put the answer key on the shared screen | Both corrected |
+| Minor | Exercise 2, step 3 asked for a lot in seven planned minutes | The corrected summary is for when there is time |
+| Note | Smaller points: the key did not say why the figure check passes "12 March"; one test compared figures with their own formulas; four conditions of the checker, the model reply, the licence table and the run sheet's rows had no test; the word table counted two requests on two bases; the label of an edited answer named a file a participant does not have; an empty answer file passed; a pattern was slow on a long run; the map-back said nothing of stand-ins it could not put back; a test named one working folder; some invented names may match real ones; two terms in exercise 2 were not explained; the hour of preparation was not marked as planned | Each was worked through, with a test where one is possible. For the names, the README and the case folder say that any likeness is a coincidence; no search was made |
+
+After the changes, each change to the code was taken out again, one at a time, in a scratch copy, and the tests were run: 30 of 32 were caught at first. For one of the other two a test was added; the other, a word the checker did not need, was taken out of the code, and a test holds the word it did need. In the end, taking out any of the 32 changes fails a test.
+
+**What it could not do.** It could not open a browser, run CI, or search for the invented names, and no person took part.
 
 **What a review by an AI agent is and is not.** It is a careful second reading with experiments, by something that did not write the kit. It is not a review by a trainer who has stood in front of a room, and it could not open a browser.
 

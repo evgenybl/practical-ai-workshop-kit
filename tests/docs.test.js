@@ -173,10 +173,10 @@ test('the README repeats the evidence table of How this kit was tested, word for
 test('the evidence table says what is done, what was done once, and what is owed', () => {
   assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
   assert.match(evidenceState('A new-user test by an AI agent'), /^Done twice, by separate AI agents: at commit 5059ae2, .* and at commit 2926752, .*Both are listed on the testing page\. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first\.$/);
-  assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent: .*listed on the testing page\. The review has not been repeated on the current version\.$/);
+  assert.match(evidenceState('An independent review'), /^Done twice, by separate AI agents: at commit 5059ae2 \(3 blockers, 6 majors and a list of minors\) and at commit 16fa097 \(no blocker, 1 major, and minors and notes\), each worked through in the commits after it\. Both are listed on the testing page\. Not repeated after that\.$/);
   assert.match(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), /^Not yet done by a person\. Rendered once in a headless browser .* says nothing about keyboard use or a screen reader\.$/);
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
-  assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the badge at the top of the README shows the latest run\./);
+  assert.match(evidenceState('Automated tests'), /^Done locally on macOS \(arm64\), with Node 24\.22\.3 and with Node 22\.23\.5: (\d+) tests, \1 pass, 0 fail with each\. Earlier, at commit 16fa097: 250 tests, 250 pass, 0 fail, locally on Windows with Node 24\. In CI, on Linux and Windows with Node 22 and 24: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84, both passed\. CI runs on every push; the badge at the top of the README shows the result of the last run\.$/);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
   const newUser = how.slice(how.indexOf('## A new-user test by an AI agent'), how.indexOf('\n---', how.indexOf('## A new-user test by an AI agent')));
   assert.match(newUser, /\*\*State: done twice, by separate AI agents: at commit 5059ae2, and at commit 2926752\.\*\*/);
@@ -186,7 +186,10 @@ test('the evidence table says what is done, what was done once, and what is owed
   assert.match(newUser, /\| Start here, and the case \| 8 \| About 1,230 \|/);
   for (const h of ['## A new-user test by an AI agent', '## An independent review']) {
     const section = how.slice(how.indexOf(h), how.indexOf('\n---', how.indexOf(h)));
-    if (h === '## An independent review') { assert.match(section, /\*\*State: done once, at commit 5059ae2, by a separate AI agent\. Not repeated on the current version\.\*\*/, h); }
+    if (h === '## An independent review') {
+      assert.match(section, /\*\*State: done twice, by separate AI agents: at commit 5059ae2, and at commit 16fa097\. Not repeated after that\.\*\*/, h);
+      for (const sub of ['### The first, at commit 5059ae2', '### The second, at commit 16fa097', '**What it could not do.** It could not open a browser, run CI, or search for the invented names, and no person took part.']) { assert.ok(section.includes(sub), sub); }
+    }
     assert.match(section, /What was changed/i, h);
     assert.doesNotMatch(section, /is owed/, h);
   }
@@ -198,7 +201,7 @@ test('the evidence table says what is done, what was done once, and what is owed
 test('the test count in the evidence table is the one the pasted test run printed', () => {
   // Only the number of tests is compared: the pasted run is the one before this run, so its pass and
   // fail lines are checked by reading them, not by this test.
-  const m = evidenceState('Automated tests').match(/^Done locally: (\d+) tests, (\d+) pass, 0 fail/);
+  const m = evidenceState('Automated tests').match(/^Done locally on macOS \(arm64\), with Node 24\.22\.3 and with Node 22\.23\.5: (\d+) tests, (\d+) pass, 0 fail with each\./);
   assert.ok(m, 'the count is in the table');
   assert.equal(m[1], m[2]);
   const run = pastedBlocks('docs/HOW-THIS-WAS-TESTED.md').find((b) => /^node --test/.test(b.command)).text;
@@ -455,4 +458,17 @@ test('the word table counts every file on one basis, the whole file as wc -w cou
   for (const n of [1, 2, 3]) {
     assert.ok(rows.find((r) => r.startsWith('| Exercise ' + n + ' |')).includes('`recorded/requests/ex' + n + '-request.txt`'), 'exercise ' + n);
   }
+});
+
+test('every CI run is cited with its commit, the same way in the README and on the testing page, and nothing names a "latest" run', () => {
+  const runs = (f) => [...raw(f).matchAll(/\brun (\d{8,}) at commit ([0-9a-f]{7})\b/g)].map((m) => m[1] + '@' + m[2]);
+  for (const f of ['README.md', 'docs/HOW-THIS-WAS-TESTED.md']) {
+    const t = raw(f);
+    assert.doesNotMatch(t, /latest run|last run is|most recent run/i, f);
+    // Every run number on the page is one of the runs cited with a commit.
+    const cited = new Set(runs(f).map((r) => r.split('@')[0]));
+    for (const m of t.matchAll(/\b(\d{11})\b/g)) { assert.ok(cited.has(m[1]), f + ': ' + m[1] + ' without its commit'); }
+  }
+  assert.deepEqual([...new Set(runs('README.md'))].sort(), ['45300468336@5059ae2', '45315987278@1038d84']);
+  assert.deepEqual([...new Set(runs('docs/HOW-THIS-WAS-TESTED.md'))].sort(), ['45300468336@5059ae2', '45315987278@1038d84']);
 });
