@@ -1,5 +1,5 @@
 # Images
 
-No picture of the workbook is in the kit yet, and no page embeds one: a test checks that every image a Markdown file embeds exists in the repository, so a page cannot point to a picture that is not there.
+`workbook.png` shows exercise 2 of the workbook after *Use the recorded answer* and *Check my answer* were pressed: the recorded answer, and the result under it (nine *OK*, one *Look again*). It is cut from a capture of `participant/workbook-single-file.html`, 800 pixels wide, made in a headless browser with no network on 24 November 2026 at commit 5e38dfa.
 
-`workbook.png`, when it is made, should show exercise 2 of the workbook after *Check my answer* has been pressed on the recorded answer, with the result visible (nine *OK*, one *Look again*). Take it from `participant/workbook-single-file.html` in a browser window about 1280 pixels wide, crop it to the exercise, and only then add it to the README.
+CI does not make the picture again. When the page changes, capture it again the same way; a test checks that every image a Markdown file embeds exists in the repository, and that the README's caption says how the picture was made.

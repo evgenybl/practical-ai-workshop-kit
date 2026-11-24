@@ -8,7 +8,7 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
 | A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
 | An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
-| Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done. |
+| Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done by a person. Rendered once in a headless browser with no network, on 2026-11-24 at commit 5e38dfa: both copies loaded and looked the same, exercise 2's two buttons were clicked and the result appeared, and the console showed no message, no error and no blocked or attempted request. That run says nothing about keyboard use or a screen reader. |
 | Taught to a class of people | | Not done. |
 
 This kit has not been taught to a class of people.
@@ -59,9 +59,9 @@ node --test "tests/*.test.js"
 # duration_ms 3865.775
 ```
 
-**What the automated tests do not cover.** The page has not been opened in a real browser by anyone working on this kit: its logic runs in a fake page, which checks what the buttons do but not how the page looks, how it behaves with a keyboard alone, or how a screen reader reads it. The labels, the focus style and the colour contrast are checked in the markup only. The real-browser pass in the table above, not yet done, is where that is owed.
+**What the automated tests do not cover.** No person has yet worked through the page in a browser; a headless browser has rendered it once (below). In the tests its logic runs in a fake page, which checks what the buttons do but not how the page looks, how it behaves with a keyboard alone, or how a screen reader reads it. The labels, the focus style and the colour contrast are checked in the markup only. The real-browser pass in the table above, not yet done, is where that is owed.
 
-**"Sends nothing."** Both copies of the workbook carry a content security policy in a `meta` tag: `connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'`. In a browser that enforces it, the page cannot open a connection, load an image other than an inline one, load media, a frame or a plug-in, or submit a form, so "sends nothing" is enforced by the browser, not only promised by the code. It leaves the page's own scripts and style alone. The tests check that the tag is in both copies; that a real browser enforces it on this page, and still runs the page, awaits the real-browser pass.
+**"Sends nothing."** Both copies of the workbook carry a content security policy in a `meta` tag: `connect-src 'none'; img-src data:; media-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'`. In a browser that enforces it, the page cannot open a connection, load an image other than an inline one, load media, a frame or a plug-in, or submit a form, so "sends nothing" is enforced by the browser, not only promised by the code. It leaves the page's own scripts and style alone. The tests check that the tag is in both copies; that a real browser enforces it on this page, and still runs the page, awaits the real-browser pass by a person. In the one headless run the page ran under the policy, and no request was blocked or attempted.
 
 **CI.** The workflow in `.github/workflows/ci.yml` runs the tests, rebuilds and compares every generated file, and runs every answer through the command-line checker, on Linux and Windows with Node 22 and Node 24. Its latest run is 45315987278, at commit 1038d84: it passed on all four (the first, 45300468336, was at commit 5059ae2). The commits since have not been through CI; the runs on this page were made locally on Windows with Node 24.
 
@@ -166,7 +166,23 @@ as expected  solutions/quiz-answers.txt (exercise quiz, model solution): 10 rule
 
 ## Opened in a real browser: keyboard only, network off, both copies
 
-**State: not yet done.** A person opens `participant/workbook-single-file.html` and `participant/workbook/index.html` with the network off, works every exercise with the keyboard alone, and checks that the content security policy is enforced and the page still runs.
+**State: not yet done by a person; rendered once in a headless browser.**
+
+**What is owed.** A person opens `participant/workbook-single-file.html` and `participant/workbook/index.html` with the network off, works every exercise with the keyboard alone, and listens to it with a screen reader.
+
+**What was done, on 2026-11-24 at commit 5e38dfa.** A headless browser (Chromium, driven by a script, on a machine with no network; any request other than for a local file would have been stopped and logged) opened both copies:
+
+| What was captured | What it showed |
+|---|---|
+| The single-file copy, the top of the page at 1280 by 800 | The page renders, with its navigation and the start section |
+| The folder copy, the same frame | A picture identical, byte for byte, to the single-file copy's; the "did not load" line is in the page and is not shown, so the four scripts and the stylesheet loaded from the folder |
+| The single-file copy, the whole page | Every section renders |
+| The single-file copy at 390 by 844 | The page fits a phone's width |
+| Exercise 2 after two clicks: *Use the recorded answer*, then *Check my answer* | The recorded answer appears and the result under it reads "9 OK, 1 to look at again". The picture in the README is cut from this capture |
+
+For all five, the browser's console held no message and no error, and no request was blocked or attempted. So the page runs under its content security policy in that browser, and nothing in that run tried to leave the computer.
+
+**What this does not show.** Keyboard use, focus order, a screen reader, other browsers, a locked-down company laptop, or printing. A headless run is a rendering, not a person using the page.
 
 ---
 

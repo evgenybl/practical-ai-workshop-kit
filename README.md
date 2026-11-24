@@ -24,6 +24,12 @@ A hands-on session for professionals and managers who are not technical. It is w
 
 **In a browser:** open `participant/workbook-single-file.html` by double-clicking it. Go to exercise 2, press *Use the recorded answer*, then *Check my answer*.
 
+What exercise 2 looks like after those two presses: one model's recorded summary, and the checker's result under it. Nine checks pass, and the sentence about the van is still wrong:
+
+![Exercise 2 of the workbook: the recorded answer in its box and, under it, the checker's result, 9 OK and 1 to look at again](docs/img/workbook.png)
+
+*Cut from a capture of `participant/workbook-single-file.html` in a headless browser with no network, 24 November 2026. CI does not make this picture again; if it ever differs from the page, the page is right.*
+
 **On the command line** (Node 22 or later, nothing to install): run the recorded answer of exercise 2 through the checker. It is one model's summary, unchanged, and a good one. Then read its bullet that begins "Tom's cause" against message 4 of the thread (`participant/case/customer-thread.txt`): every check passes it, and it says the opposite. That is what this kit teaches.
 
 ```
@@ -87,7 +93,7 @@ After the session a participant can:
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes. Also in CI run 45300468336, at commit 5059ae2. |
 | A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done once, at commit 5059ae2, by a separate AI agent; its eleven points of friction were worked through in later commits and are listed on the testing page. The test has not been repeated on the current version. |
 | An independent review | A reviewer with no part in the build | Done once, at commit 5059ae2, by a separate AI agent: 3 blockers, 6 majors and a list of minors, all worked through in later commits and listed on the testing page. The review has not been repeated on the current version. |
-| Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done. |
+| Opened in a real browser: keyboard only, network off, both copies | A person opens the single-file copy and the folder copy, with the network off, and works every exercise with the keyboard alone | Not yet done by a person. Rendered once in a headless browser with no network, on 2026-11-24 at commit 5e38dfa: both copies loaded and looked the same, exercise 2's two buttons were clicked and the result appeared, and the console showed no message, no error and no blocked or attempted request. That run says nothing about keyboard use or a screen reader. |
 | Taught to a class of people | | Not done. |
 
 **This kit has not been taught to a class of people.** The details, and the output of the last runs, are in [How this kit was tested](docs/HOW-THIS-WAS-TESTED.md).

@@ -112,8 +112,9 @@ test('every image a page embeds exists in the repository', () => {
       assert.ok(lib.exists(rel), f + ' embeds ' + src + ', which is not in the repository');
     }
   }
-  // Today no page embeds a picture: the README's screenshot comes back only when the file exists.
-  assert.equal(embedded, 0);
+  // One picture is embedded: the README's capture of exercise 2, whose caption says how it was made.
+  assert.equal(embedded, 1);
+  assert.match(raw('README.md'), /Cut from a capture of `participant\/workbook-single-file.html` in a headless browser with no network/);
 });
 
 // ---- pasted output ----------------------------------------------------------------
@@ -161,7 +162,7 @@ test('the evidence table says what is done, what was done once, and what is owed
   assert.match(evidenceState('Recorded answers through the checker'), /^Done/);
   assert.match(evidenceState('A new-user test by an AI agent'), /^Done once, at commit 5059ae2, by a separate AI agent; .*listed on the testing page\. The test has not been repeated on the current version\.$/);
   assert.match(evidenceState('An independent review'), /^Done once, at commit 5059ae2, by a separate AI agent: .*listed on the testing page\. The review has not been repeated on the current version\.$/);
-  assert.equal(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), 'Not yet done.');
+  assert.match(evidenceState('Opened in a real browser: keyboard only, network off, both copies'), /^Not yet done by a person\. Rendered once in a headless browser .* says nothing about keyboard use or a screen reader\.$/);
   assert.equal(evidenceState('Taught to a class of people'), 'Not done.');
   assert.match(evidenceState('Automated tests'), /CI: run 45315987278 passed on Linux and Windows with Node 22 and 24, at commit 1038d84; the commits since have not been through CI\./);
   const how = raw('docs/HOW-THIS-WAS-TESTED.md');
@@ -172,7 +173,8 @@ test('the evidence table says what is done, what was done once, and what is owed
     assert.doesNotMatch(section, /is owed/, h);
   }
   const browser = how.slice(how.indexOf('## Opened in a real browser'), how.indexOf('\n---', how.indexOf('## Opened in a real browser')));
-  assert.match(browser, /\*\*State: not yet done\.\*\*/);
+  assert.match(browser, /\*\*State: not yet done by a person; rendered once in a headless browser\.\*\*/);
+  assert.match(browser, /A headless run is a rendering, not a person using the page\./);
 });
 
 test('the test count in the evidence table is the one the pasted test run printed', () => {
