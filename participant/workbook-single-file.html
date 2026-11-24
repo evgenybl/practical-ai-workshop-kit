@@ -2353,8 +2353,20 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     var t = plain(text);
     var out = [];
     var m;
-    var email = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/g;
-    while ((m = email.exec(t))) { out.push({ kind: 'something shaped like an e-mail address', value: m[0] }); }
+    // An address is found from its "@": the name before it, then a domain with a dot. Each character is
+    // read a fixed number of times, so a long run with no address in it is read quickly.
+    var local = /[A-Za-z0-9._%+-]/;
+    var domain = new RegExp('[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+', 'y');
+    var end = 0;
+    for (var at = t.indexOf('@'); at !== -1; at = t.indexOf('@', at + 1)) {
+      var start = at;
+      while (start > end && local.test(t.charAt(start - 1))) { start--; }
+      domain.lastIndex = at + 1;
+      var d = start < at ? domain.exec(t) : null;
+      if (!d) { continue; }
+      end = at + 1 + d[0].length;
+      out.push({ kind: 'something shaped like an e-mail address', value: t.slice(start, end) });
+    }
     var phone = /(?:\+\d{1,3}[ .-]?)?(?:\(\d{1,5}\)[ .-]?)?\d{2,6}(?:[ .-]\d{2,6}){1,4}|\b\d{9,13}\b/g;
     while ((m = phone.exec(t))) {
       if (m[0].replace(/\D/g, '').length >= 7) { out.push({ kind: 'something shaped like a phone number', value: m[0].trim() }); }

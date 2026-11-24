@@ -128,3 +128,16 @@ test('leaving a column out removes it from the extract', () => {
   assert.ok(!/Phone|E-mail|Contact|Customer/.test(ex.text));
   assert.deepEqual(ex.key, {});
 });
+
+test('part 2: a long run shaped almost like an e-mail address is read in linear time', () => {
+  // Before the fix, 100,000 characters of "a.a.a...@" took about five seconds: each start was tried to the end.
+  const start = process.hrtime.bigint();
+  const r = C.checkExtract('a.'.repeat(100000) + '@');
+  const ms = Number(process.hrtime.bigint() - start) / 1e6;
+  assert.equal(status(r, 'personal'), 'ok');
+  assert.ok(ms < 500, 'took ' + ms.toFixed(1) + ' ms');
+  // Addresses are still found where they are, and only there.
+  const at = '@';
+  assert.deepEqual(C.findContactShapes('Write to a.b' + at + 'example.com or c' + at + 'example.com.').map((s) => s.value), ['a.b' + at + 'example.com', 'c' + at + 'example.com']);
+  assert.deepEqual(C.findContactShapes('x' + at + 'y, ' + at + 'example.com, a' + at + 'b.c' + at + 'd.e').map((s) => s.value), ['a' + at + 'b.c']);
+});
