@@ -161,3 +161,19 @@ test('delivery day: "will confirm" holds back a day: "I will confirm the deliver
   assert.equal(status(C.checkReply(plus('I will confirm the delivery by Thursday.')), 'date'), 'ok');
   assert.equal(status(C.checkReply(plus('I will make the delivery by Thursday.')), 'date'), 'look');
 });
+
+test('the model reply promises only what its writer does himself: no delivery day, and nothing that depends on someone else', () => {
+  // Every sentence that commits to something, written out here: a change to any of them must be read again.
+  const commitments = C.splitSentences(strong).filter((s) => /\b(will|shall|going to|promise\w*|guarantee\w*|am passing)\b|'ll\b/i.test(s));
+  assert.deepEqual(commitments, [
+    'The warehouse has not yet given me the day, so I will not guess at it.',
+    'Your request for a credit of $531.00 needs the approval of our operations manager, Dana Liu, and I am passing it to her today, with your receipt for the cash-and-carry.',
+    'I will write to you again by Thursday with where the delivery and the credit stand, even if neither is settled by then.'
+  ]);
+  // None names a delivery day, a decision of someone else, or an act of the warehouse or the manager.
+  for (const s of commitments) { assert.doesNotMatch(s, /with the (delivery )?day|delivery day is|(Dana|she|the warehouse|they) will|decision by|will be (delivered|with you)/i, s); }
+  // The same file with the earlier mistake in it fails.
+  const earlier = strong.replace('I will write to you again by Thursday with where the delivery and the credit stand, even if neither is settled by then.', 'I will call you by the end of today with the delivery day.');
+  assert.notEqual(earlier, strong);
+  assert.ok(C.splitSentences(earlier).some((s) => /with the (delivery )?day/i.test(s)));
+});
