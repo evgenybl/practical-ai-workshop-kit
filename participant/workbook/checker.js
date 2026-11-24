@@ -232,7 +232,7 @@
     hedge: /\b(not|no|never|cannot|can't|nothing|pending|await\w*|waiting|wait|until|once|if|unless|ask|asks|asked|asking|request\w*|want\w*|claim\w*|says|said she|writes|wrote|believes|thinks|according|review\w*|decid\w*|decision|approval|consider\w*|whether|must|need|needs|has to|have to|requir\w*)\b|n't\b/,
 
     // What a credit promise talks about, and the words that make a statement a promise.
-    creditTopic: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the |your |this )?(invoice|bill)\b/,
+    creditTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the |your |this )?(invoice|bill)\b/,
     moneyTopic: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back|discount|invoice|bill|amount)\b|\$\s?\d/,
     asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted|committed|commits|commit|offered|offers|offer)\b|\bon (its|the|their) way\b/g,
     future: /\b(will|shall|we'll|i'll|you'll|they'll|she'll|can|am going to|are going to|is going to)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|receive|get|give|send you|cover|pay)\b/g,
