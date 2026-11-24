@@ -47,7 +47,8 @@ test('required: the invoice number, both ways', () => {
 
 test('required: what went wrong, both ways (late, short and damaged)', () => {
   assert.equal(status(C.checkSummary(strong), 'fact-wrong'), 'ok');
-  const r = C.checkSummary(swap('delivered late on', 'delivered on'));
+  // With "late" gone, and no due date before the delivery date, nothing says it came late.
+  const r = C.checkSummary(swap('due 28 February (msg 1), delivered late on 5 March (msg 3)', 'delivered on 5 March (msg 3)'));
   assert.equal(status(r, 'fact-wrong'), 'look');
   assert.match(rule(r, 'fact-wrong').message, /late/);
 });
@@ -115,4 +116,69 @@ test('trap, the two sixes: separate groups pass; merging them fails', () => {
 
 test('the summary check says that figures in words are not checked', () => {
   assert.ok(C.checkSummary(strong).notes.some((n) => /written in words/.test(n) && /not checked/.test(n)));
+});
+
+// ---- cases found by the first review: each one failed before the fix ------------------
+
+test('trap, the promise never given: "waiting" or "asked" does not cancel "promised" or "agreed"', () => {
+  const s1 = strong + '- ' + F.contactFirst + ' is still waiting for the credit ' + F.staffFirst + ' promised for the ' + F.cupsCrushed + ' damaged cartons (msg 5).\n';
+  assert.equal(status(C.checkSummary(s1), 'credit'), 'look');
+  const s2 = strong + '- ' + F.staffFirst + ' agreed to the credit ' + F.contactFirst + ' asked for.\n';
+  assert.equal(status(C.checkSummary(s2), 'credit'), 'look');
+  // Her claim, reported as hers, still passes.
+  const s3 = strong + '- ' + F.contactFirst + ' says she is still waiting for the credit she was promised (msg 5).\n';
+  assert.equal(status(C.checkSummary(s3), 'credit'), 'ok');
+});
+
+test('figures: a figure that is in the thread only as a "Message N" label is not a figure of the thread', () => {
+  const r = C.checkSummary(strong + '- ' + F.contactFirst + ' says 4 cartons arrived crushed (msg 3).\n');
+  assert.equal(status(r, 'numbers'), 'look');
+  assert.match(rule(r, 'numbers').items.join(' '), /^4 is not in the material/);
+});
+
+test('what went wrong: "not late", "nothing missing" and "nothing damaged" are not read as the facts', () => {
+  const r = C.checkSummary('Order ' + F.orderNo + ', invoice ' + F.invoiceNo + '. The order was not late. Nothing was missing and nothing was damaged.');
+  assert.equal(status(r, 'fact-wrong'), 'look');
+  assert.match(rule(r, 'fact-wrong').message, /late/);
+  assert.match(rule(r, 'fact-wrong').message, /missing/);
+  assert.match(rule(r, 'fact-wrong').message, /damaged/);
+});
+
+test('what went wrong: a due date followed by a later delivery date says it came late', () => {
+  const base = 'Order ' + F.orderNo + ', invoice ' + F.invoiceNo + '. ' + F.cupsMissing + ' cartons are missing and ' + F.cupsCrushed + ' arrived crushed. ';
+  assert.equal(status(C.checkSummary(base + 'Due 28 Feb; delivered 5 Mar (msg 1, 3).'), 'fact-wrong'), 'ok');
+  assert.equal(status(C.checkSummary(base + 'Due 5 Mar; delivered 28 Feb.'), 'fact-wrong'), 'look');
+});
+
+test('what was promised: "a day by 7 Mar; not kept", in the words a participant used, counts', () => {
+  const other = swap(unkeptSentence, 'We promised a day for the missing cartons by 7 Mar; not kept (msg 4, msg 5).');
+  assert.equal(status(C.checkSummary(other), 'fact-promised'), 'ok');
+});
+
+test('citations: a date written with figures is checked as a date, against the message it is cited to', () => {
+  const right = C.checkSummary(strong + '- Due 28/02, delivered 05/03 (msg 1, 3).\n');
+  assert.equal(status(right, 'citations'), 'ok');
+  assert.equal(status(right, 'numbers'), 'ok');
+  const wrong = C.checkSummary(strong + '- Due 28/02 (msg 4).\n');
+  assert.equal(status(wrong, 'citations'), 'look');
+  assert.ok(rule(wrong, 'citations').items.includes('The date 28/02 is cited to message 4, but it is in message 1.'), rule(wrong, 'citations').items.join('; '));
+  const invented = C.checkSummary(strong + '- Due 27/02 (msg 1).\n');
+  assert.equal(status(invented, 'numbers'), 'look');
+});
+
+test('an empty box says so on every rule, and passes none', () => {
+  const r = C.checkSummary('  ');
+  assert.equal(r.rules.length, 10);
+  for (const x of r.rules) { assert.equal(x.status, 'note', x.id); assert.match(x.message, /^This box is empty\./, x.id); }
+});
+
+test('the request of exercise 2: without the line that asks for sources it is flagged; with it, it passes', () => {
+  const without = C.requestText('summary', { withoutCiteLine: true });
+  const r = C.checkRequest(without);
+  assert.equal(status(r, 'cite'), 'look');
+  assert.equal(status(r, 'material'), 'ok');
+  assert.equal(status(C.checkRequest(C.requestText('summary')), 'cite'), 'ok');
+  assert.equal(status(C.checkRequest(without.replace('## Form\n', '## Form\nFor every bullet, name the message it comes from. ')), 'cite'), 'ok');
+  assert.equal(status(C.checkRequest(without + '\nBe accurate.\n'), 'cite'), 'look');
+  assert.equal(status(C.checkRequest('Summarise the thread. After each fact, give the message number.'), 'material'), 'look');
 });

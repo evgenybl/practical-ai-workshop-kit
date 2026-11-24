@@ -10,6 +10,10 @@
  * show the same words:
  *   { exercise, title, rules: [{ id, name, status, message, items }], notes }
  * status is 'ok' (shown as "OK"), 'look' ("Look again") or 'note' ("Note").
+ *
+ * The checks match words and figures. They cannot know what a sentence means,
+ * so a pass is always worded as what was not found ("I found no ..."), never as
+ * a verdict on the text.
  */
 (function (root, factory) {
   'use strict';
@@ -52,9 +56,13 @@
   function quote(s) { return '"' + s + '"'; }
 
   // ---------------------------------------------------------------------------
-  // Message numbers that a summary cites, such as (msg 3) or (messages 4 and 5)
+  // Message numbers that a summary cites, such as (msg 3) or (messages 4 and 5).
+  // Written so that each part of the input can be matched in only one way: a
+  // long, unclosed list takes as long as its length, not twice as long per item.
   // ---------------------------------------------------------------------------
-  var CITATION = /[(\[]\s*(?:msgs?|messages?)\.?\s*\d+(?:\s*(?:,|and|&|-|to)\s*(?:msgs?\.?|messages?)?\s*\d+)*\s*[)\]]/gi;
+  var CITATION = /[(\[]\s*(?:msgs?|messages?)\.?\s*\d+(?:\s*(?:,|and|&|-|to)\s*(?:(?:msgs?|messages?)\.?\s*)?\d+)*\s*[)\]]/gi;
+  // A reference in running text, such as "message 4", "rule 3" or "rules 5 and 6": a pointer, not a figure.
+  var REFERENCE = /\b(?:msgs?|messages?|rules?|points?)\.?\s+\d+(?:\s*(?:,|and|&|or|to|-)\s*\d+)*/gi;
 
   function findCitations(text) {
     var out = [];
@@ -68,13 +76,53 @@
   function stripCitations(text) { return plain(text).replace(new RegExp(CITATION.source, 'gi'), ' '); }
 
   // ---------------------------------------------------------------------------
-  // Numbers. 1,250.00 and 1250 are the same figure. A date counts as its parts:
-  // 05/03 is 5 and 3. A figure written in words, such as "six", is not read.
+  // Figures and dates. 1,250.00 and 1250 are the same figure. A date written as
+  // 28/02, 28.02.2025 or 2025-02-28 is compared as a date: its day and month.
+  // Message labels, rule numbers and list numbers are pointers, not figures.
+  // A figure written in words, such as "six", is not read.
   // ---------------------------------------------------------------------------
   var NUMBER = /\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?/g;
+  var DATE_FORMS = [
+    { re: /\b(\d{4})-(\d{1,2})-(\d{1,2})\b/g, day: 3, month: 2 },
+    { re: /\b(\d{1,2})\.(\d{1,2})\.(\d{2,4})\b/g, day: 1, month: 2 },
+    { re: /\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?\b/g, day: 1, month: 2 }
+  ];
+  var MONTH_NAMES = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
+  /** Blanks out what is not a figure, keeping every other character where it was. */
+  function blank(s) { return s.replace(/[^\n]/g, ' '); }
+  function figureText(text) {
+    return stripCitations(text)
+      .replace(new RegExp(REFERENCE.source, 'gi'), blank)
+      .replace(/^([ \t]*)\d{1,2}[.)](?=[ \t])/gm, function (all, lead) { return lead + blank(all.slice(lead.length)); });
+  }
+  function around(t, index, length) {
+    var start = Math.max(0, index - 35);
+    var end = Math.min(t.length, index + length + 35);
+    var s = t.slice(start, end).replace(/\s+/g, ' ').trim();
+    return (start > 0 ? '...' : '') + s + (end < t.length ? '...' : '');
+  }
+  /** The dates written with figures only, such as 28/02. */
+  function extractDates(text) {
+    var t = figureText(text);
+    var out = [];
+    DATE_FORMS.forEach(function (form) {
+      var re = new RegExp(form.re.source, 'g');
+      var m;
+      while ((m = re.exec(t))) {
+        var day = Number(m[form.day]);
+        var month = Number(m[form.month]);
+        var taken = out.some(function (d) { return m.index < d.end && d.index < m.index + m[0].length; });
+        if (!taken) {
+          out.push({ raw: m[0], display: m[0], day: day, month: month, index: m.index, end: m.index + m[0].length, context: around(t, m.index, m[0].length) });
+        }
+      }
+    });
+    return out.sort(function (a, b) { return a.index - b.index; });
+  }
   function extractNumbers(text) {
-    var t = stripCitations(text).replace(/\b(\d{1,2})\.(\d{1,2})\.(\d{2,4})\b/g, '$1/$2/$3');
+    var t = figureText(text);
+    extractDates(text).forEach(function (d) { t = t.slice(0, d.index) + blank(d.raw) + t.slice(d.end); });
     var out = [];
     var re = new RegExp(NUMBER.source, 'g');
     var m;
@@ -83,12 +131,6 @@
       out.push({ raw: m[0], display: sign + m[0], value: Number(m[0].replace(/,/g, '')), index: m.index, end: m.index + m[0].length, context: around(t, m.index, m[0].length) });
     }
     return out;
-  }
-  function around(t, index, length) {
-    var start = Math.max(0, index - 35);
-    var end = Math.min(t.length, index + length + 35);
-    var s = t.slice(start, end).replace(/\s+/g, ' ').trim();
-    return (start > 0 ? '...' : '') + s + (end < t.length ? '...' : '');
   }
   function sameNumber(a, b) { return Math.abs(a - b) < 1e-9; }
   function containsNumber(list, value) {
@@ -101,14 +143,34 @@
   function messagesList(list) {
     return (list.length === 1 ? 'message ' : 'messages ') + (list.length === 1 ? String(list[0]) : list.slice(0, -1).join(', ') + ' and ' + list[list.length - 1]);
   }
+  /** The dates a text names in words, such as "5 March", as day-month pairs. */
+  function namedDates(text) {
+    var out = [];
+    var re = new RegExp('\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(' + MONTH_NAMES.join('|') + ')\\b', 'gi');
+    var m;
+    while ((m = re.exec(plain(text)))) { out.push({ day: Number(m[1]), month: MONTH_NAMES.indexOf(m[2].toLowerCase()) + 1 }); }
+    return out;
+  }
+  function dateIn(list, d) {
+    return list.some(function (x) { return (x.day === d.day && x.month === d.month) || (x.day === d.month && x.month === d.day); });
+  }
 
+  // The policy's rule numbers ("3. Who approves a credit.") are labels, not figures.
+  var POLICY_FIGURE_TEXT = CASE.policyText.replace(/^\d+\.\s/gm, '');
   var THREAD_NUMBERS = numberValues(CASE.threadText);
-  var POLICY_NUMBERS = numberValues(CASE.policyText);
+  var POLICY_NUMBERS = numberValues(POLICY_FIGURE_TEXT);
+  var THREAD_DATES = namedDates(CASE.threadText);
   var MESSAGE_NUMBERS = CASE.thread.map(function (m) { return numberValues(CASE.messageText(m)); });
+  var MESSAGE_DATES = CASE.thread.map(function (m) { return namedDates(CASE.messageText(m)); });
 
   function whereInThread(value) {
     var found = [];
     MESSAGE_NUMBERS.forEach(function (list, i) { if (containsNumber(list, value)) { found.push(i + 1); } });
+    return found;
+  }
+  function whereDateInThread(d) {
+    var found = [];
+    MESSAGE_DATES.forEach(function (list, i) { if (dateIn(list, d)) { found.push(i + 1); } });
     return found;
   }
 
@@ -160,24 +222,35 @@
   // ---------------------------------------------------------------------------
   var MONTHS = 'january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec';
   var RX = {
-    late: /\b(late|lateness|delay\w*|overdue|was due|were due|missed|behind schedule|not on time|after the (promised|agreed) date)\b/,
-    short: /\b(missing|short|shortage|fewer|not delivered|undelivered|not (yet )?arrived|did not arrive|didn't arrive|never arrived|never came|left behind|left off|not sent|still to come|still owed)\b/,
-    damage: /\b(damag\w*|crush\w*|wet|broken|unusable|cannot use|can't use|cannot be used|ruined|spoil\w*|unsellable)\b/,
+    late: /\b(late|lateness|delay\w*|overdue|was due|were due|missed|behind schedule|not on time|after the (promised|agreed) date)\b/g,
+    short: /\b(missing|short|shortage|fewer|not delivered|undelivered|not (yet )?arrived|did not arrive|didn't arrive|never arrived|never came|left behind|left off|not sent|still to come|still owed)\b/g,
+    damage: /\b(damag\w*|crush\w*|wet|broken|unusable|cannot use|can't use|cannot be used|ruined|spoil\w*|unsellable)\b/g,
     promise: /\b(promis\w*|agreed|agree|confirm\w*|commit\w*|undert\w*|said (he|she|they|we) would|guarantee\w*)\b/,
     notKept: /\b(did not|didn't|not kept|no reply|not heard|heard nothing|has not|hasn't|missed|broke|broken|failed|not confirmed|never confirmed|not stated|still waiting)\b/,
 
     credit: /\b(credit|credits|credited|crediting|refund\w*|reimburs\w*|compensat\w*|money back)\b/,
-    creditCommit: /\b(promis\w*|agreed|agrees?|approved|approves|confirm|confirms|confirmed|guarantee\w*|will|shall|we'll|i'll|you'll|has been|have been|is being|issued|issuing|credited|refunded|reimbursed)\b/,
     hedge: /\b(not|no|never|cannot|can't|nothing|pending|await\w*|waiting|wait|until|once|if|unless|ask|asks|asked|asking|request\w*|want\w*|claim\w*|says|said she|writes|wrote|believes|thinks|according|review\w*|decid\w*|decision|approval|consider\w*|whether|must|need|needs|has to|have to|requir\w*)\b|n't\b/,
 
-    costTopic: /\b(cash-and-carry|cash and carry|bought|buy|buying|spent|spend|other costs?|elsewhere|replacement|receipt)\b/,
-    costVerb: /\b(cover|covers|covered|covering|refund\w*|reimburs\w*|repay\w*|pay for|pay back|pay you|compensat\w*|credit|credited|crediting|include|includes|including)\b/,
-    costCommit: /\b(will|shall|we'll|i'll|can|confirm\w*|agree\w*|happy to|of course|glad to|going to)\b/,
+    // What a credit promise talks about, and the words that make a statement a promise.
+    creditTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the|your) (invoice|bill)\b/,
+    moneyTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount|invoice|bill|amount)\b|\$\s?\d/,
+    asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted)\b/g,
+    future: /\b(will|shall|we'll|i'll|you'll|they'll|she'll|can|am going to|are going to|is going to)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|receive|get|give|send you|cover|pay)\b/g,
+    // Words just before a promise word that hold it back: a negation, a condition, a request.
+    negation: /^(not|no|never|nothing|none|nobody|neither|nor|cannot|without|won't|can't|cant)$|n't$/,
+    localHedge: /\b(whether|if|once|until|unless|before|must|need|needs|needed|require|requires|required|could|may|might|should|would|awaiting|pending|ask|asks|asked|request|requests|requested|want|wants|wanted|please|has to|have to|had to|how to)\b/,
+    claim: /\b(says?|said|claims?|claimed|writes|wrote|believes|thinks|according|insists|feels)\b/,
 
-    deliver: /\b(deliver\w*|arriv\w*|send|sent|ship\w*|dispatch\w*|van|bring|get (them|it|the cartons|the missing cartons) to you)\b/,
+    costTopic: /\b(cash-and-carry|cash and carry|bought|buy|buying|spent|spend|other costs?|elsewhere|replacement|receipt)\b/,
+    costVerb: /\b(cover|covers|covered|covering|refund\w*|reimburs\w*|repay\w*|pay for|pay back|pay you|compensat\w*|credit|credited|crediting|include|includes|including)\b/g,
+    costCommit: /\b(will|shall|we'll|i'll|can|confirm\w*|agree\w*|happy to|of course|glad to|going to)\b/g,
+
+    deliver: /\b(deliver\w*|arriv\w*|van|be with you|reach you|come to you|get (them|it|the cartons|the missing cartons|your order) to you)\b/,
+    deliverGoods: /\b(send|sent|ship\w*|dispatch\w*|bring)\b/,
+    goods: /\b(cartons?|cups|lids|order|goods|them|missing)\b/,
     when: new RegExp('\\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|tomorrow|today|tonight|this (morning|afternoon|evening|week)|next week|within \\d+ (hours|days|working days)|\\d{1,2}(st|nd|rd|th)? (' + MONTHS + ')|(' + MONTHS + ') \\d{1,2})\\b'),
     dateCommit: /\b(will|shall|we'll|i'll|you'll|they'll|guarantee\w*|promis\w*|confirm\w*|arranged|booked|scheduled|definitely|certainly|going to|can (deliver|send|bring|get))\b/,
-    dateHedge: /\b(not|no|never|cannot|can't|until|once|as soon as|if|unless|let you know|find out|check\w*|call you|ring you|phone you|will confirm|hope|try|aim|expect|ask\w*|whether)\b|n't\b|confirm (the|a) (\w+ )?day/,
+    dateHedge: /\b(not|no|never|cannot|can't|until|once|as soon as|if|unless|let you know|find out|check\w*|call you|ring you|phone you|write to you|tell you|update you|get back to you|be in touch|e-?mail you|will confirm|hope|try|aim|expect|ask\w*|whether)\b|n't\b|confirm (the|a) (\w+ )?day/,
 
     person: /\b(i|we|our|my|me|us|customer|client|manager|she|he|they|her|his|their)\b/,
     action: /\b(write|draft|reply|respond|answer|summari[sz]e|list|prepare|rewrite|compose|suggest|create|produce|explain|translate|check|compare|turn|make|give)\b/,
@@ -186,14 +259,59 @@
     prohibit: /\b(do not|don't|dont|never|must not|mustn't|should not|shouldn't|may not|cannot|can't|avoid|not allowed|forbidden)\b|(^|[.!?\n]\s*)no\s+\w+/
   };
 
+  /** The last few words before a position, after the last punctuation mark. */
+  function wordsBefore(text, index, n) {
+    var parts = text.slice(0, index).split(/[.!?;:,()]/);
+    return parts[parts.length - 1].split(/\s+/).filter(Boolean).slice(-n);
+  }
+  function negated(words) { return words.some(function (w) { return RX.negation.test(w.replace(/[^a-z']/g, '')); }); }
+  /**
+   * True if a match of the regular expression stands in the text as stated: not negated or
+   * held back by a condition in the four words before it, and not after "says" or "claims".
+   */
+  function liveMatch(text, re) {
+    var r = new RegExp(re.source, 'g');
+    var m;
+    while ((m = r.exec(text))) {
+      var before = wordsBefore(text, m.index, 4);
+      var next = text.slice(m.index + m[0].length).split(/\s+/).filter(Boolean)[0] || '';
+      if (negated(before) || RX.localHedge.test(before.join(' ')) || RX.claim.test(text.slice(0, m.index))) { continue; }
+      // "promises no credit": the negation comes just after the word.
+      if (negated([next])) { continue; }
+      // An instruction, "confirm the amount", is not a promise: a base verb with no subject before it.
+      if (before.length === 0 && /^(confirm|approve|agree|promise|guarantee|accept)$/.test(m[0])) { continue; }
+      return true;
+    }
+    return false;
+  }
+  /** True if a sign is in the text and not negated just before it: "not late" is not a sign of lateness. */
+  function signPresent(text, re) {
+    var r = new RegExp(re.source, 'g');
+    var m;
+    while ((m = r.exec(text))) {
+      if (!negated(wordsBefore(text, m.index, 3))) { return true; }
+    }
+    return false;
+  }
+
   // ---------------------------------------------------------------------------
   // Detectors for the three things a reply to this customer must never promise,
   // and for the trap of the two sixes. Each looks at one sentence.
   // ---------------------------------------------------------------------------
-  /** A credit described as promised, agreed or given, with no word that holds it back. */
+  /** A credit, or money off, stated as promised, agreed or given; or promised for the future. */
   function promisesCredit(sentence) {
     return splitClauses(sentence).some(function (c) {
-      return RX.credit.test(c) && RX.creditCommit.test(c) && !RX.hedge.test(c);
+      if (RX.creditTopic.test(c) && liveMatch(c, RX.asserted)) { return true; }
+      if (!RX.moneyTopic.test(c)) { return false; }
+      var r = new RegExp(RX.future.source, 'g');
+      var m;
+      while ((m = r.exec(c))) {
+        var before = wordsBefore(c, m.index, 4);
+        var between = m[2].split(/\s+/).filter(Boolean);
+        if (negated(before) || negated(between) || RX.localHedge.test(before.join(' ')) || RX.claim.test(c.slice(0, m.index))) { continue; }
+        return true;
+      }
+      return false;
     });
   }
   /** An offer to pay the customer's other costs (the cash-and-carry purchase). */
@@ -201,19 +319,18 @@
     var cl = splitClauses(sentence);
     function topic(c) { return RX.costTopic.test(c) || containsNumber(numberValues(c), F.localPurchase); }
     for (var i = 0; i < cl.length; i++) {
-      if (!RX.costVerb.test(cl[i])) { continue; }
+      if (!liveMatch(cl[i], RX.costVerb)) { continue; }
       var near = cl.slice(Math.max(0, i - 1), i + 2);
       var before = cl.slice(Math.max(0, i - 1), i + 1);
-      if (near.some(topic) && before.some(function (c) { return RX.costCommit.test(c); }) && !near.some(function (c) { return RX.hedge.test(c); })) {
-        return true;
-      }
+      if (near.some(topic) && before.some(function (c) { return liveMatch(c, RX.costCommit); })) { return true; }
     }
     return false;
   }
-  /** A day or date given for a delivery, as a commitment. */
+  /** A day or date given for a delivery of the cartons, as a commitment. */
   function promisesDate(sentence) {
     return splitClauses(sentence).some(function (c) {
-      return RX.deliver.test(c) && RX.when.test(c) && RX.dateCommit.test(c) && !RX.dateHedge.test(c);
+      var delivery = RX.deliver.test(c) || (RX.deliverGoods.test(c) && RX.goods.test(c));
+      return delivery && RX.when.test(c) && RX.dateCommit.test(c) && !RX.dateHedge.test(c);
     });
   }
   /**
@@ -235,9 +352,11 @@
         .split(/\s+/).filter(Boolean).slice(0, 6).join(' ');
       var backParts = text.slice(k > 0 ? nums[k - 1].end : 0, n.index).split(/[,;:.!?()]/);
       var backward = backParts[backParts.length - 1].split(/\s+/).filter(Boolean).slice(-6).join(' ');
-      var seg = (RX.short.test(forward) || RX.damage.test(forward)) ? forward : backward;
-      var s = RX.short.test(seg);
-      var d = RX.damage.test(seg);
+      var shortRe = new RegExp(RX.short.source);
+      var damageRe = new RegExp(RX.damage.source);
+      var seg = (shortRe.test(forward) || damageRe.test(forward)) ? forward : backward;
+      var s = shortRe.test(seg);
+      var d = damageRe.test(seg);
       if (isGroup && s && d) {
         issues.push({ kind: 'merged', figure: n.raw, sentence: sentence });
       } else if (isBoth && !isGroup && s !== d && !/^\s*oz\b/.test(forward)) {
@@ -253,24 +372,34 @@
   function rule(id, name, status, message, items) {
     return { id: id, name: name, status: status, message: message, items: items || [] };
   }
+  var EMPTY_MESSAGE = 'This box is empty. Paste or write the text first, then check it.';
+  /** The same rules, each saying only that the box is empty. */
+  function emptied(result) {
+    result.rules = result.rules.map(function (r) { return rule(r.id, r.name, 'note', EMPTY_MESSAGE); });
+    return result;
+  }
 
   function numbersRule(text, allowed, materialName) {
     var nums = extractNumbers(text);
-    if (nums.length === 0) {
+    var dates = extractDates(text);
+    var total = nums.length + dates.length;
+    if (total === 0) {
       return rule('numbers', 'The figures', 'note', 'I found no figures written in digits. Figures written in words, such as "six", are not checked.');
-    }
-    var missing = nums.filter(function (n) { return !containsNumber(allowed, n.value); });
-    if (missing.length === 0) {
-      return rule('numbers', 'The figures', 'ok',
-        'Every figure in this answer (' + plural(nums.length, 'figure') + ') is in ' + materialName + '. Being there does not make it right: check that each one means what the answer says it means.');
     }
     var seen = {};
     var items = [];
-    missing.forEach(function (n) {
+    nums.filter(function (n) { return !containsNumber(allowed, n.value); }).forEach(function (n) {
       if (seen[n.value]) { return; }
       seen[n.value] = true;
       items.push(showNumber(n) + ' is not in the material: check it. It appears here: ' + quote(n.context));
     });
+    dates.filter(function (d) { return !dateIn(THREAD_DATES, d); }).forEach(function (d) {
+      items.push(d.display + ' is not a date in the material: check it. It appears here: ' + quote(d.context));
+    });
+    if (items.length === 0) {
+      return rule('numbers', 'The figures', 'ok',
+        'Every figure I found in this answer (' + plural(total, 'figure') + ') is in ' + materialName + '. Being there does not make it right: check that each one means what the answer says it means.');
+    }
     return rule('numbers', 'The figures', 'look',
       plural(items.length, 'figure') + ' in this answer ' + (items.length === 1 ? 'is' : 'are') + ' not in ' + materialName +
       '. If a figure was worked out from others, check the sum yourself. If you cannot tell where it came from, take it out until you can.', items);
@@ -283,7 +412,7 @@
     if (issues.length === 0) {
       return rule('counts', name, 'ok',
         'The thread uses ' + F.cupsCrushed + ' twice: ' + F.cupsMissing + ' cartons that never arrived, and ' + F.cupsCrushed +
-        ' that arrived crushed. Nothing here merges the two.');
+        ' that arrived crushed. I found no figure here that merges the two.');
     }
     return rule('counts', name, 'look',
       'The thread uses ' + F.cupsCrushed + ' twice, for two different groups: ' + F.cupsMissing + ' cartons that never arrived (message 3), and ' + F.cupsCrushed +
@@ -297,26 +426,26 @@
 
   function creditRule(text, forSummary) {
     var hits = splitSentences(text).filter(promisesCredit);
-    var name = forSummary ? 'The promise that was never given' : 'No credit promised';
+    var name = forSummary ? 'The promise that was never given' : 'Promises of a credit';
     if (hits.length === 0) {
       return rule('credit', name, 'ok', forSummary
-        ? 'Nothing here says that a credit was promised or agreed. In the thread, ' + F.staffFirst + ' passed the request to the ' + F.managerRole + ' and promised no credit (message 4).'
-        : 'Nothing here promises a credit or an amount. Under the policy, a credit above ' + money(F.staffCreditLimit) + ' needs the ' + F.managerRole + '\'s approval first (rules 3 and 6).');
+        ? 'I found no sentence that says a credit was promised or agreed. In the thread, ' + F.staffFirst + ' passed the request to the ' + F.managerRole + ' and promised no credit (message 4).'
+        : 'I found no sentence that promises a credit, an amount or money off. Under the policy, a credit above ' + money(F.staffCreditLimit) + ' needs the ' + F.managerRole + '\'s approval first (rules 3 and 6).');
     }
     return rule('credit', name, 'look', forSummary
-      ? 'This answer says a credit was promised or agreed. ' + F.staffFirst + ' never promised one: he wrote that it must be approved by the ' + F.managerRole + ' (message 4). ' +
+      ? 'This answer seems to say that a credit was promised or agreed. ' + F.staffFirst + ' never promised one: he wrote that it must be approved by the ' + F.managerRole + ' (message 4). ' +
         F.contactFirst + ' writes "the credit you promised" (message 5), but that is her claim, not a promise. Write "' + F.contactFirst + ' says", or say plainly that no credit was promised.'
-      : 'This reply seems to promise a credit, or an amount. Under the policy, a credit above ' + money(F.staffCreditLimit) + ' must be approved by the ' + F.managerRole + ', and no credit may be promised by e-mail before it is approved (rules 3 and 6).',
+      : 'This reply seems to promise a credit, an amount or money off. Under the policy, a credit above ' + money(F.staffCreditLimit) + ' must be approved by the ' + F.managerRole + ', and no credit may be promised by e-mail before it is approved (rules 3 and 6).',
       hits.map(function (s) { return 'Read this sentence: ' + quote(s); }));
   }
 
   function costsRule(text) {
     var hits = splitSentences(text).filter(promisesCosts);
     if (hits.length === 0) {
-      return rule('costs', 'No offer to pay other costs', 'ok',
-        'Nothing here offers to pay for the cups bought elsewhere. Under the policy, that needs the ' + F.managerRole + '\'s agreement in writing (rules 5 and 6).');
+      return rule('costs', 'Offers to pay other costs', 'ok',
+        'I found no sentence that offers to pay for the cups bought elsewhere. Under the policy, that needs the ' + F.managerRole + '\'s agreement in writing (rules 5 and 6).');
     }
-    return rule('costs', 'No offer to pay other costs', 'look',
+    return rule('costs', 'Offers to pay other costs', 'look',
       'This reply seems to offer to pay the customer\'s other costs. The policy says we do not pay for goods bought elsewhere unless the ' + F.managerRole +
       ' agrees in writing, and that this is never promised by e-mail (rules 5 and 6).',
       hits.map(function (s) { return 'Read this sentence: ' + quote(s); }));
@@ -325,16 +454,16 @@
   function dateRule(text) {
     var hits = splitSentences(text).filter(promisesDate);
     if (hits.length === 0) {
-      return rule('date', 'No delivery day promised', 'ok',
-        'Nothing here promises a day for the missing cartons. The warehouse has not confirmed one, and ' + F.staffFirst + ' wrote that the van does not come until next week (message 4).');
+      return rule('date', 'Promises of a delivery day', 'ok',
+        'I found no sentence that promises a day for the missing cartons. The warehouse has not confirmed one, and ' + F.staffFirst + ' wrote that the van does not come until next week (message 4).');
     }
-    return rule('date', 'No delivery day promised', 'look',
+    return rule('date', 'Promises of a delivery day', 'look',
       'This reply seems to promise a delivery day. No day has been confirmed by the warehouse (message 4), and the policy says never to promise one that is not confirmed (rule 6).',
       hits.map(function (s) { return 'Read this sentence: ' + quote(s); }));
   }
 
   var WORD_SIGNS_NOTE = 'The checks for promises look for words that usually mean a promise. They can miss one, or flag a sentence that is fine. Read each flagged sentence yourself and decide.';
-  var WORDS_NOTE = 'Figures written in words, such as "six", are not checked.';
+  var WORDS_NOTE = 'Figures written in words, such as "six", are not checked. Dates written with figures, such as 28/02, are compared by day and month.';
 
   // ---------------------------------------------------------------------------
   // Exercise 1: the five-part brief. It checks that each part is there and does
@@ -369,7 +498,7 @@
       rules.push(rule('situation', 'Situation', 'look',
         'I found ' + plural(sw, 'word') + ' here. A situation usually needs at least 12 words and says who is involved (I, we, the customer, the manager). Say who you are, who the reader is and what has happened.'));
     } else {
-      rules.push(rule('situation', 'Situation', 'ok', 'There are ' + plural(sw, 'word') + ' that set the scene and say who is involved.'));
+      rules.push(rule('situation', 'Situation', 'ok', 'I found ' + plural(sw, 'word') + ', and a word that says who is involved.'));
     }
 
     // Material
@@ -377,13 +506,13 @@
     var found = [];
     MESSAGE_MARKERS.forEach(function (mk, i) { if (mat.indexOf(mk) !== -1) { found.push(i + 1); } });
     if (!p.material) {
-      rules.push(rule('material', 'Material', 'look', 'This box is empty. An assistant can only use what you give it: paste the whole e-mail thread here.'));
+      rules.push(rule('material', 'Material', 'look', 'This box is empty. Press the button above the box to put the whole thread in it; do not type a note. About your case, an assistant knows only what you give it.'));
     } else if (found.length < CASE.thread.length) {
       rules.push(rule('material', 'Material', 'look',
         'I looked for the opening words of each of the ' + CASE.thread.length + ' messages and found ' + found.length +
-        (found.length ? ' (message ' + found.join(', ') + ')' : '') + '. An assistant can only use what you give it: paste the whole thread.'));
+        (found.length ? ' (message ' + found.join(', ') + ')' : '') + '. About your case, an assistant knows only what you give it: press the button above the box to put the whole thread in it.'));
     } else {
-      rules.push(rule('material', 'Material', 'ok', 'All ' + CASE.thread.length + ' messages of the thread are here.'));
+      rules.push(rule('material', 'Material', 'ok', 'I found the opening words of all ' + CASE.thread.length + ' messages of the thread.'));
     }
 
     // Task
@@ -393,7 +522,7 @@
       rules.push(rule('task', 'Task', 'look',
         'I found no word that says what to produce, such as write, draft, reply or summarise. Start the task with the job: "Draft my reply to her last message."'));
     } else {
-      rules.push(rule('task', 'Task', 'ok', 'It says what to produce: ' + quote(p.task.toLowerCase().match(RX.action)[0]) + '.'));
+      rules.push(rule('task', 'Task', 'ok', 'I found a word that says what to produce: ' + quote(p.task.toLowerCase().match(RX.action)[0]) + '.'));
     }
 
     // Form
@@ -404,7 +533,7 @@
       var what = [];
       if (RX.length.test(fl)) { what.push('a length (' + quote(fl.match(RX.length)[0]) + ')'); }
       if (RX.structure.test(fl)) { what.push('a structure (' + quote(fl.match(RX.structure)[0]) + ')'); }
-      rules.push(rule('form', 'Form', 'ok', 'It names ' + what.join(' and ') + '.'));
+      rules.push(rule('form', 'Form', 'ok', 'I found ' + what.join(' and ') + '.'));
     } else {
       rules.push(rule('form', 'Form', 'look',
         'I found no length and no structure. Words such as "short" or "brief" mean different things to different people. Name a length, such as "at most 150 words", or a structure, such as "three short paragraphs".'));
@@ -415,7 +544,7 @@
     if (!p.limits) {
       rules.push(rule('limits', 'Limits', 'look', 'This box is empty. Say what the answer must not do, as a plain sentence: "Do not promise a credit."'));
     } else if (RX.prohibit.test(ll)) {
-      rules.push(rule('limits', 'Limits', 'ok', 'It holds at least one explicit prohibition (' + quote(ll.match(RX.prohibit)[0].trim()) + ').'));
+      rules.push(rule('limits', 'Limits', 'ok', 'I found at least one explicit prohibition (' + quote(ll.match(RX.prohibit)[0].trim()) + ').'));
     } else {
       rules.push(rule('limits', 'Limits', 'look',
         'I found no explicit prohibition. Limits work best as plain "Do not ..." sentences: "Do not promise a credit or any amount."'));
@@ -436,14 +565,45 @@
   function materialText(names) {
     return names.map(function (n) { return n === 'policy' ? CASE.policyText : CASE.threadText; }).join('\n');
   }
-  /** The exact text of a prepared request: 'wish', 'summary' or 'reply'. */
-  function requestText(name) {
+  /**
+   * The exact text of a prepared request: 'wish', 'summary' or 'reply'.
+   * With { withoutCiteLine: true }, the summary request without the line that asks for message
+   * numbers: in exercise 2 the participant writes that line.
+   */
+  function requestText(name, options) {
     var b = CASE.briefs[name];
     if (!b) { throw new Error('Unknown request: ' + name); }
     if (b.line) { return b.line + '\n\n' + materialText(b.material); }
     var parts = {};
     PARTS.forEach(function (k) { parts[k] = k === 'material' ? materialText(b.material) : b[k]; });
+    if (options && options.withoutCiteLine && b.citeLine) { parts.form = parts.form.replace(' ' + b.citeLine, ''); }
     return assembleBrief(parts);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Exercise 2, step 1: the request the participant makes checkable
+  // ---------------------------------------------------------------------------
+  var CITE_SOURCE = /\b(message|messages|msg|source|sources|where (it|each|they|the fact) (comes?|came) from)\b/;
+  var CITE_EACH = /\b(each|every|after|all)\b/;
+  var CITE_WHAT = /\b(facts?|figures?|points?|bullets?|claims?|lines?|statements?|sentences?|numbers?)\b/;
+  function checkRequest(text) {
+    var t = plain(text);
+    var mat = squash(t);
+    var found = MESSAGE_MARKERS.filter(function (mk) { return mat.indexOf(mk) !== -1; }).length;
+    var asks = splitSentences(t).filter(function (s) {
+      var l = s.toLowerCase();
+      return CITE_SOURCE.test(l) && CITE_EACH.test(l) && CITE_WHAT.test(l);
+    });
+    var rules = [
+      asks.length
+        ? rule('cite', 'A source for every fact', 'ok', 'I found a line that asks for the source of each fact: ' + quote(asks[0]) + '. Now every figure in the answer will point to the message to check it against.')
+        : rule('cite', 'A source for every fact', 'look', 'I found no line that asks the assistant to say, after each fact, which message it comes from. Add one to the Form part, for example: "After each fact, put the number of the message it comes from in brackets."'),
+      found === CASE.thread.length
+        ? rule('material', 'The thread', 'ok', 'I found the opening words of all ' + CASE.thread.length + ' messages: the thread is still in the request.')
+        : rule('material', 'The thread', 'look', 'I found the opening words of ' + found + ' of the ' + CASE.thread.length + ' messages. Keep the whole thread in the request: the assistant can cite only what it has.')
+    ];
+    var result = { exercise: '2-request', heading: 'Exercise 2, step 1: the request', title: 'The request', rules: rules, notes: ['This check looks for the presence of a line by simple signs, not for its quality.'] };
+    return t.trim() ? result : emptied(result);
   }
   function parseBrief(text) {
     var parts = { situation: '', material: '', task: '', form: '', limits: '' };
@@ -477,7 +637,8 @@
       costsRule(t),
       dateRule(t)
     ];
-    return { exercise: 'reply', title: 'A reply to the customer', rules: rules, notes: [WORD_SIGNS_NOTE, WORDS_NOTE] };
+    var result = { exercise: 'reply', title: 'A reply to the customer', rules: rules, notes: [WORD_SIGNS_NOTE, WORDS_NOTE] };
+    return t.trim() ? result : emptied(result);
   }
 
   // ---------------------------------------------------------------------------
@@ -504,6 +665,14 @@
             items.push(showNumber(n) + ' is cited to ' + messagesList(c.messages) + ', but it is in ' + messagesList(inThread) + '.');
           }
         });
+        extractDates(segment).forEach(function (d) {
+          var inThread = whereDateInThread(d);
+          if (inThread.length === 0) { return; }
+          var ok = c.messages.some(function (m) { return m >= 1 && m <= MESSAGE_DATES.length && dateIn(MESSAGE_DATES[m - 1], d); });
+          if (!ok) {
+            items.push('The date ' + d.display + ' is cited to ' + messagesList(c.messages) + ', but it is in ' + messagesList(inThread) + '.');
+          }
+        });
       });
     });
     if (total === 0) {
@@ -511,21 +680,40 @@
         'I found no message numbers, such as (msg 3). Asking for them makes an answer much quicker to check: each figure then points to the place to look.');
     }
     if (items.length === 0) {
-      return rule('citations', 'Message numbers', 'ok', 'Each figure is in the message its citation names (' + plural(total, 'citation') + ' checked).');
+      return rule('citations', 'Message numbers', 'ok', 'I checked ' + plural(total, 'citation') + ', and each figure I found is in the message its citation names.');
     }
     return rule('citations', 'Message numbers', 'look',
       plural(items.length, 'figure') + ' cannot be found in the message cited for ' + (items.length === 1 ? 'it' : 'them') +
       '. Open that message and the one named below, and correct the citation or the figure.', items);
   }
 
+  /** "Due 28 Feb ... delivered 5 Mar": a due date, and a later date of delivery, say that it came late. */
+  function lateByDates(lower) {
+    // The first date that follows the word in the same clause, as month * 100 + day.
+    function dateAfter(re) {
+      var r = new RegExp(re.source, 'g');
+      var m;
+      while ((m = r.exec(lower))) {
+        var clause = lower.slice(m.index, m.index + m[0].length + 30).split(/[.;:!?(]/)[0];
+        var d = namedDates(clause.replace(SHORT_MONTH, function (all, day, mon) { return day + ' ' + FULL_MONTH[mon]; }))[0];
+        if (d) { return d.month * 100 + d.day; }
+      }
+      return null;
+    }
+    var due = dateAfter(/\b(due|was due|were due)\b/);
+    var came = dateAfter(/\b(delivered|arrived|came)\b/);
+    return due !== null && came !== null && came > due;
+  }
+  var FULL_MONTH = { jan: 'january', feb: 'february', mar: 'march', apr: 'april', jun: 'june', jul: 'july', aug: 'august', sep: 'september', sept: 'september', oct: 'october', nov: 'november', dec: 'december' };
+  var SHORT_MONTH = /\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|jun|jul|aug|sept|sep|oct|nov|dec)\b\.?/g;
   function capital(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function factRule(fact, nums) {
     var ok = fact.numbers.some(function (set) { return set.every(function (v) { return containsNumber(nums, v); }); });
     if (ok) {
-      return rule('fact-' + fact.id, capital(fact.name), 'ok', 'Found, as required.');
+      return rule('fact-' + fact.id, capital(fact.name), 'ok', 'I found it, as required.');
     }
     return rule('fact-' + fact.id, capital(fact.name), 'look',
-      'Required, and I could not find it written in digits. Look in ' + fact.where + '.');
+      'Required, and I did not find it written in digits. Look in ' + fact.where + '.');
   }
 
   function checkSummary(text) {
@@ -542,12 +730,12 @@
 
     // What went wrong: late, short, damaged
     var missingSigns = [];
-    if (!RX.late.test(lower)) { missingSigns.push('that the delivery was late (message 1)'); }
-    if (!RX.short.test(lower) && !containsNumber(nums, F.cupsDelivered)) { missingSigns.push('that cartons were missing (message 3)'); }
-    if (!RX.damage.test(lower)) { missingSigns.push('that cartons arrived damaged (message 3)'); }
+    if (!signPresent(lower, RX.late) && !lateByDates(lower)) { missingSigns.push('that the delivery was late (message 1)'); }
+    if (!signPresent(lower, RX.short) && !containsNumber(nums, F.cupsDelivered)) { missingSigns.push('that cartons were missing (message 3)'); }
+    if (!signPresent(lower, RX.damage)) { missingSigns.push('that cartons arrived damaged (message 3)'); }
     rules.push(missingSigns.length === 0
-      ? rule('fact-wrong', 'What went wrong', 'ok', 'Found, as required: it says the order was late, that cartons were missing, and that cartons were damaged.')
-      : rule('fact-wrong', 'What went wrong', 'look', 'Required. Three things went wrong, and I could not find ' + missingSigns.join(', or ') + '.'));
+      ? rule('fact-wrong', 'What went wrong', 'ok', 'I found, as required, words that say the order was late, that cartons were missing, and that cartons were damaged.')
+      : rule('fact-wrong', 'What went wrong', 'look', 'Required. Three things went wrong, and I did not find words that say ' + missingSigns.join(', or ') + '. The check looks for words such as late, missing and damaged, and does not count them after "not" or "nothing".'));
 
     rules.push(factRule(facts[2], nums));
 
@@ -561,7 +749,7 @@
     var mentionsPromise = sentencesLower.some(function (s) {
       var byWhen = new RegExp('\\b(' + confirmDay.weekday.toLowerCase() + '|' + confirmDay.weekday.slice(0, 3).toLowerCase() + ')\\b').test(s.lower) ||
         containsNumber(numberValues(s.text), confirmDay.day);
-      return /\bconfirm\w*/.test(s.lower) && /\b(day|date|delivery)\b/.test(s.lower) && byWhen;
+      return /\b(confirm\w*|promis\w*|said he would|would (tell|let))/.test(s.lower) && /\b(day|date|delivery)\b/.test(s.lower) && byWhen;
     });
     var saysNotKept = sentencesLower.some(function (s) {
       return RX.notKept.test(s.lower) && /\b(confirm\w*|reply|replied|heard|day|date)\b/.test(s.lower);
@@ -569,15 +757,15 @@
     var unkept = mentionsPromise && saysNotKept;
     if (saysPromise && creditStatus && unkept) {
       rules.push(rule('fact-promised', 'What was promised', 'ok',
-        'Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by ' + confirmDay.weekday +
-        ', with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.'));
+        'I found, as required: a word such as promised; a mention of the promise to confirm a delivery day by ' + confirmDay.weekday +
+        ', with a sign that it was not kept; and the credit described as asked for or awaiting a decision.'));
     } else {
       var lacks = [];
       if (!saysPromise) { lacks.push('a word such as promised, agreed or confirmed'); }
       if (!unkept) { lacks.push(F.staffFirst + '\'s promise to confirm a delivery day by ' + CASE.format.wdm(confirmDay) + ', and that it was not kept (messages 4 and 5)'); }
       if (!creditStatus) { lacks.push('the credit described as asked for, or as waiting for a decision (message 4)'); }
       rules.push(rule('fact-promised', 'What was promised', 'look',
-        'Required, and I could not find ' + lacks.join('; or ') + '. A manager deciding on a credit needs to know what the company has already promised, and which promise it broke.'));
+        'Required, and I did not find ' + lacks.join('; or ') + '. A manager deciding on a credit needs to know what the company has already promised, and which promise it broke.'));
     }
 
     var words = countWords(t);
@@ -588,7 +776,8 @@
     rules.push(creditRule(t, true));
     rules.push(countsRule(t));
 
-    return { exercise: '2', title: 'Summarise, and prove it', rules: rules, notes: [WORDS_NOTE, WORD_SIGNS_NOTE] };
+    var result = { exercise: '2', title: 'Summarise, and prove it', rules: rules, notes: [WORDS_NOTE, WORD_SIGNS_NOTE] };
+    return t.trim() ? result : emptied(result);
   }
 
   // ---------------------------------------------------------------------------
@@ -749,25 +938,47 @@
     });
   }
 
+  /** Anything shaped like an e-mail address or a phone number, from any source. */
+  function findContactShapes(text) {
+    var t = plain(text);
+    var out = [];
+    var m;
+    var email = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+/g;
+    while ((m = email.exec(t))) { out.push({ kind: 'something shaped like an e-mail address', value: m[0] }); }
+    var phone = /(?:\+\d{1,3}[ .-]?)?(?:\(\d{1,5}\)[ .-]?)?\d{2,6}(?:[ .-]\d{2,6}){1,4}|\b\d{9,13}\b/g;
+    while ((m = phone.exec(t))) {
+      if (m[0].replace(/\D/g, '').length >= 7) { out.push({ kind: 'something shaped like a phone number', value: m[0].trim() }); }
+    }
+    return out;
+  }
+
+  var EXTRACT_RULE = 'This table\'s values, and contact details';
   function checkExtract(text) {
     var t = plain(text).trim();
     var rules = [];
     if (!t) {
-      rules.push(rule('personal', 'Nothing personal in it', 'note', 'This box is empty. Prepare the extract first, then check it here before you paste it anywhere.'));
+      rules.push(rule('personal', EXTRACT_RULE, 'note', 'This box is empty. Prepare the extract first, then check it here before you paste it anywhere.'));
     } else {
       var found = findPersonal(t);
+      var known = found.map(function (v) { return v.value.toLowerCase(); });
+      var knownDigits = found.filter(function (v) { return v.phone; }).map(function (v) { return v.value.replace(/\D/g, ''); });
+      findContactShapes(t).forEach(function (s) {
+        var digits = s.value.replace(/\D/g, '');
+        if (known.indexOf(s.value.toLowerCase()) === -1 && knownDigits.indexOf(digits) === -1) { found.push(s); }
+      });
       if (found.length === 0) {
-        rules.push(rule('personal', 'Nothing personal in it', 'ok',
-          'I found none of the table\'s ' + CASE.customers.length + ' business names, contact names, phone numbers or e-mail addresses in this text.'));
+        rules.push(rule('personal', EXTRACT_RULE, 'ok',
+          'I found none of this table\'s ' + CASE.customers.length + ' business names, contact names, phone numbers or e-mail addresses, and nothing shaped like an e-mail address or a phone number. ' +
+          'I cannot recognise other names or personal details: read the text yourself before you paste it.'));
       } else {
-        rules.push(rule('personal', 'Nothing personal in it', 'look',
-          'Do not paste this yet. I found ' + plural(found.length, 'value') + ' from the orders table that identify a customer or a person. Leave those columns out, or replace them with stand-ins.',
+        rules.push(rule('personal', EXTRACT_RULE, 'look',
+          'Do not paste this yet. I found ' + plural(found.length, 'value') + ' that can identify a customer or a person. Leave those columns out, or replace them with stand-ins.',
           found.slice(0, 12).map(function (v) { return v.kind + ': ' + v.value; }).concat(found.length > 12 ? ['and ' + (found.length - 12) + ' more'] : [])));
       }
     }
     return {
       exercise: '4b', title: 'What must not go in: the text about to be pasted', rules: rules,
-      notes: ['This check knows only the orders table in this workbook. With your own data, you are the check.']
+      notes: ['This check knows the orders table in this workbook, and the shape of e-mail addresses and phone numbers. It does not know names in general: with your own data, you are the check.']
     };
   }
 
@@ -818,7 +1029,10 @@
   // ---------------------------------------------------------------------------
   var PLACEHOLDER = /\[([^\[\]\n]{2,200})\]|\{\{\s*([^{}\n]{2,200}?)\s*\}\}|\{([^{}\n]{2,200})\}|<([^<>\n]{2,200})>/g;
   var MATERIAL_PLACEHOLDER = /(paste|thread|e-?mails?|material|messages?|text|correspondence|conversation)/i;
-  var BLANK = /_{3,}|\.\.\.|\bx{3,}\b|\[\s*\]|\(\s*\)/i;
+  // A blank that names nothing: ___, XXX, [ ], [...] or (...). An ordinary "..." in a sentence is not a blank.
+  var BLANK = /_{3,}|\bx{3,}\b|\[\s*\]|\(\s*\)|\[\s*\.{2,}\s*\]|\(\s*\.{2,}\s*\)/i;
+  // Words about placeholders, not names of one: "fill in the [BRACKETED] items" names nothing.
+  var GENERIC_NAME = /^(the |all |every )?(square )?(brackets?|bracketed( (items?|parts?|words?))?|placeholders?|items?|parts?|blanks?|fields?|gaps?|things?)$/i;
 
   function findPlaceholders(text) {
     var t = stripCitations(text);
@@ -830,6 +1044,7 @@
       var name = (m[1] || m[2] || m[3] || m[4] || '').trim();
       if ((name.match(/[A-Za-z]/g) || []).length < 2) { continue; }
       if (/[@\/]/.test(name)) { continue; } // an e-mail address or a web address in brackets is not a placeholder
+      if (GENERIC_NAME.test(name)) { continue; }
       var k = name.toUpperCase();
       if (!seen[k]) { seen[k] = true; names.push(name); }
     }
@@ -897,10 +1112,11 @@
     var rules = [];
     var names = findPlaceholders(t);
     var material = names.filter(function (n) { return MATERIAL_PLACEHOLDER.test(n); });
-    var blanks = BLANK.test(stripCitations(t).replace(PLACEHOLDER, ''));
-    if (!t.trim()) {
-      rules.push(rule('placeholders', 'Named placeholders', 'look', 'This box is empty. Start from the brief of exercise 2, then replace what belongs to this case.'));
-    } else if (names.length >= 3 && material.length > 0 && !blanks) {
+    // Named placeholders are taken out first; an unnamed one, such as [...], stays and counts as a blank.
+    var blanks = BLANK.test(stripCitations(t).replace(new RegExp(PLACEHOLDER.source, 'g'), function (all) {
+      return (all.match(/[A-Za-z]/g) || []).length >= 2 ? '' : all;
+    }));
+    if (names.length >= 3 && material.length > 0 && !blanks) {
       rules.push(rule('placeholders', 'Named placeholders', 'ok',
         'I found ' + plural(names.length, 'named placeholder') + ', including one for the material (' + quote(material[0]) + ').', names.map(function (n) { return n; })));
     } else {
@@ -910,19 +1126,20 @@
         why.push(names.length ? 'None of them stands for the material to paste: add one, such as [PASTE THE E-MAIL THREAD HERE].'
           : 'Make one of them stand for the material to paste, such as [PASTE THE E-MAIL THREAD HERE].');
       }
-      if (blanks) { why.push('There is a blank such as ___ or "...". A blank does not say what goes there: give it a name in square brackets.'); }
+      if (blanks) { why.push('There is a blank such as ___ or [...]. A blank does not say what goes there: give it a name in square brackets.'); }
       rules.push(rule('placeholders', 'Named placeholders', 'look', why.join(' '), names));
     }
     var left = findLeftovers(t);
     if (left.length === 0) {
-      rules.push(rule('leftovers', 'Nothing left from this case', 'ok',
+      rules.push(rule('leftovers', 'Values left from this case', 'ok',
         'I found no name of a person or of the customer from this case, no order or invoice number, no amount of money, no carton count and no date from the thread. (The company\'s own name may stay.)'));
     } else {
-      rules.push(rule('leftovers', 'Nothing left from this case', 'look',
+      rules.push(rule('leftovers', 'Values left from this case', 'look',
         plural(left.length, 'value') + ' here belong' + (left.length === 1 ? 's' : '') + ' to this case, and would go out with every use of the template. Replace each with a named placeholder.',
         left.slice(0, 15).map(function (v) { return v.kind + ': ' + v.value; }).concat(left.length > 15 ? ['and ' + (left.length - 15) + ' more'] : [])));
     }
-    return { exercise: '5', title: 'Make it reusable', rules: rules, notes: [] };
+    var result = { exercise: '5', title: 'Make it reusable', rules: rules, notes: [] };
+    return t.trim() ? result : emptied(result);
   }
 
   // ---------------------------------------------------------------------------
@@ -975,7 +1192,8 @@
     return parts.join(', ') + '.';
   }
   function formatResult(result) {
-    var lines = [result.exercise === 'reply' ? result.title : 'Exercise ' + result.exercise + ': ' + result.title, summaryLine(result), ''];
+    var heading = result.heading || (result.exercise === 'reply' ? result.title : 'Exercise ' + result.exercise + ': ' + result.title);
+    var lines = [heading, summaryLine(result), ''];
     result.rules.forEach(function (r) {
       lines.push('[' + STATUS_WORDS[r.status] + '] ' + r.name + ': ' + r.message);
       r.items.forEach(function (i) { lines.push('    - ' + i); });
@@ -988,13 +1206,14 @@
   }
 
   var EXERCISES = {
-    '1': { name: 'the five-part brief', run: function (t) { return checkBrief(parseBrief(t)); } },
-    'reply': { name: 'a reply to the customer', run: checkReply },
-    '2': { name: 'the summary for the manager', run: checkSummary },
+    '1': { name: 'the five-part brief: a text file with the headings "## Situation", "## Material", "## Task", "## Form" and "## Limits" (or "Situation:" and so on), each followed by its part', run: function (t) { return checkBrief(parseBrief(t)); } },
+    'reply': { name: 'a reply to the customer, as plain text', run: checkReply },
+    '2-request': { name: 'the request of exercise 2, with your line that asks for sources, as plain text', run: checkRequest },
+    '2': { name: 'the summary for the manager, as plain text', run: checkSummary },
     '3': { name: 'your marks for the three answers (lines such as "A2: figure")', run: function (t) { return checkMarks(parseMarks(t)); } },
     '4a': { name: 'your piles for the eight snippets (lines such as "3: remove")', run: function (t) { return checkPiles(parsePiles(t)); } },
-    '4b': { name: 'the text you are about to paste', run: checkExtract },
-    '5': { name: 'the template', run: checkTemplate },
+    '4b': { name: 'the text you are about to paste, as plain text', run: checkExtract },
+    '5': { name: 'the template, as plain text', run: checkTemplate },
     'quiz': { name: 'your answers to the ten questions (lines such as "4: B")', run: function (t) { return checkQuiz(parseQuiz(t)); } }
   };
   function runExercise(id, text) {
@@ -1012,7 +1231,8 @@
     promisesCredit: promisesCredit, promisesCosts: promisesCosts, promisesDate: promisesDate, countIssues: countIssues,
     // exercises
     PARTS: PARTS, PART_NAMES: PART_NAMES, assembleBrief: assembleBrief, parseBrief: parseBrief, checkBrief: checkBrief,
-    materialText: materialText, requestText: requestText,
+    materialText: materialText, requestText: requestText, checkRequest: checkRequest,
+    extractDates: extractDates, findContactShapes: findContactShapes, WORD_SIGNS_NOTE: WORD_SIGNS_NOTE, WORDS_NOTE: WORDS_NOTE, EMPTY_MESSAGE: EMPTY_MESSAGE,
     checkReply: checkReply, checkSummary: checkSummary, SUMMARY_LIMIT: SUMMARY_LIMIT,
     LABELS: LABELS, parseMarks: parseMarks, checkMarks: checkMarks,
     parsePiles: parsePiles, checkPiles: checkPiles,

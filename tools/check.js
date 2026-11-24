@@ -18,7 +18,9 @@ function usage(C) {
     '',
     'Exercises:'
   ];
-  for (const [id, ex] of Object.entries(C.EXERCISES)) { lines.push('  ' + id.padEnd(6) + ' ' + ex.name); }
+  // In the order of the session (an object lists number-like keys first).
+  const order = ['1', 'reply', '2-request', '2', '3', '4a', '4b', '5', 'quiz'];
+  for (const id of order.concat(Object.keys(C.EXERCISES).filter((k) => !order.includes(k)))) { lines.push('  ' + id.padEnd(10) + ' ' + C.EXERCISES[id].name); }
   lines.push('', 'Example: node tools/check.js 2 recorded/answers/ex2-answer.txt');
   return lines.join('\n');
 }

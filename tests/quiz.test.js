@@ -51,3 +51,12 @@ test('an unanswered question is a note', () => {
 test('answers are read from text', () => {
   assert.deepEqual(C.parseQuiz('1: B\n2) c\n3 - D\n10. a'), { 1: 'B', 2: 'C', 3: 'D', 10: 'A' });
 });
+
+test('the best answer is not given away by its length', () => {
+  // A first-time participant scored ten out of ten by choosing the longest option every time.
+  const longest = CASE.quiz.filter((q) => {
+    const best = q.options.find((o) => o.correct).text.length;
+    return q.options.filter((o) => !o.correct).every((o) => o.text.length < best);
+  }).map((q) => q.n);
+  assert.ok(longest.length <= 2, 'the best answer is the longest option in questions ' + longest.join(', '));
+});

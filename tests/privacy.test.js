@@ -22,7 +22,8 @@ test('part 1: a wrong pile fails, with the key and the reason', () => {
 
 test('part 1: where two piles are defensible, both pass, and the reason says what tips it', () => {
   const two = CASE.snippets.filter((s) => s.accept.length > 1);
-  assert.deepEqual(two.map((s) => s.n), [3, 5]);
+  // The complaint, the orders table and the rota: each can be pasted after removing details, or not at all.
+  assert.deepEqual(two.map((s) => s.n), [3, 4, 5]);
   for (const s of two) {
     assert.match(s.reason, /^Two piles are defensible\./);
     assert.match(s.reason, /What would tip it/);
@@ -71,6 +72,38 @@ test('part 2: each kind of personal value is caught on its own', () => {
 
 test('part 2: an empty box is a note, not a pass', () => {
   assert.equal(status(C.checkExtract('   '), 'personal'), 'note');
+});
+
+test('part 2: anything shaped like an e-mail address or a phone number is caught, from any source', () => {
+  // Addresses outside example.com are built here at run time, so that no file of the kit holds one.
+  const at = '@';
+  const outside = 'john.smith' + at + 'realcompany.co.uk';
+  const r = C.checkExtract('John Smith, ' + outside + ', 07700 900123');
+  assert.equal(status(r, 'personal'), 'look');
+  const items = rule(r, 'personal').items;
+  assert.ok(items.includes('something shaped like an e-mail address: ' + outside), items.join('; '));
+  assert.ok(items.includes('something shaped like a phone number: 07700 900123'), items.join('; '));
+  for (const leak of ['+44 20 7946 0958', '(555) 010-0199', 'call 5550100199', 'a.b' + at + 'example.org']) {
+    assert.equal(status(C.checkExtract('Which customer ordered most? ' + leak), 'personal'), 'look', leak);
+  }
+  // Order numbers, amounts and short dates are not phone numbers.
+  assert.equal(status(C.checkExtract('SO-20417 on 3 Feb: $1,184.00, and 12 oz cups'), 'personal'), 'ok');
+});
+
+test('part 2: the rule is named for what it knows, and its pass says what it cannot see', () => {
+  const r = C.checkExtract('Which customer ordered most? Customer 04');
+  assert.equal(rule(r, 'personal').name, 'This table\'s values, and contact details');
+  assert.match(rule(r, 'personal').message, /^I found none of this table's /);
+  assert.match(rule(r, 'personal').message, /I cannot recognise other names or personal details/);
+});
+
+test('part 1 and part 2 agree about the order number', () => {
+  // The recommended extract keeps the order number, so the complaint's reason must not say to replace it.
+  assert.equal(CASE.orders.recommendedChoices.order, 'keep');
+  const complaint = CASE.snippets.find((s) => s.n === 3);
+  const replaceSentences = complaint.reason.split(/(?<=\.)\s+/).filter((x) => /replace/i.test(x));
+  assert.ok(replaceSentences.length > 0);
+  for (const s of replaceSentences) { assert.doesNotMatch(s, /order number/i, s); }
 });
 
 test('stand-ins are consistent: one customer, one stand-in', () => {

@@ -38,8 +38,15 @@ test('--json gives the same result as data', () => {
 });
 
 test('every exercise can be run from the command line', () => {
-  const files = { '1': 'solutions/ex1-strong-brief.txt', reply: 'solutions/ex1-strong-reply.txt', '2': 'solutions/ex2-strong-summary.txt',
+  const files = { '1': 'solutions/ex1-strong-brief.txt', reply: 'solutions/ex1-strong-reply.txt', '2-request': 'solutions/ex2-strong-request.txt', '2': 'solutions/ex2-strong-summary.txt',
     '3': 'solutions/ex3-marks.txt', '4a': 'solutions/ex4-piles.txt', '4b': 'solutions/ex4-extract.txt', '5': 'solutions/ex5-strong-template.txt', quiz: 'solutions/quiz-answers.txt' };
   assert.deepEqual(Object.keys(files).sort(), Object.keys(C.EXERCISES).sort());
   for (const [ex, f] of Object.entries(files)) { assert.equal(run(ex, f).status, 0, ex); }
+});
+
+test('the usage says what each exercise\'s file must hold, in the order of the session', () => {
+  const out = run().stdout;
+  assert.match(out, /  1 +the five-part brief: a text file with the headings "## Situation", "## Material", "## Task", "## Form" and "## Limits"/);
+  const ids = [...out.matchAll(/^  (\S+) +/gm)].map((m) => m[1]);
+  assert.deepEqual(ids, ['1', 'reply', '2-request', '2', '3', '4a', '4b', '5', 'quiz']);
 });

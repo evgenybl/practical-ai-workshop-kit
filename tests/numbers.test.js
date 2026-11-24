@@ -17,12 +17,22 @@ test('decimals compare as numbers: 36.50 is 36.5', () => {
   assert.ok(C.sameNumber(values('36.50')[0], values('36.5')[0]));
 });
 
-test('a date counts as its parts', () => {
+test('a date written with figures only is read as a date, not as figures', () => {
   assert.deepEqual(values('5 March'), [5]);
-  assert.deepEqual(values('05/03'), [5, 3]);
-  assert.deepEqual(values('2025-03-05'), [2025, 3, 5]);
-  assert.deepEqual(values('05.03.2025'), [5, 3, 2025]);
+  for (const text of ['05/03', '2025-03-05', '05.03.2025', '5/3/25']) {
+    assert.deepEqual(values(text), [], text);
+    const d = C.extractDates(text);
+    assert.equal(d.length, 1, text);
+    assert.deepEqual([d[0].day, d[0].month], [5, 3], text);
+  }
   assert.deepEqual(values('at 10:30'), [10, 30]);
+});
+
+test('message labels, rule numbers and list numbers are pointers, not figures', () => {
+  assert.deepEqual(values('As message 4 says, under rules 5 and 6, see point 2.'), []);
+  assert.deepEqual(values('1. First point\n2) Second point'), []);
+  assert.ok(!C.threadNumbers.includes(1) && !C.threadNumbers.includes(2), 'the "Message N" labels of the thread are not allowed figures');
+  assert.ok(!C.policyNumbers.includes(7), 'the policy\'s rule numbers are not allowed figures');
 });
 
 test('identifiers give their digits; a hyphen is not a minus sign', () => {
@@ -65,4 +75,17 @@ test('typographic quotes and dashes are read as plain ones', () => {
 test('words are counted without message citations', () => {
   assert.equal(C.countWords('One two three (msg 2).'), 3);
   assert.equal(C.countWords('- A bullet: $531.00 asked.'), 4);
+});
+
+test('a long, unclosed citation is read in a few milliseconds, not in seconds', () => {
+  // Before the fix, each item added to "(msg 1 and 2 and 2 ..." doubled the time: 24 items took over five seconds.
+  const unclosed = '(msg 1' + ' and 2'.repeat(22);
+  const start = process.hrtime.bigint();
+  C.findCitations(unclosed);
+  C.extractNumbers(unclosed);
+  C.checkSummary(unclosed);
+  const ms = Number(process.hrtime.bigint() - start) / 1e6;
+  assert.ok(ms < 250, 'took ' + ms.toFixed(1) + ' ms');
+  assert.deepEqual(C.findCitations('(msg 1 and 2 and 3)')[0].messages, [1, 2, 3]);
+  assert.deepEqual(C.findCitations('(messages 4, msg 5)')[0].messages, [4, 5]);
 });

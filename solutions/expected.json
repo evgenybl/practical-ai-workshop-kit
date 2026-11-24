@@ -3,6 +3,7 @@
   "files": {
     "ex1-strong-brief.txt": { "exercise": "1", "expect": "all-ok" },
     "ex1-strong-reply.txt": { "exercise": "reply", "expect": "all-ok" },
+    "ex2-strong-request.txt": { "exercise": "2-request", "expect": "all-ok" },
     "ex2-strong-summary.txt": { "exercise": "2", "expect": "all-ok" },
     "ex3-marks.txt": { "exercise": "3", "expect": "all-ok" },
     "ex4-piles.txt": { "exercise": "4a", "expect": "all-ok" },

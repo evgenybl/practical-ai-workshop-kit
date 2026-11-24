@@ -63,3 +63,41 @@ test('the messages say what was found and where to look, never only "wrong"', ()
     assert.match(x.message + ' ' + x.items.join(' '), /message|rule|policy|check|sentence/i, x.id);
   }
 });
+
+// ---- cases found by the first review: each one failed before the fix ------------------
+
+test('credit: money off the invoice is a promise of a credit, whatever the word', () => {
+  assert.equal(status(C.checkReply(plus('We will take $219.00 off your invoice.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We will issue a corrected invoice that removes those cartons.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('You will get $219.00 back on your next invoice.')), 'credit'), 'look');
+});
+
+test('credit: a promise word that is negated, or an instruction, is not a promise', () => {
+  assert.equal(status(C.checkReply(plus('The draft promises no credit and no amount.')), 'credit'), 'ok');
+  assert.equal(status(C.checkReply(plus('[Billing: confirm the corrected invoice amount before sending.]')), 'credit'), 'ok');
+  assert.equal(status(C.checkReply(plus('I cannot confirm an amount or a decision on the credit today.')), 'credit'), 'ok');
+});
+
+test('delivery day: "will be with you on Thursday" is a promised day; a receipt sent today is not a delivery', () => {
+  assert.equal(status(C.checkReply(plus('The cartons will be with you on Thursday.')), 'date'), 'look');
+  assert.equal(status(C.checkReply(plus('I will send your receipt to Dana today.')), 'date'), 'ok');
+  assert.equal(status(C.checkReply(plus('I will write to you by Thursday with where the delivery stands.')), 'date'), 'ok');
+  assert.equal(status(C.checkReply(plus('We will send the missing cartons on Thursday.')), 'date'), 'look');
+});
+
+test('figures: a message label or a rule number is not a figure from the material', () => {
+  // "Message 1" to "Message 5" label the thread, and the policy's rules are numbered 1 to 7: neither makes 4 a figure of the case.
+  assert.equal(status(C.checkReply(plus('Of the cartons that came, 4 arrived crushed.')), 'numbers'), 'look');
+  assert.equal(status(C.checkReply(plus('As message 4 says, and as rules 3 and 6 require, the manager decides.')), 'numbers'), 'ok');
+});
+
+test('an empty box says so on every rule, and passes none', () => {
+  for (const text of ['', '   \n  ']) {
+    const r = C.checkReply(text);
+    assert.equal(r.rules.length, 5);
+    for (const x of r.rules) {
+      assert.equal(x.status, 'note', x.id);
+      assert.equal(x.message, 'This box is empty. Paste or write the text first, then check it.', x.id);
+    }
+  }
+});

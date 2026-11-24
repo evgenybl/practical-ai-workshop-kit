@@ -56,3 +56,22 @@ test('leftovers: the company\'s own name may stay', () => {
   assert.ok(strong.includes(F.supplier));
   assert.equal(status(C.checkTemplate(strong), 'leftovers'), 'ok');
 });
+
+test('placeholders: a word about placeholders, such as [BRACKETED], is not counted as one', () => {
+  const t = 'Fill in every [BRACKETED] part, and the [placeholders], then send.\n[MANAGER] [ORDER NUMBER]';
+  assert.deepEqual(C.findPlaceholders(t), ['MANAGER', 'ORDER NUMBER']);
+  // Two named placeholders, neither for the material: still too few, whatever the first line says.
+  assert.equal(status(C.checkTemplate(t), 'placeholders'), 'look');
+});
+
+test('placeholders: an ordinary "..." in a sentence is not a blank; [...] and (...) are', () => {
+  const named = '[CUSTOMER NAME] [ORDER NUMBER] [PASTE THE THREAD HERE]';
+  assert.equal(status(C.checkTemplate(named + ' Include the facts, the amounts, and so on...'), 'placeholders'), 'ok');
+  assert.equal(status(C.checkTemplate(named + ' for [...]'), 'placeholders'), 'look');
+  assert.equal(status(C.checkTemplate(named + ' for (...)'), 'placeholders'), 'look');
+});
+
+test('an empty box says so on both rules, and passes neither', () => {
+  const r = C.checkTemplate('');
+  for (const x of r.rules) { assert.equal(x.status, 'note', x.id); assert.match(x.message, /^This box is empty\./); }
+});
