@@ -1559,8 +1559,17 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
     // What a credit promise talks about, and the words that make a statement a promise.
     creditTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount)\b|\b(corrected|reduced|amended|new) invoice\b|\boff (the|your) (invoice|bill)\b/,
     moneyTopic: /\b(credit|credits|credited|refund\w*|reimburs\w*|compensat\w*|money back|discount|invoice|bill|amount)\b|\$\s?\d/,
-    asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted)\b/g,
+    asserted: /\b(promis\w*|agreed|agrees|agree|approved|approves|approve|confirmed|confirms|confirm|guarantee\w*|issued|credited|refunded|reimbursed|granted|accepted|committed|commits|commit|offered|offers|offer)\b/g,
     future: /\b(will|shall|we'll|i'll|you'll|they'll|she'll|can|am going to|are going to|is going to)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|receive|get|give|send you|cover|pay)\b/g,
+    // "Tom said he would credit the cartons": a promise reported in the words of the one who made it.
+    saidWould: /\b(said|told \w+|wrote) (?:that )?(?:he|we|they|i) (?:would|will)\s+((?:[a-z$.,']+\s+){0,2}?)(credit|refund|issue|take|deduct|reduce|remove|correct|reimburse|waive|give|cover|pay)\b/g,
+    // "Promised: a delivery day, and a credit": a label that names promises, and one that says they were not made.
+    promiseLabel: /\b(promis\w*|agreed|committed|confirmed|guaranteed|undertook)\b/,
+    labelNot: /\b(not|no|never|nothing|none|unkept|broken)\b|n't\b/,
+    // After a promise word, what was promised: to tell, to pass on, to confirm a day. None of these is a credit.
+    promisedOther: /^\s+(?:only |just )?to (tell|let|pass|send|forward|refer|ask|check|write|call|ring|phone|update|inform|reply|answer|find out|look into|get back|confirm (?:a|the) (?:\w+ )?(?:day|date))\b/,
+    // "confirmed that a credit of this size needs your approval", "confirm that I have passed your request": a report, not a promise.
+    reportedThat: /^\s+that\b.*(\b(pass\w*|sent|send\w*|forward\w*|refer\w*|gave|given)\b.*\brequest\b|\b(needs?|requires?|required|must|has to|have to)\b.*\b(approv\w*|decision|decide\w*)\b)/,
     // Words just before a promise word that hold it back: a negation, a condition, a request.
     negation: /^(not|no|never|nothing|none|nobody|neither|nor|cannot|without|won't|can't|cant)$|n't$/,
     localHedge: /\b(whether|if|once|until|unless|before|must|need|needs|needed|require|requires|required|could|may|might|should|would|awaiting|pending|ask|asks|asked|request|requests|requested|want|wants|wanted|please|has to|have to|had to|how to)\b/,
@@ -1593,8 +1602,9 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   /**
    * True if a match of the regular expression stands in the text as stated: not negated or
    * held back by a condition in the four words before it, and not after "says" or "claims".
+   * skip(match, text), if given, can set aside a match for a reason of its own.
    */
-  function liveMatch(text, re) {
+  function liveMatch(text, re, skip) {
     var r = new RegExp(re.source, 'g');
     var m;
     while ((m = r.exec(text))) {
@@ -1604,10 +1614,22 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
       // "promises no credit": the negation comes just after the word.
       if (negated([next])) { continue; }
       // An instruction, "confirm the amount", is not a promise: a base verb with no subject before it.
-      if (before.length === 0 && /^(confirm|approve|agree|promise|guarantee|accept)$/.test(m[0])) { continue; }
+      if (before.length === 0 && /^(confirm|approve|agree|promise|guarantee|accept|offer|commit)$/.test(m[0])) { continue; }
+      if (skip && skip(m, text)) { continue; }
       return true;
     }
     return false;
+  }
+  /**
+   * For a credit: a promise word that is about something else. "promised to tell her the decision",
+   * "agreed to pass the request on", "confirmed that a credit of this size needs approval", and
+   * "the credit is for Dana to approve" promise no credit.
+   */
+  function notACreditPromise(m, text) {
+    var after = text.slice(m.index + m[0].length);
+    if (/^(promis|agree|commit|offer|undert)/.test(m[0]) && RX.promisedOther.test(after)) { return true; }
+    if (/^(confirm|agree)/.test(m[0]) && RX.reportedThat.test(after)) { return true; }
+    return /^(approve|agree|confirm|accept|promise|guarantee)$/.test(m[0]) && /(^|\s)(for|up to) \S+ to$/.test(wordsBefore(text, m.index, 4).join(' '));
   }
   /** True if a sign is in the text and not negated just before it: "not late" is not a sign of lateness. */
   function signPresent(text, re) {
@@ -1625,18 +1647,56 @@ footer { margin-top: 3rem; padding-bottom: 2rem; border-top: 2px solid var(--lin
   // ---------------------------------------------------------------------------
   /** A credit, or money off, stated as promised, agreed or given; or promised for the future. */
   function promisesCredit(sentence) {
-    return splitClauses(sentence).some(function (c) {
-      if (RX.creditTopic.test(c) && liveMatch(c, RX.asserted)) { return true; }
+    var clauses = splitClauses(sentence);
+    return clauses.some(function (c, i) {
+      if (RX.creditTopic.test(c) && liveMatch(c, RX.asserted, notACreditPromise)) { return true; }
+      if (asPromisedBeside(clauses, i)) { return true; }
       if (!RX.moneyTopic.test(c)) { return false; }
-      var r = new RegExp(RX.future.source, 'g');
-      var m;
-      while ((m = r.exec(c))) {
-        var before = wordsBefore(c, m.index, 4);
-        var between = m[2].split(/\s+/).filter(Boolean);
-        if (negated(before) || negated(between) || RX.localHedge.test(before.join(' ')) || RX.claim.test(c.slice(0, m.index))) { continue; }
-        return true;
-      }
-      return false;
+      return [RX.future].some(function (re) {
+        var r = new RegExp(re.source, 'g');
+        var m;
+        while ((m = r.exec(c))) {
+          var before = wordsBefore(c, m.index, 4);
+          var between = m[2].split(/\s+/).filter(Boolean);
+          if (negated(before) || negated(between) || RX.localHedge.test(before.join(' ')) || RX.claim.test(c.slice(0, m.index))) { continue; }
+          return true;
+        }
+        return false;
+      }) || saidWould(c);
+    }) || promisedInList(sentence);
+  }
+  /** "Tom said he would credit the cartons", but not "Mira said he would": that is her claim. */
+  function saidWould(c) {
+    var r = new RegExp(RX.saidWould.source, 'g');
+    var customer = new RegExp('^(she|her|customer|' + F.contactFirst.toLowerCase() + '|' + F.contact.split(' ').slice(-1)[0].toLowerCase() + ')$');
+    var m;
+    while ((m = r.exec(c))) {
+      var who = wordsBefore(c, m.index, 1)[0] || '';
+      if (customer.test(who) || negated(m[2].split(/\s+/).filter(Boolean)) || RX.claim.test(c.slice(0, m.index))) { continue; }
+      return true;
+    }
+    return false;
+  }
+  /** "A credit is due to her, as promised": the tag "as promised" makes the clause beside it a promise. */
+  function asPromisedBeside(clauses, i) {
+    var tag = /\bas (promised|agreed|confirmed)$/;
+    var c = clauses[i].replace(/[.!?"')\]]+$/, '');
+    if (!tag.test(c)) { return false; }
+    function statedCredit(text) { return !!text && RX.creditTopic.test(text) && !RX.hedge.test(text) && !RX.claim.test(text); }
+    return statedCredit(c.replace(tag, '')) || statedCredit(clauses[i - 1]) || statedCredit(clauses[i + 1]);
+  }
+  /**
+   * "Promised: a delivery day by Friday, and a credit for the damaged cartons." Under a label that
+   * names promises, each item of the list is stated as promised.
+   */
+  function promisedInList(sentence) {
+    var t = stripCitations(sentence).toLowerCase();
+    var colon = t.indexOf(': ');
+    if (colon === -1) { return false; }
+    var label = t.slice(0, colon);
+    if (!RX.promiseLabel.test(label) || RX.labelNot.test(label) || RX.claim.test(label)) { return false; }
+    return t.slice(colon + 2).split(CLAUSE_SPLIT).some(function (item) {
+      return RX.creditTopic.test(item) && !RX.hedge.test(item) && !RX.claim.test(item);
     });
   }
   /** An offer to pay the customer's other costs (the cash-and-carry purchase). */

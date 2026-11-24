@@ -182,3 +182,64 @@ test('the request of exercise 2: without the line that asks for sources it is fl
   assert.equal(status(C.checkRequest(without + '\nBe accurate.\n'), 'cite'), 'look');
   assert.equal(status(C.checkRequest('Summarise the thread. After each fact, give the message number.'), 'material'), 'look');
 });
+
+// ---- cases found by the second review: each one failed before the fix ------------------
+
+test('trap, the promise never given: a list under "Promised:", and four other wordings, are flagged', () => {
+  for (const s of [
+    'Promised: a delivery day by Fri 7 Mar, not confirmed (msg 4), and a credit for the damaged cartons (msg 5).',
+    F.staffFirst + ' said he would credit the damaged cartons.',
+    F.staffFirst + ' committed to a credit.',
+    F.staffFirst + ' offered a credit of ' + money(F.creditDamaged) + '.',
+    'A credit is due to ' + F.contactFirst + ', as promised.'
+  ]) {
+    assert.equal(status(C.checkSummary(strong + '- ' + s + '\n'), 'credit'), 'look', s);
+  }
+});
+
+test('trap, the promise never given: a list of what was promised, or not, with no credit in it, still passes', () => {
+  for (const s of [
+    // The two lines of the recorded answer, word for word.
+    'Promised: delivery on 5 Mar (msg 2), and a confirmed day for the missing cartons by Fri 7 Mar (msg 4).',
+    'Credit not promised: ' + F.staffFirst + ' sent the request to you for approval (msg 4). ' + F.contactFirst + ' says a credit was promised (msg 5).',
+    'Not promised: a credit for the damaged cartons.',
+    'Promised: a delivery day by Friday 7 March (not kept); a credit was asked for, and awaits your decision (msg 4).',
+    F.contactFirst + ' said he would credit the damaged cartons (msg 5).',
+    'Your order was delivered on 5 March, as promised (msg 2, 3).'
+  ]) {
+    assert.equal(status(C.checkSummary(strong + '- ' + s + '\n'), 'credit'), 'ok', s);
+  }
+});
+
+test('trap: a promise to tell, to pass on or to confirm a day, and a credit that still needs approval, are not a promised credit', () => {
+  for (const s of [
+    F.staffFirst + ' promised to tell ' + F.contactFirst + ' your decision on the credit (msg 4).',
+    F.staffFirst + ' confirmed that a credit of this size needs your approval (msg 4).',
+    F.staffFirst + ' agreed to pass the credit request to ' + F.manager.split(' ')[0] + ' (msg 4).',
+    F.staffFirst + ' promised only to confirm a delivery day; the credit is for ' + F.manager.split(' ')[0] + ' to approve.'
+  ]) {
+    assert.equal(status(C.checkSummary(strong + '- ' + s + '\n'), 'credit'), 'ok', s);
+  }
+  // The same verbs, with a credit as what was promised, are still flagged.
+  for (const s of [
+    F.staffFirst + ' promised to credit the damaged cartons (msg 4).',
+    F.staffFirst + ' confirmed that the credit will be issued.',
+    F.staffFirst + ' agreed to approve the credit.',
+    'We are happy to approve the credit.'
+  ]) {
+    assert.equal(status(C.checkSummary(strong + '- ' + s + '\n'), 'credit'), 'look', s);
+  }
+});
+
+test('the wordings the instructor guide gives for the two traps are each flagged, as the guide says', () => {
+  const guide = lib.readText('instructor/guide.md');
+  const item = guide.split('\n').find((l) => l.startsWith('4. **With a live assistant, the traps the recorded answer avoided:**'));
+  assert.ok(item, 'the guide has the item');
+  assert.match(item, /The check flags each of these wordings; other wordings can slip past it/);
+  const quoted = [...item.slice(0, item.indexOf('The check flags')).matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(quoted.length, 3);
+  for (const q of quoted) {
+    const r = C.checkSummary(strong + '- ' + q + '.\n');
+    assert.ok(status(r, 'credit') === 'look' || status(r, 'counts') === 'look', q);
+  }
+});

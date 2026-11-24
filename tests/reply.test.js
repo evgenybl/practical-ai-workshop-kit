@@ -109,3 +109,14 @@ test('credit: a promise in the future tense is found, and a refusal, a doubt or 
   assert.equal(status(C.checkReply(plus('I do not know whether we will reduce the invoice.')), 'credit'), 'ok');
   assert.equal(status(C.checkReply(plus('Mira says we will reduce the invoice.')), 'credit'), 'ok');
 });
+
+// ---- cases found by the second review: each one failed before the fix ------------------
+
+test('credit: a request reported as passed on, or a promise to tell or to pass on, is not a promised credit', () => {
+  assert.equal(status(C.checkReply(plus('I confirm that I have passed your credit request to Dana today.')), 'credit'), 'ok');
+  assert.equal(status(C.checkReply(plus('I promise to tell you Dana\'s decision on the credit by Thursday.')), 'credit'), 'ok');
+  // A promise in the same words is still one.
+  assert.equal(status(C.checkReply(plus('I confirm that we will credit your account today.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('I promise to credit your account today.')), 'credit'), 'look');
+  assert.equal(status(C.checkReply(plus('We have offered you a credit of $219.00.')), 'credit'), 'look');
+});
