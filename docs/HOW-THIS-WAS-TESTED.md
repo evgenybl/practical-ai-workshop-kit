@@ -166,16 +166,16 @@ as expected  solutions/quiz-answers.txt (exercise quiz, model solution): 10 rule
 
 It found no contradiction on the page.
 
-**Words to read, beside the planned minutes.** The agent counted the words a participant reads in each block, on the page at commit 2926752. These are counts, not measured times: how long a person takes to read them is not known, and the page has changed a little since.
+**Words to read, beside the planned minutes.** The agent counted the words a participant reads on the page in each block, at commit 2926752. Beside them are the words of the files each block uses, each file counted whole, as `wc -w` counts them: a word is anything between spaces. A test counts them again. The two counts can overlap where the page shows a file's text. These are counts, not measured times: how long a person takes to read them is not known, and the page has changed a little since.
 
-| Block | Planned minutes | Words to read |
-|---|---|---|
-| Start here, and the case | 8 | About 1,230 |
-| Exercise 1 | 18 | 470 on the page, plus the 408-word reply |
-| Exercise 2 | 20 | 475 on the page, plus the 702-word request and the 214-word recorded answer |
-| Exercise 3 | 15 | 262 on the page, plus the 218-word request, answer A (279) and answer B (67); 11 marks |
-| Exercise 4 | 20 | 425 on the page, plus the 443 words of the eight snippets |
-| The ten questions | 9 | 619 |
+| Block | Planned minutes | Words on the page, the agent's count | Files the block uses, each counted whole |
+|---|---|---|---|
+| Start here, and the case | 8 | About 1,230 | `participant/case/customer-thread.txt`, 562 words; `participant/case/returns-policy.txt`, 223 words |
+| Exercise 1 | 18 | 470 | The request, the one-line wish with the thread under it, `recorded/requests/ex1-request.txt`, 568 words; the reply, `recorded/answers/ex1-answer.txt`, 408 words |
+| Exercise 2 | 20 | 475 | The request, with the thread, `recorded/requests/ex2-request.txt`, 702 words; the recorded answer, `recorded/answers/ex2-answer.txt`, 214 words |
+| Exercise 3 | 15 | 262, and 11 marks | The request, with the thread and the policy, `recorded/requests/ex3-request.txt`, 1,012 words, folded away on the page; answer A, `recorded/answers/ex3-answer-a.txt`, 279 words; answer B, `recorded/answers/ex3-answer-b.txt`, 67 words |
+| Exercise 4 | 20 | 425 | The eight snippets with their titles, `participant/case/snippets.txt`, 532 words |
+| The ten questions | 9 | 619 | None |
 
 **Where it was unsure, and what was changed.**
 

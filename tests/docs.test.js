@@ -435,3 +435,24 @@ test('the testing page says that the picture\'s tag was removed, and that a real
   assert.ok(lib.exists('docs/img/workbook.png'));
   assert.match(raw('README.md'), /!\[[^\]]*\]\(docs\/img\/workbook\.png\)/);
 });
+
+test('the word table counts every file on one basis, the whole file as wc -w counts it, and each count is what the file holds today', () => {
+  const how = raw('docs/HOW-THIS-WAS-TESTED.md');
+  const start = how.indexOf('| Block | Planned minutes | Words on the page');
+  const rows = how.slice(start, how.indexOf('\n\n', start)).split('\n').slice(2);
+  assert.equal(rows.length, 6);
+  assert.match(how, /Beside them are the words of the files each block uses, each file counted whole, as `wc -w` counts them: a word is anything between spaces\. A test counts them again\./);
+  let counted = 0;
+  for (const row of rows) {
+    for (const m of row.matchAll(/`([^`]+)`, ([\d,]+) words/g)) {
+      const words = raw(m[1]).split(/\s+/).filter(Boolean).length;
+      assert.equal(Number(m[2].replace(/,/g, '')), words, m[1]);
+      counted++;
+    }
+  }
+  assert.equal(counted, 10);
+  // Each exercise row names its whole request file.
+  for (const n of [1, 2, 3]) {
+    assert.ok(rows.find((r) => r.startsWith('| Exercise ' + n + ' |')).includes('`recorded/requests/ex' + n + '-request.txt`'), 'exercise ' + n);
+  }
+});
