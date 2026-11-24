@@ -1,24 +1,28 @@
 {
   "exercise": "3",
   "answer": "A",
-  "kind": "constructed",
-  "about": "One of the three answers of exercise 3: a reply drafted from the strong brief.",
-  "constructed_note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-  "model": null,
-  "date": null,
-  "route": null,
+  "in_session": true,
+  "kind": "recorded",
+  "about": "Answer A of exercise 3: a reply to the strong brief, exactly as it came back, with the assistant's own notes under it.",
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-11-24",
+  "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex3-request.txt",
   "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
-  "edits": null,
+  "answer_sha256": "6ad593dcd3c4f683e42f4f5afa3f6b252153f5e3e6b8a662e6aee6dca438f5dc",
+  "answer_characters": 1500,
+  "edits": "none",
   "check": {
     "exercise": "reply",
-    "expect": { "numbers": "ok", "counts": "ok", "credit": "ok", "costs": "look", "date": "ok" }
+    "expect": { "numbers": "ok", "counts": "ok", "credit": "ok", "costs": "ok", "date": "ok" }
   },
   "key": [
-    { "accept": ["fine"], "reason": "True: {staffFirst} promised to confirm a day by Friday (message 4) and did not (message 5). Owning the mistake first is right." },
-    { "accept": ["figure"], "reason": "{cupsDelivered} cartons were delivered, not {cupsOrdered}: {cupsOrdered} is what was ordered (message 3). The automatic check cannot see this, because {cupsOrdered} is in the thread with another meaning." },
-    { "accept": ["fine"], "reason": "True to the policy: a credit of this size needs the {managerRole}'s approval (rule 3), and it promises nothing." },
-    { "accept": ["policy"], "reason": "The policy does not allow paying for goods bought elsewhere without the {managerRole}'s agreement in writing, and says never to promise it by e-mail (rules 5 and 6). The figure is right; the promise is not allowed." },
-    { "accept": ["fine"], "reason": "A promise about {staffFirst}'s own action, which he can keep. It does not promise a delivery day." }
+    { "accept": ["fine"], "reason": "True: {staffFirst} promised to confirm a day by Friday (message 4) and did not (message 5). Owning it first is right." },
+    { "accept": ["fine"], "reason": "True (message 5), and it owns the failure without an excuse." },
+    { "accept": ["fine"], "reason": "True (message 5). The figure is written in words, so the figure check does not read it." },
+    { "accept": ["fine", "material"], "reason": "Two marks are defensible. On {date:msg4}, message 4 said the van comes \"next week\": the week this reply is written in. Written on {date:msg5}, \"until next week\" now means the week after: a new delay that nothing in the thread supports. Read as a repeat of message 4, it is fine. What tips it: whether the warehouse has said anything since. The second half, no confirmed day, is true." },
+    { "accept": ["fine"], "reason": "True to the policy (rule 3), and it promises nothing." },
+    { "accept": ["material"], "reason": "Message 4 says {staffFirst} sent the photos and the request. The receipt, and the full request with the cash-and-carry cost, arrived only in message 5, and nothing says they were passed on. The assistant's own notes under the reply say so too. The second half, no amount and no decision today, is fine." },
+    { "accept": ["material", "fine"], "reason": "Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only {staffFirst}'s own action, which the policy allows. What tips it: it is fine once {staffFirst} has decided he can keep that date, and not before." }
   ]
 }

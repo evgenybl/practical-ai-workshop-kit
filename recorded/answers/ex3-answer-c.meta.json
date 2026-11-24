@@ -1,24 +1,33 @@
 {
   "exercise": "3",
   "answer": "C",
-  "kind": "constructed",
-  "about": "One of the three answers of exercise 3: a reply drafted from the strong brief.",
-  "constructed_note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-  "model": null,
-  "date": null,
-  "route": null,
+  "in_session": false,
+  "kind": "edited",
+  "about": "Answer C of exercise 3, for those who finish early or as homework: the recorded answer A, edited to plant a promised delivery day and a wrong figure that every automatic check passes.",
+  "edited_from": "recorded/answers/ex3-answer-a.txt",
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-11-24",
+  "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex3-request.txt",
   "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
-  "edits": null,
+  "answer_sha256": "b73327a6190225587b8b61c160147a7b76ba6a62cca429d3f9198fa47b8ff491",
+  "edits": "Three changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) Removed the assistant's notes under the reply, which describe the original wording.",
+  "edit_steps": [
+    { "replace": "Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", "with": "Our van will bring them to you on Thursday 13 March." },
+    { "replace": "I have sent her your photos, your full request and the receipt you sent, and", "with": "I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and" },
+    { "cut_from": "\n\n---\n\n" }
+  ],
   "check": {
     "exercise": "reply",
-    "expect": { "numbers": "look", "counts": "look", "credit": "look", "costs": "ok", "date": "look" }
+    "expect": { "numbers": "look", "counts": "ok", "credit": "ok", "costs": "ok", "date": "look" }
   },
   "key": [
-    { "accept": ["fine"], "reason": "An apology, and the order number is right (message 1)." },
-    { "accept": ["figure"], "reason": "{cupsCrushed} of the {cupsDelivered} were crushed (message 3). The other {cupsMissing} never arrived. The two groups count different cartons, and adding them does not give the number crushed." },
-    { "accept": ["policy"], "reason": "A credit of this size needs the {managerRole}'s approval (rule 3), and no credit may be promised before it is approved (rule 6). The figure is right; the promise is not allowed." },
-    { "accept": ["fine"], "reason": "It passes the request on and promises nothing. That is what the policy asks for (rule 5)." },
-    { "accept": ["policy", "material"], "reason": "No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date itself is nowhere in the thread. Either mark is right." }
+    { "accept": ["fine"], "reason": "As in answer A: true, and owning it first is right." },
+    { "accept": ["fine"], "reason": "As in answer A: true (message 5)." },
+    { "accept": ["fine"], "reason": "As in answer A: true (message 5)." },
+    { "accept": ["policy", "material"], "reason": "Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right." },
+    { "accept": ["fine"], "reason": "As in answer A: true to the policy (rule 3), and it promises nothing." },
+    { "accept": ["figure"], "reason": "Planted. The damaged cartons come to {money:creditDamaged} ({cupsCrushed} at {money:cupPrice}, message 5); {money:localPurchase} is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning." },
+    { "accept": ["material", "fine"], "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only {staffFirst}'s own action. Fine once {staffFirst} has decided he can keep it." }
   ]
 }

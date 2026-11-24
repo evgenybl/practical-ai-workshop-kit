@@ -1,18 +1,26 @@
-Subject: Re: Order SO-20417 has not arrived - still waiting
+**Subject:** Re: Order SO-20417 has not arrived - still waiting
 
-Dear Mira,
+Hi Mira,
 
-Thank you for your message, and please accept our sincere apologies for the difficulties you have experienced with order SO-20417. You are absolutely right to be frustrated, and I want to put this right for you straight away.
+You are right, and I am sorry. I told you I would confirm a delivery day for the missing cartons by Friday 7 March, and I did not. You should have heard from me, and I should not have let that date pass in silence.
 
-I am pleased to confirm that we will issue a full credit of $531.00 against invoice INV-7731, covering the 6 damaged cartons and the $312.00 you spent at the cash-and-carry. You will see this on your account within the next few days.
+**The 6 missing cartons.** [Tom: confirm the delivery day and time with our transport team before sending, and replace this line with it. If no date is set yet, say so and give the date by which you will confirm it.]
 
-I have also arranged for the 6 missing cartons to be delivered to you tomorrow morning.
+**Invoice INV-7731.** You were billed for the full order, including the 6 cartons that never left our warehouse. [Billing: confirm the corrected invoice amount and when it will be issued.] We will issue a corrected invoice that removes those cartons.
 
-We value your business greatly and, to make up for the inconvenience, I would like to offer you a 15% discount on your next order.
+**The damaged cartons.** Thank you for the photos. They are clear, and I have them with your request. The 6 damaged cartons come to $219.00 at $36.50 a carton, and that credit is with our operations manager, Dana Liu. I have also sent her your receipt for the $312.00 you spent on cups at the cash-and-carry, so she has the full request in front of her. I cannot approve the $531.00 myself, and I do not want to promise an amount before she has decided. Dana will give you her decision by [date, to be confirmed by Dana before sending].
 
-Once again, I am truly sorry for the inconvenience. Please do not hesitate to contact me if there is anything else I can do.
+I know the Saturday job has already been affected, and I am sorry for the trouble this has caused your business. If you need anything else from me in the meantime, reply to this email and I will answer the same day.
 
-Kind regards,
+Best regards,
 Tom Becker
-Customer Service
-Larkfield Wholesale
+Customer service, Larkfield Wholesale
+
+---
+
+Before sending, check these points:
+
+- The three bracketed items are facts I do not have: the delivery day for the 6 missing cartons, the corrected invoice amount, and Dana Liu's decision date. Do not send with them still in brackets.
+- The $219.00 figure is correct (6 × $36.50). The $531.00 total is Mira's request, and the thread does not show that anyone at Larkfield has agreed to any part of it.
+- The apology covers the missed Friday confirmation, which is the one thing Larkfield clearly committed to and did not do.
+- I have not sent this. Mira's deadline is "by Friday" (14 March), so Dana's decision date needs to be settled before this goes out.

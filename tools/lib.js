@@ -47,4 +47,24 @@ function loadWorkbook() {
   };
 }
 
-module.exports = { ROOT, WORKBOOK, abs, readText, exists, writeText, listFiles, walk, freshRequire, loadWorkbook };
+/**
+ * Applies the declared edits of an edited answer to the recorded answer it came from.
+ * Each step is { replace, with } (the text must occur exactly once) or { cut_from } (drop the rest).
+ */
+function applyEdits(text, steps) {
+  let out = text;
+  for (const s of steps) {
+    if ('cut_from' in s) {
+      const i = out.indexOf(s.cut_from);
+      if (i === -1 || out.indexOf(s.cut_from, i + 1) !== -1) { throw new Error('cut_from must occur exactly once: ' + JSON.stringify(s.cut_from)); }
+      out = out.slice(0, i);
+    } else {
+      const i = out.indexOf(s.replace);
+      if (i === -1 || out.indexOf(s.replace, i + 1) !== -1) { throw new Error('replace must occur exactly once: ' + JSON.stringify(s.replace)); }
+      out = out.slice(0, i) + s.with + out.slice(i + s.replace.length);
+    }
+  }
+  return out;
+}
+
+module.exports = { ROOT, WORKBOOK, abs, readText, exists, writeText, listFiles, walk, freshRequire, loadWorkbook, applyEdits };

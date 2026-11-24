@@ -8,159 +8,198 @@
   var data = {
     "ex1": {
       "file": "recorded/answers/ex1-answer.txt",
-      "kind": "constructed",
-      "note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-      "model": null,
-      "date": null,
-      "route": null,
-      "edits": null,
-      "text": "Subject: Re: Order SO-20417 has not arrived - still waiting\n\nDear Mira,\n\nThank you for your message, and please accept our sincere apologies for the difficulties you have experienced with order SO-20417. You are absolutely right to be frustrated, and I want to put this right for you straight away.\n\nI am pleased to confirm that we will issue a full credit of $531.00 against invoice INV-7731, covering the 6 damaged cartons and the $312.00 you spent at the cash-and-carry. You will see this on your account within the next few days.\n\nI have also arranged for the 6 missing cartons to be delivered to you tomorrow morning.\n\nWe value your business greatly and, to make up for the inconvenience, I would like to offer you a 15% discount on your next order.\n\nOnce again, I am truly sorry for the inconvenience. Please do not hesitate to contact me if there is anything else I can do.\n\nKind regards,\nTom Becker\nCustomer Service\nLarkfield Wholesale\n",
+      "kind": "recorded",
+      "model": "claude-haiku-5-5",
+      "recorded_on": "2026-11-24",
+      "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+      "edits": "none",
+      "edited_from": null,
+      "in_session": true,
+      "text": "**Subject:** Re: Order SO-20417 has not arrived - still waiting\n\nHi Mira,\n\nYou are right, and I am sorry. I told you I would confirm a delivery day for the missing cartons by Friday 7 March, and I did not. You should have heard from me, and I should not have let that date pass in silence.\n\n**The 6 missing cartons.** [Tom: confirm the delivery day and time with our transport team before sending, and replace this line with it. If no date is set yet, say so and give the date by which you will confirm it.]\n\n**Invoice INV-7731.** You were billed for the full order, including the 6 cartons that never left our warehouse. [Billing: confirm the corrected invoice amount and when it will be issued.] We will issue a corrected invoice that removes those cartons.\n\n**The damaged cartons.** Thank you for the photos. They are clear, and I have them with your request. The 6 damaged cartons come to $219.00 at $36.50 a carton, and that credit is with our operations manager, Dana Liu. I have also sent her your receipt for the $312.00 you spent on cups at the cash-and-carry, so she has the full request in front of her. I cannot approve the $531.00 myself, and I do not want to promise an amount before she has decided. Dana will give you her decision by [date, to be confirmed by Dana before sending].\n\nI know the Saturday job has already been affected, and I am sorry for the trouble this has caused your business. If you need anything else from me in the meantime, reply to this email and I will answer the same day.\n\nBest regards,\nTom Becker\nCustomer service, Larkfield Wholesale\n\n---\n\nBefore sending, check these points:\n\n- The three bracketed items are facts I do not have: the delivery day for the 6 missing cartons, the corrected invoice amount, and Dana Liu's decision date. Do not send with them still in brackets.\n- The $219.00 figure is correct (6 \u00d7 $36.50). The $531.00 total is Mira's request, and the thread does not show that anyone at Larkfield has agreed to any part of it.\n- The apology covers the missed Friday confirmation, which is the one thing Larkfield clearly committed to and did not do.\n- I have not sent this. Mira's deadline is \"by Friday\" (14 March), so Dana's decision date needs to be settled before this goes out.",
       "issues": [
-        "It promises the full credit she asked for. Only the operations manager can approve a credit of this size, and no credit may be promised by e-mail before it is approved (policy, rules 3 and 6).",
-        "It promises to pay for the cups she bought at the cash-and-carry. The policy does not allow that without the operations manager's agreement in writing (rules 5 and 6).",
-        "It promises delivery tomorrow. No day has been confirmed, and Tom wrote that the van does not come to her area until next week (message 4).",
-        "It offers a discount that exists nowhere in the thread or the policy.",
-        "It does not answer what she is most upset about: Tom said he would confirm a delivery day by Friday, and did not (messages 4 and 5).",
-        "It is long and padded with stock phrases. She asked two plain questions; the reply gives her promises the company may not be able to keep."
+        "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
+        "It says \"I have also sent her your receipt\". Nobody has: in message 4, Tom sent the operations manager the photos and the request; the receipt arrived only in message 5.",
+        "It promises an answer \"the same day\" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.",
+        "It commits the operations manager to a decision by a date (\"Dana will give you her decision by [date ...]\"): a promise made on someone else's behalf.",
+        "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.",
+        "Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the $531.00, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
+      ],
+      "strengths": [
+        "It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.",
+        "Its figures are right, and it does not promise the credit: it says the amount is the operations manager's decision."
       ]
     },
     "ex2": {
       "file": "recorded/answers/ex2-answer.txt",
-      "kind": "constructed",
-      "note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. It was written to contain two mistakes an assistant commonly makes with this thread: a customer's claim reported as a fact, and a figure cited to the wrong message. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-      "model": null,
-      "date": null,
-      "route": null,
-      "edits": null,
-      "text": "Summary for Dana: order SO-20417 (msg 1), invoice INV-7731 (msg 3)\n\n- The order was due on 28 February (msg 1) and arrived late, on 5 March (msg 3).\n- 34 of the 40 cartons of cups arrived; 6 were crushed and wet and cannot be used (msg 3). The other 6 have still not arrived (msg 5).\n- Tom promised a credit for the 6 damaged cartons (msg 5) and said he would confirm a delivery day for the missing cartons by Friday 7 March, which he did not do (msg 4).\n- Mira bought replacement cups for $312.00 and now asks for a credit of $531.00 against INV-7731 (msg 4).\n- Decision needed: whether to approve the credit.\n"
+      "kind": "recorded",
+      "model": "claude-haiku-5-5",
+      "recorded_on": "2026-11-24",
+      "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+      "edits": "none",
+      "edited_from": null,
+      "in_session": true,
+      "text": "**Dana: Order SO-20417 and invoice INV-7731 (Halden Street Bakery)**\n\n- Order SO-20417 (cups, lids) was due 28 Feb. It was held because the lids were out of stock (msg 1, msg 2).\n- Delivered 5 Mar: 34 of 40 cup cartons. 6 cartons are missing and 6 of the 34 are crushed and wet. Lids are fine (msg 3, msg 4).\n- Tom's cause: 6 cartons were left on the van at loading, and 6 were damaged in transit (msg 4).\n- Invoice INV-7731 charges the full order: $1,820.00 (msg 3).\n- Promised: delivery on 5 Mar (msg 2), and a confirmed day for the missing cartons by Fri 7 Mar (msg 4).\n- Not promised: the missing cartons before Saturday, since the van returns next week (msg 4).\n- Credit not promised: Tom sent the request to you for approval (msg 4). Mira says a credit was promised (msg 5).\n- Mira asks for a $531.00 credit on INV-7731, made up of $312.00 she spent on cups at a cash-and-carry (receipt attached) and 6 cartons at $36.50 (msg 5). Mira says she has had no reply since 6 Mar, and she wants confirmation by Friday (msg 5).\n- Not stated: a delivery day for the missing cartons, and your decision on the credit.",
+      "issues": [
+        "It ignores the word limit the request set. The checker counts the words.",
+        "\"6 cartons were left on the van at loading\" says the opposite of message 4, where they were left behind when the van was loaded. It passes every automatic check: the figure is in the thread, the citation is right, and nothing is merged. Only a person who reads message 4 catches it.",
+        "A smaller one: \"no reply since 6 Mar\" is cited to message 5, but the date is the date of message 4. The citation check passes it only because the same figure also appears in message 5."
+      ],
+      "strengths": [
+        "It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.",
+        "It keeps the two groups of 6 apart, cites a message for every fact, and writes \"Not stated\" where the thread is silent, as the request asked."
+      ]
     },
     "ex3": [
       {
         "file": "recorded/answers/ex3-answer-a.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Dear Mira,\n\nI am sorry that I did not confirm a delivery day by Friday, as I said I would. I understand that 6 of the 40 cartons we delivered were crushed, and that you had to buy cups elsewhere for Saturday. Your request for a credit of $531.00 needs the approval of our operations manager, Dana Liu, and I am passing it to her today. In the meantime, I can confirm that we will cover the $312.00 you spent at the cash-and-carry. I will call you today to agree a delivery day for the 6 missing cartons.\n\nBest regards,\nTom Becker\n",
+        "kind": "recorded",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "none",
+        "edited_from": null,
+        "in_session": true,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van does not come to your area until next week, and I do not yet have a confirmed day for them. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\n\nTom Becker\n\n---\n\nNotes for you before sending:\n\n- **Wednesday 12 March is my proposal.** It is not in the thread. Change it if you can keep a different date.\n- **Check the delivery day with the warehouse before sending** if you can. If they have confirmed one, the second paragraph should name it. If not, the draft is accurate as written.\n- **Dana's decision on the damaged cartons is pending.** Please check that she has the request, including the $312.00 receipt. Message 4 says only the photos and request went to her. The receipt is new in message 5.\n- **The draft promises no credit, no amount, no delivery day and no payment of the cash-and-carry cost.** Under policy point 5, that cost needs the operations manager's written agreement.\n- **Policy point 7 asks for a reply within one working day.** Send this today.",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning the mistake first is right."
-          },
-          {
-            "accept": [
-              "figure"
-            ],
-            "reason": "34 cartons were delivered, not 40: 40 is what was ordered (message 3). The automatic check cannot see this, because 40 is in the thread with another meaning."
+            "reason": "True: Tom promised to confirm a day by Friday (message 4) and did not (message 5). Owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "True to the policy: a credit of this size needs the operations manager's approval (rule 3), and it promises nothing."
-          },
-          {
-            "accept": [
-              "policy"
-            ],
-            "reason": "The policy does not allow paying for goods bought elsewhere without the operations manager's agreement in writing, and says never to promise it by e-mail (rules 5 and 6). The figure is right; the promise is not allowed."
+            "reason": "True (message 5), and it owns the failure without an excuse."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "A promise about Tom's own action, which he can keep. It does not promise a delivery day."
+            "reason": "True (message 5). The figure is written in words, so the figure check does not read it."
+          },
+          {
+            "accept": [
+              "fine",
+              "material"
+            ],
+            "reason": "Two marks are defensible. On Thursday 6 March, message 4 said the van comes \"next week\": the week this reply is written in. Written on Tuesday 11 March, \"until next week\" now means the week after: a new delay that nothing in the thread supports. Read as a repeat of message 4, it is fine. What tips it: whether the warehouse has said anything since. The second half, no confirmed day, is true."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "True to the policy (rule 3), and it promises nothing."
+          },
+          {
+            "accept": [
+              "material"
+            ],
+            "reason": "Message 4 says Tom sent the photos and the request. The receipt, and the full request with the cash-and-carry cost, arrived only in message 5, and nothing says they were passed on. The assistant's own notes under the reply say so too. The second half, no amount and no decision today, is fine."
+          },
+          {
+            "accept": [
+              "material",
+              "fine"
+            ],
+            "reason": "Two marks are defensible. The date is the assistant's own proposal and is not in the thread; its notes say so. But it promises only Tom's own action, which the policy allows. What tips it: it is fine once Tom has decided he can keep that date, and not before."
           }
         ],
         "id": "A"
       },
       {
         "file": "recorded/answers/ex3-answer-b.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Hi Mira,\n\nThank you for your patience, and I am sorry you have had to chase us again. Our driver has told me the damage happened because your cartons were loaded under heavier boxes. The 6 damaged cartons come to $219.00 at $36.50 a carton, and our operations manager, Dana Liu, will decide on your request for that amount and for the $312.00 you spent. As a regular customer, you also qualify for our loyalty discount on your next order. I will call you this afternoon to confirm the day we can deliver the 6 missing cartons.\n\nKind regards,\nTom\n",
+        "kind": "edited",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "Four changes to the recorded answer A. (1) Planted a wrong figure: in \"The six missing cartons are still not with you.\", \"six\" became \"12\". (2) Removed the sentence \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences \"For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.\" became the one sentence \"For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request.\" (4) Removed the closing paragraph (\"I will write to you again by Wednesday 12 March, ...\") and the assistant's notes under the reply, which describe the original wording.",
+        "edited_from": "recorded/answers/ex3-answer-a.txt",
+        "in_session": true,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe 12 missing cartons are still not with you. For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request.\n\nTom Becker",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "An apology, and true: she has had to write again (message 5)."
-          },
-          {
-            "accept": [
-              "material"
-            ],
-            "reason": "Nothing in the thread or the policy mentions the driver or how the cartons were loaded. Message 4 says only that they were damaged on the way. A made-up cause can also start an argument the company cannot win."
+            "reason": "As in answer A: true, and owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "The figures match message 5, and it says the operations manager will decide: it promises no credit."
+            "reason": "As in answer A: true (message 5)."
           },
           {
             "accept": [
-              "material"
+              "figure"
             ],
-            "reason": "There is no loyalty discount in the thread or the policy. An invented offer is also a promise the company may not keep."
+            "reason": "Planted. 6 cartons are missing (message 3); 12 adds the 6 that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size (12 oz); the check of the two groups catches it."
           },
           {
             "accept": [
-              "fine"
+              "policy"
             ],
-            "reason": "A promise about Tom's own action, which he can keep. It does not promise a delivery day."
+            "reason": "Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval."
           }
         ],
         "id": "B"
       },
       {
         "file": "recorded/answers/ex3-answer-c.txt",
-        "kind": "constructed",
-        "note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-        "model": null,
-        "date": null,
-        "route": null,
-        "edits": null,
-        "text": "Dear Mira,\n\nI am very sorry for all the trouble with order SO-20417. You received 34 cartons of cups, and 12 of them were crushed and wet. I have approved a credit of $219.00 for the damaged cartons, which will appear on your next invoice. I will pass your request for the $312.00 to Dana Liu, our operations manager, today. The 6 missing cartons will be delivered on Monday 17 March.\n\nBest wishes,\nTom\n",
+        "kind": "edited",
+        "model": "claude-haiku-5-5",
+        "recorded_on": "2026-11-24",
+        "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
+        "edits": "Three changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) Removed the assistant's notes under the reply, which describe the original wording.",
+        "edited_from": "recorded/answers/ex3-answer-a.txt",
+        "in_session": false,
+        "text": "Hi Mira,\n\nI am sorry we did not confirm a delivery day by Friday, as I said we would. You should have heard from us, and you did not.\n\nThe six missing cartons are still not with you. Our van will bring them to you on Thursday 13 March. For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today.\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\n\nTom Becker",
         "key": [
           {
             "accept": [
               "fine"
             ],
-            "reason": "An apology, and the order number is right (message 1)."
-          },
-          {
-            "accept": [
-              "figure"
-            ],
-            "reason": "6 of the 34 were crushed (message 3). The other 6 never arrived. The two groups count different cartons, and adding them does not give the number crushed."
-          },
-          {
-            "accept": [
-              "policy"
-            ],
-            "reason": "A credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). The figure is right; the promise is not allowed."
+            "reason": "As in answer A: true, and owning it first is right."
           },
           {
             "accept": [
               "fine"
             ],
-            "reason": "It passes the request on and promises nothing. That is what the policy asks for (rule 5)."
+            "reason": "As in answer A: true (message 5)."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "As in answer A: true (message 5)."
           },
           {
             "accept": [
               "policy",
               "material"
             ],
-            "reason": "No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date itself is nowhere in the thread. Either mark is right."
+            "reason": "Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right."
+          },
+          {
+            "accept": [
+              "fine"
+            ],
+            "reason": "As in answer A: true to the policy (rule 3), and it promises nothing."
+          },
+          {
+            "accept": [
+              "figure"
+            ],
+            "reason": "Planted. The damaged cartons come to $219.00 (6 at $36.50, message 5); $312.00 is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning."
+          },
+          {
+            "accept": [
+              "material",
+              "fine"
+            ],
+            "reason": "As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it."
           }
         ],
         "id": "C"

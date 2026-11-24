@@ -1,24 +1,32 @@
 {
   "exercise": "3",
   "answer": "B",
-  "kind": "constructed",
-  "about": "One of the three answers of exercise 3: a reply drafted from the strong brief.",
-  "constructed_note": "Constructed for the build as a stand-in, with its errors written in on purpose. No assistant produced this text. A real recording is owed: send the request file to an assistant, and where an error has to be planted by editing the real answer, say so in 'edits' in plain words.",
-  "model": null,
-  "date": null,
-  "route": null,
+  "in_session": true,
+  "kind": "edited",
+  "about": "Answer B of exercise 3: the recorded answer A, edited to plant a wrong figure and a breach of the policy, which answer A does not contain.",
+  "edited_from": "recorded/answers/ex3-answer-a.txt",
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-11-24",
+  "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex3-request.txt",
   "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
-  "edits": null,
+  "answer_sha256": "68ab2530c3c384cc9d46cbc3561508aa2f941e99bc2c484873f29531ad416a70",
+  "edits": "Four changes to the recorded answer A. (1) Planted a wrong figure: in \"The six missing cartons are still not with you.\", \"six\" became \"12\". (2) Removed the sentence \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences \"For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.\" became the one sentence \"For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request.\" (4) Removed the closing paragraph (\"I will write to you again by Wednesday 12 March, ...\") and the assistant's notes under the reply, which describe the original wording.",
+  "edit_steps": [
+    { "replace": "The six missing cartons are still not with you.", "with": "The 12 missing cartons are still not with you." },
+    { "replace": " Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", "with": "" },
+    { "replace": "For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today.", "with": "For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request." },
+    { "replace": "\n\nI will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.", "with": "" },
+    { "cut_from": "\n\n---\n\n" }
+  ],
   "check": {
     "exercise": "reply",
-    "expect": { "numbers": "ok", "counts": "ok", "credit": "ok", "costs": "ok", "date": "ok" }
+    "expect": { "numbers": "ok", "counts": "look", "credit": "look", "costs": "ok", "date": "ok" }
   },
   "key": [
-    { "accept": ["fine"], "reason": "An apology, and true: she has had to write again (message 5)." },
-    { "accept": ["material"], "reason": "Nothing in the thread or the policy mentions the driver or how the cartons were loaded. Message 4 says only that they were damaged on the way. A made-up cause can also start an argument the company cannot win." },
-    { "accept": ["fine"], "reason": "The figures match message 5, and it says the {managerRole} will decide: it promises no credit." },
-    { "accept": ["material"], "reason": "There is no loyalty discount in the thread or the policy. An invented offer is also a promise the company may not keep." },
-    { "accept": ["fine"], "reason": "A promise about {staffFirst}'s own action, which he can keep. It does not promise a delivery day." }
+    { "accept": ["fine"], "reason": "As in answer A: true, and owning it first is right." },
+    { "accept": ["fine"], "reason": "As in answer A: true (message 5)." },
+    { "accept": ["figure"], "reason": "Planted. {cupsMissing} cartons are missing (message 3); 12 adds the {cupsCrushed} that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size ({cupSize} oz); the check of the two groups catches it." },
+    { "accept": ["policy"], "reason": "Planted. The amount is right, but a credit of this size needs the {managerRole}'s approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval." }
   ]
 }

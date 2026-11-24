@@ -1,19 +1,29 @@
 {
   "exercise": "2",
-  "kind": "constructed",
-  "about": "An answer to the prepared summary request of exercise 2, for participants who have no assistant.",
-  "constructed_note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. It was written to contain two mistakes an assistant commonly makes with this thread: a customer's claim reported as a fact, and a figure cited to the wrong message. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-  "model": null,
-  "date": null,
-  "route": null,
+  "kind": "recorded",
+  "about": "The answer to the prepared summary request of exercise 2, for participants who have no assistant.",
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-11-24",
+  "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex2-request.txt",
   "request_sha256": "dcffec22ed35f9e1efa3874c1389e67e643ab77eedfe6032c5c2e3d228bbe1ab",
-  "edits": null,
+  "answer_sha256": "80ff7430c8474807d2a4b48d47041e37b15208fcd6cad6dc061edd9762ecdc8d",
+  "answer_characters": 1112,
+  "edits": "none",
   "check": {
     "exercise": "2",
     "expect": {
-      "numbers": "ok", "citations": "look", "fact-order": "ok", "fact-invoice": "ok", "fact-wrong": "ok",
-      "fact-amount": "ok", "fact-promised": "ok", "length": "ok", "credit": "look", "counts": "ok"
+      "numbers": "ok", "citations": "ok", "fact-order": "ok", "fact-invoice": "ok", "fact-wrong": "ok",
+      "fact-amount": "ok", "fact-promised": "ok", "length": "look", "credit": "ok", "counts": "ok"
     }
-  }
+  },
+  "strengths": [
+    "It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.",
+    "It keeps the two groups of {cupsCrushed} apart, cites a message for every fact, and writes \"Not stated\" where the thread is silent, as the request asked."
+  ],
+  "issues": [
+    "It ignores the word limit the request set. The checker counts the words.",
+    "\"6 cartons were left on the van at loading\" says the opposite of message 4, where they were left behind when the van was loaded. It passes every automatic check: the figure is in the thread, the citation is right, and nothing is merged. Only a person who reads message 4 catches it.",
+    "A smaller one: \"no reply since 6 Mar\" is cited to message 5, but the date is the date of message 4. The citation check passes it only because the same figure also appears in message 5."
+  ]
 }

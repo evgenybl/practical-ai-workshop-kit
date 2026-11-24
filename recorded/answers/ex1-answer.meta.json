@@ -1,24 +1,29 @@
 {
   "exercise": "1",
-  "kind": "constructed",
+  "kind": "recorded",
   "about": "The answer to the one-line request of exercise 1, shown to participants as the starting point.",
-  "constructed_note": "Constructed for the build as a stand-in. No assistant produced this text from the request file. A real recording is owed: send the request file, unchanged, to an assistant and replace this answer and this file.",
-  "model": null,
-  "date": null,
-  "route": null,
+  "model": "claude-haiku-5-5",
+  "recorded_on": "2026-11-24",
+  "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex1-request.txt",
   "request_sha256": "7905343d0eb0b303887f18cad3438b7b67585e6a7fbb0e689fe26da987f6f97e",
-  "edits": null,
+  "answer_sha256": "9979d81279c890a6832b17fbb6b6daf2cc998e6e8cd4287b233e5023e32ca455",
+  "answer_characters": 2242,
+  "edits": "none",
   "check": {
     "exercise": "reply",
-    "expect": { "numbers": "look", "counts": "ok", "credit": "look", "costs": "look", "date": "look" }
+    "expect": { "numbers": "look", "counts": "ok", "credit": "ok", "costs": "ok", "date": "ok" }
   },
+  "strengths": [
+    "It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.",
+    "Its figures are right, and it does not promise the credit: it says the amount is the {managerRole}'s decision."
+  ],
   "issues": [
-    "It promises the full credit she asked for. Only the {managerRole} can approve a credit of this size, and no credit may be promised by e-mail before it is approved (policy, rules 3 and 6).",
-    "It promises to pay for the cups she bought at the cash-and-carry. The policy does not allow that without the {managerRole}'s agreement in writing (rules 5 and 6).",
-    "It promises delivery tomorrow. No day has been confirmed, and {staffFirst} wrote that the van does not come to her area until next week (message 4).",
-    "It offers a discount that exists nowhere in the thread or the policy.",
-    "It does not answer what she is most upset about: {staffFirst} said he would confirm a delivery day by Friday, and did not (messages 4 and 5).",
-    "It is long and padded with stock phrases. She asked two plain questions; the reply gives her promises the company may not be able to keep."
+    "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
+    "It says \"I have also sent her your receipt\". Nobody has: in message 4, {staffFirst} sent the {managerRole} the photos and the request; the receipt arrived only in message 5.",
+    "It promises an answer \"the same day\" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.",
+    "It commits the {managerRole} to a decision by a date (\"Dana will give you her decision by [date ...]\"): a promise made on someone else's behalf.",
+    "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.",
+    "Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the {money:creditAsked}, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
   ]
 }

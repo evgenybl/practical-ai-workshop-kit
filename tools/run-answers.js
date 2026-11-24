@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 /*
- * Runs every recorded or constructed answer, and every model solution, through
+ * Runs every recorded or edited answer, and every model solution, through
  * the command-line checker (tools/check.js), and compares each result with the
  * result its meta file (or solutions/expected.json) says it should have.
  *

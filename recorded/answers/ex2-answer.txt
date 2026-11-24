@@ -1,7 +1,11 @@
-Summary for Dana: order SO-20417 (msg 1), invoice INV-7731 (msg 3)
+**Dana: Order SO-20417 and invoice INV-7731 (Halden Street Bakery)**
 
-- The order was due on 28 February (msg 1) and arrived late, on 5 March (msg 3).
-- 34 of the 40 cartons of cups arrived; 6 were crushed and wet and cannot be used (msg 3). The other 6 have still not arrived (msg 5).
-- Tom promised a credit for the 6 damaged cartons (msg 5) and said he would confirm a delivery day for the missing cartons by Friday 7 March, which he did not do (msg 4).
-- Mira bought replacement cups for $312.00 and now asks for a credit of $531.00 against INV-7731 (msg 4).
-- Decision needed: whether to approve the credit.
+- Order SO-20417 (cups, lids) was due 28 Feb. It was held because the lids were out of stock (msg 1, msg 2).
+- Delivered 5 Mar: 34 of 40 cup cartons. 6 cartons are missing and 6 of the 34 are crushed and wet. Lids are fine (msg 3, msg 4).
+- Tom's cause: 6 cartons were left on the van at loading, and 6 were damaged in transit (msg 4).
+- Invoice INV-7731 charges the full order: $1,820.00 (msg 3).
+- Promised: delivery on 5 Mar (msg 2), and a confirmed day for the missing cartons by Fri 7 Mar (msg 4).
+- Not promised: the missing cartons before Saturday, since the van returns next week (msg 4).
+- Credit not promised: Tom sent the request to you for approval (msg 4). Mira says a credit was promised (msg 5).
+- Mira asks for a $531.00 credit on INV-7731, made up of $312.00 she spent on cups at a cash-and-carry (receipt attached) and 6 cartons at $36.50 (msg 5). Mira says she has had no reply since 6 Mar, and she wants confirmation by Friday (msg 5).
+- Not stated: a delivery day for the missing cartons, and your decision on the credit.
