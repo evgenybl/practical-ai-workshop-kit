@@ -121,7 +121,7 @@ If the room has an assistant, add: *"If you finish, copy your brief, send it, an
 
 **Say after:**
 
-*"A wish does not get you a bad reply. It gets you a plausible one that decides things you did not decide, and reports things that did not happen: an invoice changed, a same-day promise, a receipt it says was sent. A brief takes two minutes longer, and its limits are where you make those decisions yourself. The first card of your handout is the five parts: keep it by your keyboard for a week."*
+*"A wish does not get you a bad reply. It gets you a plausible one that decides things you did not decide, such as a corrected invoice and an answer the same day, and reports things that did not happen, such as a receipt it says was sent. A brief takes two minutes longer, and its limits are where you make those decisions yourself. The first card of your handout is the five parts: keep it by your keyboard for a week."*
 
 **Solution:** `solutions/ex1-strong-brief.txt`, and a reply that follows it, `solutions/ex1-strong-reply.txt`. What the step 1 reply gets right and wrong, and what the checker finds in it: the answer key, exercise 1.
 

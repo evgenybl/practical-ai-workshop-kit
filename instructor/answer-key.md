@@ -272,7 +272,7 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 - **C: "Keep it under 150 words, in three short paragraphs."**  
   Why not: A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.
 - **D: "Use the e-mails below, and reply only to her very last message."**  
-  Why not: That is the material and the task. The recorded reply had both, and still made the promise.
+  Why not: That is the material and the task. The request behind the recorded reply had the e-mails and a task, and the reply still made the promise.
 
 **Question 3.** An assistant's summary says: "The customer asks for a credit of $540.00." You cannot find that figure anywhere in the thread. What do you do first?
 

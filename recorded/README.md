@@ -10,7 +10,7 @@ The exercises need an assistant's answers, so that a session can run with no ass
 | `answers/ex2-answer.txt` | 2: the summary for the manager | **Recorded**, unchanged | `requests/ex2-request.txt` |
 | `answers/ex3-answer-a.txt` | 3: answer A, a reply to the strong brief | **Recorded**, unchanged | `requests/ex3-request.txt` |
 | `answers/ex3-answer-b.txt` | 3: answer B | **Edited** from answer A, to plant a wrong figure and a breach of the policy | `requests/ex3-request.txt` |
-| `answers/ex3-answer-c.txt` | 3: answer C, for those who finish early, or homework | **Edited** from answer A, to plant a promised delivery day and a wrong figure that every automatic check passes | `requests/ex3-request.txt` |
+| `answers/ex3-answer-c.txt` | 3: answer C, for those who finish early, or homework | **Edited** from answer A, to plant a promised delivery day, which the check flags, and a wrong figure that every automatic check passes | `requests/ex3-request.txt` |
 
 **Where the recordings came from, according to the author's record.** They are one model's answers, `claude-haiku-5-5`, made on 2026-11-24 by giving a Claude Code subagent each request text as its whole prompt, and saving the answer as it was returned. Such a subagent also runs under its tool's own system prompt, so this was not a plain chat with no instructions, and it is not what a participant's assistant will be or write. No chat product was tried. The repository holds no transcript of those runs: this paragraph is the author's record, and no test can prove it.
 

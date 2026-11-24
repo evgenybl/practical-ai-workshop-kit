@@ -64,3 +64,36 @@ for (const m of metas.filter((x) => JSON.parse(lib.readText(x)).kind === 'edited
 test('every answer is recorded or edited from a recording: none is described as constructed', () => {
   for (const m of metas) { assert.ok(!/constructed/.test(lib.readText(m)), m); }
 });
+
+// ---- what the kit says about the answers, held against the answers themselves -------------
+
+test('the model answers page says of the strong brief\'s limits only what is so of the reply to the one-line wish', () => {
+  const { CASE, REC, C } = require('./helpers');
+  const page = lib.readText('solutions/README.md');
+  const brief = page.slice(page.indexOf('**The brief (exercise 1).**'), page.indexOf('\n', page.indexOf('**The brief (exercise 1).**')));
+  assert.doesNotMatch(brief, /Each limit would have prevented/);
+  // Four "Do not" sentences, then "Use only facts from the e-mails and the policy", as the page quotes it.
+  const limits = C.splitSentences(CASE.briefs.reply.limits);
+  assert.equal(limits.filter((s) => /^Do not /.test(s)).length, 4);
+  assert.match(limits[limits.length - 1], /^Use only facts from the e-mails and the policy;/);
+  assert.match(brief, /plus "Use only facts from the e-mails and the policy"\./);
+  // The two problems the page says the limits rule out are in the reply; the two mistakes it says the reply did not make, it did not.
+  const reply = REC.ex1.text;
+  assert.ok(reply.includes('We will issue a corrected invoice that removes those cartons.'));
+  assert.ok(reply.includes('I have also sent her your receipt'));
+  const r = C.checkReply(reply);
+  assert.equal(r.rules.find((x) => x.id === 'date').status, 'ok');
+  assert.equal(r.rules.find((x) => x.id === 'costs').status, 'ok');
+  assert.match(brief, /the corrected invoice, money off that the policy does not allow \(the fourth limit; rule 2 sends missing goods on the next run\), and the receipt it says was sent, a fact from nowhere \(the last sentence\)\. The second and third limits, no delivery day and no payment for the cups bought elsewhere, guard against mistakes that reply did not make\./);
+  assert.ok(reply.includes('I will answer the same day') && reply.includes('Dana will give you her decision by'));
+});
+
+test('the model summary carries a message number for every line that states a fact, as the model answers page says', () => {
+  const { C } = require('./helpers');
+  const summary = lib.readText('solutions/ex2-strong-summary.txt').trim().split('\n').filter((l) => l.startsWith('- '));
+  const facts = summary.filter((l) => !/^- Your decision:/.test(l));
+  for (const l of facts) { assert.match(l, /\(msg [\d, ]+\)\.?$/, l); }
+  assert.match(summary[summary.length - 1], /^- Your decision:/);
+  assert.match(lib.readText('solutions/README.md'), /Every line that states a fact ends with the messages it comes from, and every citation is right; the last line names the decision, not a fact\./);
+  assert.equal(C.checkSummary(lib.readText('solutions/ex2-strong-summary.txt')).rules.find((x) => x.id === 'citations').status, 'ok');
+});

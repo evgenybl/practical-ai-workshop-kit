@@ -3,7 +3,7 @@
   "answer": "C",
   "in_session": false,
   "kind": "edited",
-  "about": "Answer C of exercise 3, for those who finish early or as homework: the recorded answer A, edited to plant a promised delivery day and a wrong figure that every automatic check passes.",
+  "about": "Answer C of exercise 3, for those who finish early or as homework: the recorded answer A, edited to plant a promised delivery day, which the check flags, and a wrong figure that every automatic check passes.",
   "edited_from": "recorded/answers/ex3-answer-a.txt",
   "model": "claude-haiku-5-5",
   "recorded_on": "2026-11-24",
