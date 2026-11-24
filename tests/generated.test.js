@@ -45,6 +45,22 @@ test('the single-file workbook carries the current page, style and scripts', () 
   }
 });
 
+test('the single-file workbook, which is sent alone, carries the whole MIT notice in one comment of its head', () => {
+  const single = lib.readText('participant/workbook-single-file.html');
+  const licence = lib.readText('LICENSE').trim();
+  assert.match(licence, /^MIT License\n\nCopyright \(c\) 2026 Evgeny Blekhman\n\nPermission is hereby granted, free of charge/);
+  assert.match(licence, /The above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software\./);
+  assert.match(licence, /OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE\.$/);
+  const head = single.slice(0, single.indexOf('<style>'));
+  const holders = [...head.matchAll(/<!--([\s\S]*?)-->/g)].map((m) => m[1]).filter((c) => c.includes(licence));
+  assert.equal(holders.length, 1, 'one comment before the style holds the whole text of LICENSE');
+  assert.match(holders[0], /^\nThe scripts in this file are code, under the MIT licence, whose notice follows\./);
+  assert.match(holders[0], /The teaching text in this file [^.]*\nis not under it: it is under Creative Commons Attribution-NonCommercial 4\.0/);
+  // A comment shows nothing: outside it, the notice's words are nowhere in the file, and the folder copy is unchanged by it.
+  assert.equal(single.split('Permission is hereby granted').length, 2);
+  assert.ok(!lib.readText('participant/workbook/index.html').includes('Permission is hereby granted'));
+});
+
 test('the request files are exactly what the workbook shows', () => {
   assert.equal(lib.readText('recorded/requests/ex2-request.txt'), C.requestText('summary'));
   assert.equal(lib.readText('recorded/requests/ex3-request.txt'), C.requestText('reply'));

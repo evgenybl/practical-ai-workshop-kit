@@ -362,7 +362,7 @@ test('the licence table says, row by row, what each licence covers, and what it 
   assert.match(rows[1][0], /^Everything else: the pages and documents \(`\.md`, `\.html`, `\.css`\), the case files, and the recorded requests and answers; and the teaching text inside two scripts: `participant\/workbook\/case-data\.js` \(the case, the exercises and the questions\) and `participant\/workbook\/recorded-answers\.js`, which is generated from `recorded\/answers\/` and holds the recorded answers and the key with its reasons$/);
   assert.equal(rows[1][1], 'Creative Commons Attribution-NonCommercial 4.0, in [`LICENSE-TEXT.md`](LICENSE-TEXT.md)');
   assert.equal(rows[2][0], '`participant/workbook-single-file.html`');
-  assert.match(rows[2][1], /^Both: it holds the MIT code and the CC BY-NC teaching text in one file, each under its own licence, and its footer says so$/);
+  assert.match(rows[2][1], /^Both: it holds the MIT code and the CC BY-NC teaching text in one file, each under its own licence; its footer says so, and a comment at the top of the file carries the MIT licence's notice, because this file is sent alone$/);
   // Every script is in one of the three folders the first row names.
   for (const f of files.filter((x) => x.endsWith('.js'))) { assert.match(f, /^(participant\/workbook|tools|tests)\//, f); }
   // recorded-answers.js does hold the recorded answers and the key, and says what licence they are under.

@@ -4,7 +4,7 @@ This page uses six kinds of evidence, and keeps them apart. A kind of evidence i
 
 | Kind of evidence | What it is here | State |
 |---|---|---|
-| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally on macOS (arm64), with Node 24.22.3 and with Node 22.23.5: 296 tests, 296 pass, 0 fail with each. Earlier, at commit 16fa097: 250 tests, 250 pass, 0 fail, locally on Windows with Node 24. In CI, on Linux and Windows with Node 22 and 24: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84, both passed. CI runs on every push; the badge at the top of the README shows the result of the last run. |
+| Automated tests | Every checker rule, both ways; the keys agree; no network address in the workbook; the single-file copy is current | Done locally on macOS (arm64), with Node 24.22.3 and with Node 22.23.5: 297 tests, 297 pass, 0 fail with each. Earlier, at commit 16fa097: 250 tests, 250 pass, 0 fail, locally on Windows with Node 24. In CI, on Linux and Windows with Node 22 and 24: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84, both passed. CI runs on every push; the badge at the top of the README shows the result of the last run. |
 | Recorded answers through the checker | Each recorded answer, and each edited one, is run through the checker, and the result is the one the instructor guide describes | Done locally: three answers recorded from claude-haiku-5-5 on 2026-11-24, according to the author's record, and unchanged since they were saved (a test checks each one's sha256); answers B and C of exercise 3 are declared edits of the recorded answer A. Each gives the checker result the instructor guide describes, and a test reads the guide's counts to check it. Also in CI: run 45300468336 at commit 5059ae2 and run 45315987278 at commit 1038d84. |
 | A new-user test by an AI agent | A fresh agent does every exercise as a first-time participant, and lists every point where it was unsure | Done twice, by separate AI agents: at commit 5059ae2, whose eleven points of friction were worked through in later commits, and at commit 2926752, whose seven points were worked through in the commits after it. Both are listed on the testing page. In the second pass the marks of exercise 3, exercise 4 part 1 and the ten questions were made blind by a further agent, because the second agent had read the keys in the page's files first. |
 | An independent review | A reviewer with no part in the build | Done twice, by separate AI agents: at commit 5059ae2 (3 blockers, 6 majors and a list of minors) and at commit 16fa097 (no blocker, 1 major, and minors and notes), each worked through in the commits after it. Both are listed on the testing page. Not repeated after that. |
@@ -39,7 +39,7 @@ node --test "tests/*.test.js"
 | `tests/checker.test.js` | The checker's honesty: its sentences about its own limits are on every result that needs them; every pass is worded as what was not found; an empty box says so on every rule. |
 | `tests/workbook.test.js` | The page's own logic, run in a small fake page (`tests/fake-dom.js`): every exercise's buttons, the request check, columns that start on "Choose", saving and restoring answers in the browser's storage, clearing them, saving them as a text file. And the markup: a label for every box, unique ids, plain buttons, a visible focus style with an outline, a contrast ratio of at least 4.5 to 1 for every pair of text and background colours, the warning for a page opened without its folder, and the page's content security policy. And what a first-time participant needs: a gloss for each term where it first appears, no objective codes on the page, and the boxes and hints the second new-user pass asked for; the label of an edited answer, and what "the amount in question" is. |
 | `tests/offline.test.js` | No file of the participant folder contains a request call, a remote script, style, font or image, or any web address; the single-file copy loads nothing; every link on the page leads to a place on the page. |
-| `tests/generated.test.js` | Every generated file is current: the single-file workbook, the request files, the answer key (which therefore equals the workbook's own key, and a second, literal copy of the key in the test), the printable case and the generated solutions. |
+| `tests/generated.test.js` | Every generated file is current: the single-file workbook, the request files, the answer key (which therefore equals the workbook's own key, and a second, literal copy of the key in the test), the printable case and the generated solutions. The single-file workbook, which is sent alone, carries the whole text of `LICENSE` in one comment of its head. |
 | `tests/answers.test.js` | Every answer in `recorded/` and every model answer in `solutions/`, run through the command-line checker, gives its expected result; every recorded answer and its request still have the sha256 the meta file states; every edited answer is exactly the recorded answer plus its declared edits; what the model answers page says of the reply to the one-line wish and of the model summary. |
 | `tests/guide.test.js` | What the instructor guide, this page, the README, the variants and "when things go wrong" say each recorded and edited answer gives through the checker (how many *OK* and *Look again*, and which sentence or figure is flagged) is read from the page and compared with a run. |
 | `tests/cli.test.js` | The command-line checker prints exactly what the page shows, with exit codes 0, 1 and 2, an empty answer file an error, and its usage says what each exercise's file must hold. |
@@ -50,15 +50,15 @@ node --test "tests/*.test.js"
 
 <!-- pasted from: node --test --test-reporter=tap "tests/*.test.js" (the last lines) -->
 ```text
-1..296
-# tests 296
+1..297
+# tests 297
 # suites 0
-# pass 296
+# pass 297
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 1402.416125
+# duration_ms 1389.086042
 ```
 
 **What the automated tests do not cover.** No person has yet worked through the page in a browser; a headless browser has rendered it once (below). In the tests its logic runs in a fake page, which checks what the buttons do but not how the page looks, how it behaves with a keyboard alone, or how a screen reader reads it. The labels, the focus style and the colour contrast are checked in the markup only. The real-browser pass in the table above, not yet done, is where that is owed.

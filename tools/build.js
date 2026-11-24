@@ -327,8 +327,17 @@ function singleFile(recordedSource) {
   const warning = /(<p class="warn load-warning" id="load-warning">)[^<]*(<\/p>)/;
   if (!warning.test(html)) { throw new Error('index.html: the load warning is missing'); }
   html = html.replace(warning, '$1' + SINGLE_FILE_WARNING + '$2');
-  return html.replace('<!-- single-file-note -->', '<!-- ' + GENERATED_NOTE + ' Source: participant/workbook/. -->');
+  // This file is sent alone, without the kit's LICENSE file, so it carries the MIT licence's notice itself.
+  const licence = lib.readText('LICENSE').trim();
+  if (/--|<!/.test(licence)) { throw new Error('LICENSE: its text cannot be carried in an HTML comment as it is'); }
+  return html.replace('<!-- single-file-note -->', '<!-- ' + GENERATED_NOTE + ' Source: participant/workbook/. -->\n' +
+    '<!--\n' + SINGLE_FILE_LICENCE_NOTE + '\n\n' + licence + '\n-->');
 }
+const SINGLE_FILE_LICENCE_NOTE = [
+  'The scripts in this file are code, under the MIT licence, whose notice follows.',
+  'The teaching text in this file (the case, the exercises, the questions, the recorded answers and the key)',
+  'is not under it: it is under Creative Commons Attribution-NonCommercial 4.0, as the foot of the page says.'
+].join('\n');
 const SINGLE_FILE_WARNING = 'The workbook did not start. It needs JavaScript: allow it for this file, or ask your instructor for the printed case.';
 
 // -----------------------------------------------------------------------------
