@@ -10,11 +10,12 @@
   "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",
   "request_file": "recorded/requests/ex3-request.txt",
   "request_sha256": "6719c64ea2a41413300dae64c79eabd41499c8fcc6fd1572ee1d4df51ae745cc",
-  "answer_sha256": "b73327a6190225587b8b61c160147a7b76ba6a62cca429d3f9198fa47b8ff491",
-  "edits": "Three changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) Removed the assistant's notes under the reply, which describe the original wording.",
+  "answer_sha256": "8458ad7b14276a390e7513297c28410f295673ab8ca08a157e5fc970fc3cb334",
+  "edits": "Four changes to the recorded answer A. (1) Planted a breach of the policy: \"Our van does not come to your area until next week, and I do not yet have a confirmed day for them.\" became \"Our van will bring them to you on Thursday 13 March.\" (2) Planted a wrong figure: \"I have sent her your photos, your full request and the receipt you sent, and\" became \"I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and\". (3) To keep the reply consistent with the day it now promises: \"even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.\" became \"even if Dana's decision is not final by then, and I will tell you where it stands.\" (4) Removed the assistant's notes under the reply, which describe the original wording.",
   "edit_steps": [
     { "replace": "Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", "with": "Our van will bring them to you on Thursday 13 March." },
     { "replace": "I have sent her your photos, your full request and the receipt you sent, and", "with": "I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and" },
+    { "replace": "even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands.", "with": "even if Dana's decision is not final by then, and I will tell you where it stands." },
     { "cut_from": "\n\n---\n\n" }
   ],
   "check": {

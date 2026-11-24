@@ -89,10 +89,11 @@ function mdHeader(title) {
 }
 function recordNote(entry) {
   if (entry.kind === 'edited') {
-    return '> **A real answer, edited to plant the errors this exercise teaches.** Edited from `' + entry.edited_from + '` (' + entry.model +
-      ', recorded on ' + entry.recorded_on + '). ' + entry.edits + '\n\n';
+    return '> **Edited: no assistant wrote this.** It is `' + entry.edited_from + '`, changed by hand to plant errors. ' + entry.edits + '\n\n';
   }
-  return '> **Recorded answer, exactly as it came back** (no edits): ' + entry.model + ', recorded on ' + entry.recorded_on + ', through ' + entry.route + '.\n\n';
+  return '> **Recorded, unchanged** (no edits). According to the author\'s record: ' + entry.model + ', ' + entry.recorded_on + ', ' + entry.route +
+    '. That route runs under its own system prompt, so this is not a plain chat, and not what a participant\'s assistant will write. ' +
+    'Its sha256 shows only that the file has not changed since it was saved, and which request it answers (`recorded/README.md`).\n\n';
 }
 function bullets(list) { return list.map((t) => '- ' + t).join('\n') + '\n\n'; }
 
@@ -124,6 +125,7 @@ function buildDocuments(recordedSource) {
 
   // --- solutions that come straight from the keys -----------------------------
   files['solutions/ex1-strong-brief.txt'] = C.requestText('reply');
+  files['solutions/ex2-strong-request.txt'] = C.requestText('summary');
   files['solutions/ex3-marks.txt'] =
     '# Exercise 3: the key as a marks file. ' + GENERATED_NOTE + '\n' +
     REC.ex3.map((a) => a.key.map((k, i) => a.id + (i + 1) + ': ' + k.accept[0]).join('\n')).join('\n') + '\n';
@@ -152,8 +154,8 @@ function ex3Intro(REC) {
   const later = REC.ex3.filter((a) => !a.in_session).map((a) => a.id);
   const recorded = REC.ex3.filter((a) => a.kind === 'recorded').map((a) => a.id);
   const edited = REC.ex3.filter((a) => a.kind === 'edited').map((a) => a.id);
-  return 'Answer ' + recorded.join(' and ') + ' is a real answer, exactly as it came back; answer' + (edited.length > 1 ? 's ' : ' ') + edited.join(' and ') +
-    ' ' + (edited.length > 1 ? 'are' : 'is') + ' the same answer, edited to plant the errors this exercise teaches, and each says exactly what was changed. ' +
+  return 'Answer ' + recorded.join(' and ') + ' is one model\'s recorded answer, unchanged; answer' + (edited.length > 1 ? 's ' : ' ') + edited.join(' and ') +
+    ' ' + (edited.length > 1 ? 'are' : 'is') + ' that answer, edited by hand to plant errors, and each says exactly what was changed. ' +
     'Answers ' + session.join(' and ') + ' are marked in the session; ' + (later.length ? 'answer ' + later.join(' and ') + ' is for those who finish early, or homework.' : '');
 }
 
@@ -195,7 +197,7 @@ function answerKey(CASE, REC, C, F) {
   s += 'This page is generated from the workbook\'s own key, so it cannot drift from what the workbook marks. ' +
     'A test fails if it ever differs. Every business, person and figure in it is invented.\n\n' +
     'For each exercise: what a good answer holds, what the checker finds in the answer participants are given, and where the model answer is. ' +
-    'How to use each part in the room is in `instructor/guide.md`.\n\n';
+    'How to use each part in the room is in `instructor/guide.md`. This kit has not yet been taught to a class: how these answers will go in a room is planned, not observed.\n\n';
 
   // Exercise 1
   s += '## Exercise 1: From a wish to a brief\n\n';
@@ -219,6 +221,9 @@ function answerKey(CASE, REC, C, F) {
 
   // Exercise 2
   s += '## Exercise 2: Summarise, and prove it\n\n';
+  s += '### The line participants add\n\nThe request in the workbook starts without a line that asks for sources. Each participant adds one to its Form part, and checks it with *Check my request*, ' +
+    'which looks for a sentence that names the message or the source, says each, every or after, and says what it is for (each fact, figure or bullet). ' +
+    'The recorded answer was made with this line: "' + CASE.briefs.summary.citeLine + '" The full request with it is `solutions/ex2-strong-request.txt`.\n\n';
   s += '### What the summary must hold, and where each fact is\n\n| Fact | In the thread | Where |\n|---|---|---|\n';
   s += '| The order number | ' + F.orderNo + ' | Message 1, and every subject line |\n';
   s += '| The invoice number | ' + F.invoiceNo + ' | Message 3 |\n';
@@ -314,8 +319,13 @@ function singleFile(recordedSource) {
     const code = src === 'recorded-answers.js' ? recordedSource : lib.readText('participant/workbook/' + src);
     return '<script>\n' + code.replace(/<\/script/gi, '<\\/script') + '</script>';
   });
+  // In one file there is no folder to extract: the warning says what can still go wrong.
+  const warning = /(<p class="warn load-warning" id="load-warning">)[^<]*(<\/p>)/;
+  if (!warning.test(html)) { throw new Error('index.html: the load warning is missing'); }
+  html = html.replace(warning, '$1' + SINGLE_FILE_WARNING + '$2');
   return html.replace('<!-- single-file-note -->', '<!-- ' + GENERATED_NOTE + ' Source: participant/workbook/. -->');
 }
+const SINGLE_FILE_WARNING = 'The workbook did not start. It needs JavaScript: allow it for this file, or ask your instructor for the printed case.';
 
 // -----------------------------------------------------------------------------
 function main() {

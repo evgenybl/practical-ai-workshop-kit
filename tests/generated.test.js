@@ -49,3 +49,28 @@ test('the request files are exactly what the workbook shows', () => {
   assert.equal(lib.readText('recorded/requests/ex2-request.txt'), C.requestText('summary'));
   assert.equal(lib.readText('recorded/requests/ex3-request.txt'), C.requestText('reply'));
 });
+
+// The key, written out by hand a second time. A change to the key in the data must be made here too,
+// so that no single edit can flip an answer unnoticed.
+const LITERAL_KEY = {
+  marks: {
+    A: ['fine', 'fine', 'fine', 'fine|material', 'fine', 'material', 'material|fine'],
+    B: ['fine', 'fine', 'figure', 'policy'],
+    C: ['fine', 'fine', 'fine', 'policy|material', 'fine', 'figure', 'material|fine']
+  },
+  piles: { 1: 'fine', 2: 'fine', 3: 'remove|never', 4: 'remove|never', 5: 'remove|never', 6: 'never', 7: 'never', 8: 'never' },
+  quiz: { 1: 'D', 2: 'B', 3: 'A', 4: 'C', 5: 'A', 6: 'D', 7: 'C', 8: 'B', 9: 'C', 10: 'D' }
+};
+
+test('the key in the data equals the key written out by hand in this test', () => {
+  const { CASE } = require('./helpers');
+  const marks = {};
+  for (const a of REC.ex3) { marks[a.id] = a.key.map((k) => k.accept.join('|')); }
+  assert.deepEqual(marks, LITERAL_KEY.marks);
+  const piles = {};
+  for (const s of CASE.snippets) { piles[s.n] = s.accept.join('|'); assert.equal(s.pile, s.accept[0], 'snippet ' + s.n); }
+  assert.deepEqual(piles, LITERAL_KEY.piles);
+  const quiz = {};
+  for (const q of CASE.quiz) { quiz[q.n] = q.options.find((o) => o.correct).key; }
+  assert.deepEqual(quiz, LITERAL_KEY.quiz);
+});

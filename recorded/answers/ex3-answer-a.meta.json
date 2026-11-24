@@ -3,7 +3,7 @@
   "answer": "A",
   "in_session": true,
   "kind": "recorded",
-  "about": "Answer A of exercise 3: a reply to the strong brief, exactly as it came back, with the assistant's own notes under it.",
+  "about": "Answer A of exercise 3: one model's reply to the strong brief, unchanged, with the assistant's own notes under it.",
   "model": "claude-haiku-5-5",
   "recorded_on": "2026-11-24",
   "route": "a Claude Code subagent given the request text as its whole prompt; the answer saved as returned",

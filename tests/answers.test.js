@@ -27,7 +27,7 @@ test('every answer has a meta file, and every meta file an answer', () => {
 });
 
 for (const m of metas) {
-  test('meta file is complete, and the answer and its request have the sha256 it states: ' + m, () => {
+  test('meta file is complete; the answer and its request still have the sha256 it states, so neither has changed since it was saved (this does not show where the answer came from): ' + m, () => {
     const meta = JSON.parse(lib.readText(m));
     for (const k of ['exercise', 'kind', 'model', 'recorded_on', 'route', 'request_file', 'request_sha256', 'answer_sha256', 'edits', 'check']) {
       assert.ok(k in meta, k);
@@ -61,6 +61,6 @@ for (const m of metas.filter((x) => JSON.parse(lib.readText(x)).kind === 'edited
   });
 }
 
-test('no answer is a constructed stand-in any more', () => {
+test('every answer is recorded or edited from a recording: none is described as constructed', () => {
   for (const m of metas) { assert.ok(!/constructed/.test(lib.readText(m)), m); }
 });

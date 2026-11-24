@@ -44,7 +44,7 @@ The delivery came this morning at 10:30, thank you. But it is not right. We rece
 
 **The key accepts:** Paste after removing details or Do not paste.
 
-**Why:** Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.
+**Why:** Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address and the business with stand-ins such as [CUSTOMER], then put the real ones back in your reply. The order number means nothing outside your own company's systems, so it may stay, as it does in part 2. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone.
 
 ### Snippet 4: The orders table: thirty rows with business names, contact people, phones and e-mails
 
@@ -57,7 +57,9 @@ SO-20399 | 3 Feb | Copperleaf Catering | Jonas Arvidsen | 000-000-0102 | jonas.a
 (28 more rows)
 ```
 
-**Why:** The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that.
+**The key accepts:** Paste after removing details or Do not paste.
+
+**Why:** Two piles are defensible. The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer: part 2 of this exercise does exactly that. What would tip it to "do not paste": an employer's policy that keeps all customer data out of public tools, whatever is removed.
 
 ### Snippet 5: The warehouse rota for next week, with staff names (invented)
 
@@ -88,7 +90,7 @@ Fit note: Jakub Novak, warehouse. Lower back strain. Not fit for lifting over 10
 
 ### Snippet 7: Our customer contact list: every contact name with a mobile number
 
-*Why someone might paste it:* To ask for help sorting it by area.
+*Why someone might paste it:* To ask for help putting it into one tidy format for a new phone system.
 
 ```text
 Jonas Arvidsen, Copperleaf Catering, 000-000-0102
@@ -97,9 +99,9 @@ Ravi Castellan, North Quay Deli, 000-000-0104
 (24 more rows)
 ```
 
-**Why:** The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself.
+**Why:** The list is nothing but personal details: take them out and nothing is left to work on. To learn how to tidy such a list, paste two rows you have made up, then do the real list yourself.
 
-### Snippet 8: The terms of a signed supply contract with our largest customer (invented)
+### Snippet 8: The terms of a signed supply contract with an events customer (invented)
 
 *Why someone might paste it:* To ask what a penalty clause means for us.
 

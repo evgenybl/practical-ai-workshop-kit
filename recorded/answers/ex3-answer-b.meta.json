@@ -27,6 +27,6 @@
     { "accept": ["fine"], "reason": "As in answer A: true, and owning it first is right." },
     { "accept": ["fine"], "reason": "As in answer A: true (message 5)." },
     { "accept": ["figure"], "reason": "Planted. {cupsMissing} cartons are missing (message 3); 12 adds the {cupsCrushed} that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size ({cupSize} oz); the check of the two groups catches it." },
-    { "accept": ["policy"], "reason": "Planted. The amount is right, but a credit of this size needs the {managerRole}'s approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval." }
+    { "accept": ["policy"], "reason": "Planted. The amount is right, but a credit of this size needs the {managerRole}'s approval (rule 3), and no credit may be promised before it is approved (rule 6). In the recorded answer A, this sentence said that the credit needs approval." }
   ]
 }

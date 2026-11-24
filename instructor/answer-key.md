@@ -4,7 +4,7 @@
 
 This page is generated from the workbook's own key, so it cannot drift from what the workbook marks. A test fails if it ever differs. Every business, person and figure in it is invented.
 
-For each exercise: what a good answer holds, what the checker finds in the answer participants are given, and where the model answer is. How to use each part in the room is in `instructor/guide.md`.
+For each exercise: what a good answer holds, what the checker finds in the answer participants are given, and where the model answer is. How to use each part in the room is in `instructor/guide.md`. This kit has not yet been taught to a class: how these answers will go in a room is planned, not observed.
 
 ## Exercise 1: From a wish to a brief
 
@@ -12,37 +12,38 @@ For each exercise: what a good answer holds, what the checker finds in the answe
 
 The request is in `recorded/requests/ex1-request.txt`; the reply, in full, in `recorded/answers/ex1-answer.txt`.
 
-> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
+> **Recorded, unchanged** (no edits). According to the author's record: claude-haiku-5-5, 2026-11-24, a Claude Code subagent given the request text as its whole prompt; the answer saved as returned. That route runs under its own system prompt, so this is not a plain chat, and not what a participant's assistant will write. Its sha256 shows only that the file has not changed since it was saved, and which request it answers (`recorded/README.md`).
 
 **What it gets right**
 
 - It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.
-- Its figures are right, and it does not promise the credit: it says the amount is the operations manager's decision.
+- Its figures are right, and it does not promise the credit: it says it cannot approve the $531.00 itself, and that the operations manager will decide.
 
 **What is wrong with it** (the workbook shows this list as "the instructor's list")
 
-1. It decides something nobody asked it to decide: "We will issue a corrected invoice that removes those cartons." That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.
-2. It says "I have also sent her your receipt". Nobody has: in message 4, Tom sent the operations manager the photos and the request; the receipt arrived only in message 5.
+1. It decides something nobody asked it to decide: "We will issue a corrected invoice that removes those cartons." No one in the thread offered that, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.
+2. It says "I have also sent her your receipt". Nothing in the thread says anyone has: in message 4, Tom sent the operations manager the photos and the request, and the receipt arrived only in message 5.
 3. It promises an answer "the same day" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.
-4. It commits the operations manager to a decision by a date ("Dana will give you her decision by [date ...]"): a promise made on someone else's behalf.
-5. It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.
-6. Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the $531.00, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give ("14 March"): right by the calendar, but worked out, so check it.
+4. It promises a decision from the operations manager by a date: "Dana will give you her decision by [date, to be confirmed by Dana before sending]." The bracket asks for the date to be confirmed, but the promise that she will decide by then is made on her behalf.
+5. It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that an e-mail program may show as they are.
+6. Its own notes under the line are useful, and incomplete. They list the three gaps, and say that the thread does not show anyone agreeing to any part of the $531.00. But they treat the corrected invoice as settled, asking only for its amount, and they say nothing about the receipt the reply says was sent. They also work out a date the thread does not give ("14 March"): right by the calendar, but worked out, so check it.
 
 ### What the checker finds in that reply
 
 ```text
 A reply to the customer
-4 OK, 1 to look at again.
+3 OK, 2 to look at again.
 
 [Look again] The figures: 1 figure in this answer is not in the thread or the policy. If a figure was worked out from others, check the sum yourself. If you cannot tell where it came from, take it out until you can.
     - 14 is not in the material: check it. It appears here: "...s. Mira's deadline is "by Friday" (14 March), so Dana's decision date ne..."
-[OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. Nothing here merges the two.
-[OK] No credit promised: Nothing here promises a credit or an amount. Under the policy, a credit above $100.00 needs the operations manager's approval first (rules 3 and 6).
-[OK] No offer to pay other costs: Nothing here offers to pay for the cups bought elsewhere. Under the policy, that needs the operations manager's agreement in writing (rules 5 and 6).
-[OK] No delivery day promised: Nothing here promises a day for the missing cartons. The warehouse has not confirmed one, and Tom wrote that the van does not come until next week (message 4).
+[OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. I found no figure here that merges the two.
+[Look again] Promises of a credit: This reply seems to promise a credit, an amount or money off. Under the policy, a credit above $100.00 must be approved by the operations manager, and no credit may be promised by e-mail before it is approved (rules 3 and 6).
+    - Read this sentence: "We will issue a corrected invoice that removes those cartons."
+[OK] Offers to pay other costs: I found no sentence that offers to pay for the cups bought elsewhere. Under the policy, that needs the operations manager's agreement in writing (rules 5 and 6).
+[OK] Promises of a delivery day: I found no sentence that promises a day for the missing cartons. The warehouse has not confirmed one, and Tom wrote that the van does not come until next week (message 4).
 
 The checks for promises look for words that usually mean a promise. They can miss one, or flag a sentence that is fine. Read each flagged sentence yourself and decide.
-Figures written in words, such as "six", are not checked.
+Figures written in words, such as "six", are not checked. Dates written with figures, such as 28/02, are compared by day and month.
 ```
 
 ### What the brief check looks for
@@ -64,6 +65,10 @@ It checks presence, not quality, and says so on the page.
 
 ## Exercise 2: Summarise, and prove it
 
+### The line participants add
+
+The request in the workbook starts without a line that asks for sources. Each participant adds one to its Form part, and checks it with *Check my request*, which looks for a sentence that names the message or the source, says each, every or after, and says what it is for (each fact, figure or bullet). The recorded answer was made with this line: "After each fact, put the number of the message it comes from in brackets, like this: (msg 2)." The full request with it is `solutions/ex2-strong-request.txt`.
+
 ### What the summary must hold, and where each fact is
 
 | Fact | In the thread | Where |
@@ -81,14 +86,14 @@ It checks presence, not quality, and says so on the page.
 
 ### The answer participants are given
 
-> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
+> **Recorded, unchanged** (no edits). According to the author's record: claude-haiku-5-5, 2026-11-24, a Claude Code subagent given the request text as its whole prompt; the answer saved as returned. That route runs under its own system prompt, so this is not a plain chat, and not what a participant's assistant will write. Its sha256 shows only that the file has not changed since it was saved, and which request it answers (`recorded/README.md`).
 
 The answer, in full: `recorded/answers/ex2-answer.txt`.
 
 **What it gets right**
 
 - It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.
-- It keeps the two groups of 6 apart, cites a message for every fact, and writes "Not stated" where the thread is silent, as the request asked.
+- It keeps the two groups of 6 apart, ends every bullet that states a fact with the messages it comes from, and writes "Not stated" where the thread is silent, as the request asked.
 
 **What is wrong with it**
 
@@ -102,18 +107,18 @@ The answer, in full: `recorded/answers/ex2-answer.txt`.
 Exercise 2: Summarise, and prove it
 9 OK, 1 to look at again.
 
-[OK] The figures: Every figure in this answer (22 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
-[OK] Message numbers: Each figure is in the message its citation names (11 citations checked).
-[OK] The order number: Found, as required.
-[OK] The invoice number: Found, as required.
-[OK] What went wrong: Found, as required: it says the order was late, that cartons were missing, and that cartons were damaged.
-[OK] The amount in question: Found, as required.
-[OK] What was promised: Found, as required: it says what was promised; it mentions the promise to confirm a delivery day by Friday, with a sign that it was not kept; and it describes the credit as asked for or awaiting a decision.
+[OK] The figures: Every figure I found in this answer (22 figures) is in the thread. Being there does not make it right: check that each one means what the answer says it means.
+[OK] Message numbers: I checked 11 citations, and each figure I found is in the message its citation names.
+[OK] The order number: I found it, as required.
+[OK] The invoice number: I found it, as required.
+[OK] What went wrong: I found, as required, words that say the order was late, that cartons were missing, and that cartons were damaged.
+[OK] The amount in question: I found it, as required.
+[OK] What was promised: I found, as required: a word such as promised; a mention of the promise to confirm a delivery day by Friday, with a sign that it was not kept; and the credit described as asked for or awaiting a decision.
 [Look again] Length: I counted 179 words; the limit is 120. A manager with two minutes needs the short version. Message numbers in brackets are not counted.
-[OK] The promise that was never given: Nothing here says that a credit was promised or agreed. In the thread, Tom passed the request to the operations manager and promised no credit (message 4).
-[OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. Nothing here merges the two.
+[OK] The promise that was never given: I found no sentence that says a credit was promised or agreed. In the thread, Tom passed the request to the operations manager and promised no credit (message 4).
+[OK] The two groups of 6: The thread uses 6 twice: 6 cartons that never arrived, and 6 that arrived crushed. I found no figure here that merges the two.
 
-Figures written in words, such as "six", are not checked.
+Figures written in words, such as "six", are not checked. Dates written with figures, such as 28/02, are compared by day and month.
 The checks for promises look for words that usually mean a promise. They can miss one, or flag a sentence that is fine. Read each flagged sentence yourself and decide.
 ```
 
@@ -123,11 +128,11 @@ A strong summary: `solutions/ex2-strong-summary.txt`.
 
 ## Exercise 3: Find what is wrong
 
-The request behind the three answers is `recorded/requests/ex3-request.txt`. Answer A is a real answer, exactly as it came back; answers B and C are the same answer, edited to plant the errors this exercise teaches, and each says exactly what was changed. Answers A and B are marked in the session; answer C is for those who finish early, or homework. The answers in full, annotated, are in `solutions/ex3-annotated-answers.md`. Where the key accepts two marks, both are defensible, and the reason says what tips it.
+The request behind the three answers is `recorded/requests/ex3-request.txt`. Answer A is one model's recorded answer, unchanged; answers B and C are that answer, edited by hand to plant errors, and each says exactly what was changed. Answers A and B are marked in the session; answer C is for those who finish early, or homework. The answers in full, annotated, are in `solutions/ex3-annotated-answers.md`. Where the key accepts two marks, both are defensible, and the reason says what tips it.
 
 ### Answer A: in the session
 
-> **Recorded answer, exactly as it came back** (no edits): claude-haiku-5-5, recorded on 2026-11-24, through a Claude Code subagent given the request text as its whole prompt; the answer saved as returned.
+> **Recorded, unchanged** (no edits). According to the author's record: claude-haiku-5-5, 2026-11-24, a Claude Code subagent given the request text as its whole prompt; the answer saved as returned. That route runs under its own system prompt, so this is not a plain chat, and not what a participant's assistant will write. Its sha256 shows only that the file has not changed since it was saved, and which request it answers (`recorded/README.md`).
 
 | # | Sentence | Key | Why |
 |---|---|---|---|
@@ -141,18 +146,18 @@ The request behind the three answers is `recorded/requests/ex3-request.txt`. Ans
 
 ### Answer B: in the session
 
-> **A real answer, edited to plant the errors this exercise teaches.** Edited from `recorded/answers/ex3-answer-a.txt` (claude-haiku-5-5, recorded on 2026-11-24). Four changes to the recorded answer A. (1) Planted a wrong figure: in "The six missing cartons are still not with you.", "six" became "12". (2) Removed the sentence "Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences "For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today." became the one sentence "For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request." (4) Removed the closing paragraph ("I will write to you again by Wednesday 12 March, ...") and the assistant's notes under the reply, which describe the original wording.
+> **Edited: no assistant wrote this.** It is `recorded/answers/ex3-answer-a.txt`, changed by hand to plant errors. Four changes to the recorded answer A. (1) Planted a wrong figure: in "The six missing cartons are still not with you.", "six" became "12". (2) Removed the sentence "Our van does not come to your area until next week, and I do not yet have a confirmed day for them.", to keep the answer short for the session. (3) Planted a breach of the policy: the two sentences "For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. I have sent her your photos, your full request and the receipt you sent, and I cannot confirm an amount or a decision today." became the one sentence "For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request." (4) Removed the closing paragraph ("I will write to you again by Wednesday 12 March, ...") and the assistant's notes under the reply, which describe the original wording.
 
 | # | Sentence | Key | Why |
 |---|---|---|---|
 | B1 | I am sorry we did not confirm a delivery day by Friday, as I said we would. | Fine | As in answer A: true, and owning it first is right. |
 | B2 | You should have heard from us, and you did not. | Fine | As in answer A: true (message 5). |
 | B3 | The 12 missing cartons are still not with you. | A wrong figure | Planted. 6 cartons are missing (message 3); 12 adds the 6 that arrived crushed, a different group. The figure check passes 12 only because 12 is in the thread as the cup size (12 oz); the check of the two groups catches it. |
-| B4 | For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request. | Against the policy | Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the real answer, this sentence said that the credit needs approval. |
+| B4 | For the six damaged cartons, I can confirm a credit of $219.00 today, and our operations manager, Dana Liu, will decide on the rest of your request. | Against the policy | Planted. The amount is right, but a credit of this size needs the operations manager's approval (rule 3), and no credit may be promised before it is approved (rule 6). In the recorded answer A, this sentence said that the credit needs approval. |
 
 ### Answer C: for those who finish early, or as homework
 
-> **A real answer, edited to plant the errors this exercise teaches.** Edited from `recorded/answers/ex3-answer-a.txt` (claude-haiku-5-5, recorded on 2026-11-24). Three changes to the recorded answer A. (1) Planted a breach of the policy: "Our van does not come to your area until next week, and I do not yet have a confirmed day for them." became "Our van will bring them to you on Thursday 13 March." (2) Planted a wrong figure: "I have sent her your photos, your full request and the receipt you sent, and" became "I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and". (3) Removed the assistant's notes under the reply, which describe the original wording.
+> **Edited: no assistant wrote this.** It is `recorded/answers/ex3-answer-a.txt`, changed by hand to plant errors. Four changes to the recorded answer A. (1) Planted a breach of the policy: "Our van does not come to your area until next week, and I do not yet have a confirmed day for them." became "Our van will bring them to you on Thursday 13 March." (2) Planted a wrong figure: "I have sent her your photos, your full request and the receipt you sent, and" became "I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and". (3) To keep the reply consistent with the day it now promises: "even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands." became "even if Dana's decision is not final by then, and I will tell you where it stands." (4) Removed the assistant's notes under the reply, which describe the original wording.
 
 | # | Sentence | Key | Why |
 |---|---|---|---|
@@ -162,13 +167,13 @@ The request behind the three answers is `recorded/requests/ex3-request.txt`. Ans
 | C4 | Our van will bring them to you on Thursday 13 March. | Against the policy or Not in the material | Planted. No day has been confirmed by the warehouse (message 4), and rule 6 says never to promise one. The date is also in neither the thread nor the policy. Either mark is right. |
 | C5 | For the six damaged cartons, any credit above our limit needs approval from our operations manager, Dana Liu. | Fine | As in answer A: true to the policy (rule 3), and it promises nothing. |
 | C6 | I have sent her your photos and your request for a credit of $312.00 for the damaged cartons, and I cannot confirm an amount or a decision today. | A wrong figure | Planted. The damaged cartons come to $219.00 (6 at $36.50, message 5); $312.00 is what she spent at the cash-and-carry. Every automatic check passes this sentence: the figure is in the thread, with another meaning. |
-| C7 | I will write to you again by Wednesday 12 March, even if the delivery day or Dana's decision is not final by then, and I will tell you where each one stands. | Not in the material or Fine | As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it. |
+| C7 | I will write to you again by Wednesday 12 March, even if Dana's decision is not final by then, and I will tell you where it stands. | Not in the material or Fine | As in answer A: the date is the assistant's own proposal and not in the thread, but it promises only Tom's own action. Fine once Tom has decided he can keep it. |
 
 ### What the automatic reply check finds in each answer
 
 Use this in the debrief: the check catches some errors and misses others, which is the point of the exercise.
 
-| Answer | The figures | The two groups of 6 | No credit promised | No offer to pay other costs | No delivery day promised |
+| Answer | The figures | The two groups of 6 | Promises of a credit | Offers to pay other costs | Promises of a delivery day |
 |---|---|---|---|---|---|
 | A | OK | OK | OK | OK | OK |
 | B | OK | Look again | Look again | OK | OK |
@@ -182,12 +187,12 @@ Use this in the debrief: the check catches some errors and misses others, which 
 |---|---|---|---|
 | 1 | Our price list, as published on our website | Fine to paste | It is already public: anyone can read it on the website. Nothing in it is about a person, and nothing is secret. |
 | 2 | A paragraph for our website's news page, not yet published | Fine to paste | It is your own text, written to be published. It names no one and holds nothing confidential. |
-| 3 | A customer's complaint, with her name, e-mail address and order number | Paste after removing details or Do not paste | Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address, the business and the order number with stand-ins such as [CUSTOMER] and [ORDER], then put the real ones back in your reply. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone. |
-| 4 | The orders table: thirty rows with business names, contact people, phones and e-mails | Paste after removing details | The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer. Part 2 of this exercise does exactly that. |
+| 3 | A customer's complaint, with her name, e-mail address and order number | Paste after removing details or Do not paste | Two piles are defensible. The wording of a reply does not depend on who she is: replace her name, her e-mail address and the business with stand-ins such as [CUSTOMER], then put the real ones back in your reply. The order number means nothing outside your own company's systems, so it may stay, as it does in part 2. What would tip it to "do not paste": an employer's policy that keeps all customer correspondence out of public tools, or a complaint whose content would still point to her, or hold something sensitive, once her name is gone. |
+| 4 | The orders table: thirty rows with business names, contact people, phones and e-mails | Paste after removing details or Do not paste | Two piles are defensible. The question needs the amounts and a way to tell customers apart, not their names, phones or e-mails. Leave those columns out, replace each business with a stand-in such as Customer 01, and map the answer back on your own computer: part 2 of this exercise does exactly that. What would tip it to "do not paste": an employer's policy that keeps all customer data out of public tools, whatever is removed. |
 | 5 | The warehouse rota for next week, with staff names (invented) | Paste after removing details or Do not paste | Two piles are defensible. The pattern of shifts can be planned with Staff A, Staff B and Staff C, once the names are out and the note about sick leave is out too: it is health information about a person, and it does not change the question. What would tip it to "do not paste": in a team this small, the pattern itself can still point to the one person who has just come back from sick leave. |
 | 6 | A note from an employee's doctor (invented) | Do not paste | It is health information about a person. In a team of a dozen people, taking out the name does not hide who it is. Ask in general words instead: "How can a small warehouse plan duties for someone who cannot lift for a few weeks?" |
-| 7 | Our customer contact list: every contact name with a mobile number | Do not paste | The list is nothing but personal details: take them out and nothing is left to work on. To learn how to sort a list, paste two rows you have made up, then do the real sorting yourself. |
-| 8 | The terms of a signed supply contract with our largest customer (invented) | Do not paste | They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?" |
+| 7 | Our customer contact list: every contact name with a mobile number | Do not paste | The list is nothing but personal details: take them out and nothing is left to work on. To learn how to tidy such a list, paste two rows you have made up, then do the real list yourself. |
+| 8 | The terms of a signed supply contract with an events customer (invented) | Do not paste | They are terms you have signed to keep confidential, and the contract says so. Ask the question in general words instead: "What does a penalty clause for late delivery usually mean for a supplier?" |
 
 The piles, as a list, with each snippet's text: `solutions/ex4-sorted-snippets.md`.
 
@@ -214,9 +219,9 @@ The extract these choices produce, with the question, is `solutions/ex4-extract.
 Exercise 4b: What must not go in: the text about to be pasted
 1 OK, 0 to look at again.
 
-[OK] Nothing personal in it: I found none of the table's 27 business names, contact names, phone numbers or e-mail addresses in this text.
+[OK] This table's values, and contact details: I found none of this table's 27 business names, contact names, phone numbers or e-mail addresses, and nothing shaped like an e-mail address or a phone number. I cannot recognise other names or personal details: read the text yourself before you paste it.
 
-This check knows only the orders table in this workbook. With your own data, you are the check.
+This check knows the orders table in this workbook, and the shape of e-mail addresses and phone numbers. It does not know names in general: with your own data, you are the check.
 ```
 
 What a correct answer says, once mapped back: Halden Street Bakery has 3 orders, $2,872.50 in total; Copperleaf Catering has 2 orders, $3,146.00 in total. 17 of the 30 orders are not yet paid.
@@ -239,14 +244,14 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 | # | Objective | Best answer | Why |
 |---|---|---|---|
 | 1 | O1 | D: The limits | Nothing says what the reply must not do: for example, not to accept a credit instead of a replacement, or not to threaten to change supplier. Without limits, the assistant decides those things for you. |
-| 2 | O1 | B: "Do not promise anything the thread and the policy do not already commit us to: no credit, no change to the invoice, no delivery day." | It names exactly what not to do, and where the boundary comes from, so the assistant can word the reply around it. |
-| 3 | O2 | A: Find the figures in the thread that the credit is made of, and add them yourself. | The thread is the authority. If the parts are there, you can rebuild the total and see whether it is right: here it is not. |
-| 4 | O2 | C: "After each fact, write the number of the message it comes from." | Now each figure points to the place to look. Checking takes seconds per fact, and a fact with no source stands out. |
+| 2 | O1 | B: "Do not promise anything the e-mails and the policy do not." | It names what not to do, and where the boundary comes from, so the assistant can word the reply around it. |
+| 3 | O2 | A: Find the figures the credit is made of, and add them yourself. | The thread is the authority. If the parts are there, you can rebuild the total and see whether it is right: here it is not. |
+| 4 | O2 | C: "After each fact, name the message it is from." | Now each figure points to the place to look. Checking takes seconds per fact, and a fact with no source stands out. |
 | 5 | O3 | A: It merges two groups: 12 cartons were affected, not 6. | The same number appears twice with two meanings. Merging them halves the problem the manager has to decide on. |
-| 6 | O3 | D: It promises something the policy says must never be promised by e-mail. | Paying a customer's other costs needs the operations manager's agreement in writing (policy, rules 5 and 6). Correct figures do not make a promise allowed. |
-| 7 | O4 | C: Describe the situation in general words, with no name and no health details, and add the personal part yourself. | You get the help with the wording, and nothing about the person leaves your computer. |
-| 8 | O4 | B: The amounts, the dates and a stand-in for each customer, with the key to the stand-ins kept on your own computer. | That is everything the question needs. You map the answer back yourself. And your employer's own policy comes first: if it says no customer data at all, follow it. |
-| 9 | O5 | C: Replace the person and the order number with named placeholders, such as [MANAGER] and [ORDER NUMBER]. | A named placeholder tells the next person exactly what to put there, and a check can find any that were left unfilled. |
+| 6 | O3 | D: It promises a payment the policy rules out. | Paying a customer's other costs needs the operations manager's agreement in writing (policy, rules 5 and 6). Correct figures do not make a promise allowed. |
+| 7 | O4 | C: Ask in general words, with no name or health details. | You get the help with the wording, and nothing about the person leaves your computer. Add the personal part yourself. |
+| 8 | O4 | B: The amounts, the dates and a stand-in for each customer. | That is everything the question needs. The key to the stand-ins stays on your own computer, and you map the answer back yourself. Your employer's own policy comes first: if it says no customer data at all, follow it. |
+| 9 | O5 | C: Put named placeholders for the person and order. | A named placeholder, such as [MANAGER] or [ORDER NUMBER], tells the next person exactly what to put there, and a check can find any that were left unfilled. |
 | 10 | O5 | D: A value from the old case was left in the template. | A name or a number left in a template goes out with every use. That is why the template check looks for values of the old case. |
 
 ### Why each other option is wrong
@@ -262,82 +267,82 @@ The check needs at least 3 named placeholders, one of them for the material, no 
 
 **Question 2.** In exercise 1, the reply to the one-line request promised the customer a corrected invoice that nobody had decided on. Which line in a brief would most likely have prevented that?
 
-- **A: "Be professional."**  
-  Why not: A promise can be perfectly professional in tone. This line says nothing about what may be promised.
-- **C: "Keep it short."**  
+- **A: "Be professional, and keep a calm and friendly tone."**  
+  Why not: A promise can be perfectly professional and friendly. This line says nothing about what may be promised.
+- **C: "Keep it under 150 words, in three short paragraphs."**  
   Why not: A short reply can still promise a corrected invoice. Length and limits are different parts of the brief.
-- **D: "Write in a friendly tone."**  
-  Why not: A friendly tone makes a promise more likely, not less.
+- **D: "Use the e-mails below, and reply only to her very last message."**  
+  Why not: That is the material and the task. The recorded reply had both, and still made the promise.
 
 **Question 3.** An assistant's summary says: "The customer asks for a credit of $540.00." You cannot find that figure anywhere in the thread. What do you do first?
 
-- **B: Keep it: the assistant can add up.**  
+- **B: Keep it: assistants add up well, and the sum looks about right.**  
   Why not: Assistants can and do get sums wrong, or add figures that were never meant to be added. A figure you cannot find is a figure you have not checked.
-- **C: Delete the whole summary and write it yourself.**  
+- **C: Delete the whole summary and write a new one from the start.**  
   Why not: One wrong figure does not make the rest worthless. Check and fix it, and keep what is right.
-- **D: Ask the assistant whether it is sure.**  
+- **D: Ask the assistant whether it is sure, and keep it if it says yes.**  
   Why not: It will often say yes, or give you a different number with the same confidence. Only the material can settle it.
 
 **Question 4.** Which line in a request makes the answer quickest to check?
 
-- **A: "Be accurate."**  
+- **A: "Be accurate, and check each figure carefully."**  
   Why not: Every assistant already tries to be. This line gives you nothing to check with.
-- **B: "Double-check your work."**  
+- **B: "Double-check your work before you answer."**  
   Why not: It may change the wording, but you still cannot see where any figure came from.
-- **D: "Use bullet points."**  
+- **D: "Use short bullet points, most important first."**  
   Why not: Bullet points are easier to read, not easier to check. You would still have to search the thread for every figure.
 
 **Question 5.** The thread says 6 cartons were missing and 6 arrived crushed. A summary says: "6 cartons were missing or damaged." What is wrong?
 
-- **B: Nothing: 6 is in the thread.**  
+- **B: Nothing: 6 is in the thread, so the figure must be right.**  
   Why not: A figure can be in the thread and still be used wrongly. Here it counts two different groups of cartons.
-- **C: The number should be written in words.**  
+- **C: The figure should be written out in words.**  
   Why not: How a number is written does not make it right or wrong. What it counts does.
-- **D: It breaks the policy.**  
+- **D: It breaks a rule of the returns policy.**  
   Why not: A summary for your own manager breaks no rule of the policy. The problem is the figure, not a rule.
 
 **Question 6.** A drafted reply says: "I can confirm that we will cover the $312.00 you spent at the cash-and-carry." Every figure in it is correct. Why could it still be wrong?
 
-- **A: It is too short.**  
+- **A: It is too short to explain the decision.**  
   Why not: Length is not the problem. One short sentence can commit the company to a cost.
-- **B: The amount should be rounded.**  
+- **B: The amount should be rounded to a whole number.**  
   Why not: Rounding would make the figure less exact, and the promise would still break the policy.
-- **C: Nothing: the customer asked for it.**  
+- **C: Nothing: the customer asked for exactly that.**  
   Why not: What a customer asks for and what you may promise are different things. The reply must follow the policy.
 
 **Question 7.** You want help writing a kind message to an employee who is coming back after an injury. What is the safest way to ask a public assistant?
 
-- **A: Paste the doctor's note, so the assistant has every detail.**  
+- **A: Paste the doctor's note, so it has every detail.**  
   Why not: Health information about a person should not go into a public assistant, and the message does not need it.
-- **B: Paste the note with the name taken out.**  
+- **B: Paste the note, but with the employee's name taken out first.**  
   Why not: In a small team, everyone knows who has been off injured. Taking out the name does not hide who it is.
 - **D: Do not use an assistant for anything about staff.**  
   Why not: That is stricter than it needs to be. You can get good help without giving any personal facts.
 
 **Question 8.** Your manager asks which customers ordered most this quarter. You prepare the orders table for an assistant. What do you keep?
 
-- **A: Every column: the assistant will ignore what it does not need.**  
+- **A: Every column: it will ignore what it does not need.**  
   Why not: It may ignore it, but it has still received it. What you do not paste cannot leak.
-- **C: Only the names and phone numbers.**  
-  Why not: Those are the personal details, and the question does not need them at all.
-- **D: Nothing: this question can never be asked.**  
+- **C: The names and phone numbers, so it can tell customers apart.**  
+  Why not: Those are the personal details, and the question does not need them: a stand-in tells customers apart just as well.
+- **D: Nothing: this question can never be asked safely.**  
   Why not: It can, once the table holds nothing personal. The stand-ins make that possible.
 
 **Question 9.** A colleague's template begins: "Summarise the thread below for Dana Liu about order SO-20417, in at most 120 words." What should change before others reuse it?
 
-- **A: Nothing: it works.**  
+- **A: Nothing: it worked well the first time.**  
   Why not: It worked once, for one case. The next person would send the wrong name and the wrong order number.
-- **B: Take out the word limit.**  
+- **B: Take out the word limit, to suit longer threads.**  
   Why not: The word limit is part of the form, and it is the same every time. Keep it.
-- **D: Make it longer, so it covers more cases.**  
+- **D: Make it longer, so that it covers more kinds of case.**  
   Why not: Longer is not more reusable. What makes it reusable is taking the case's values out.
 
 **Question 10.** Someone used a template for a new customer, and the summary they got back mentions a customer from an old case. What most likely happened?
 
-- **A: The assistant invented a customer.**  
+- **A: The assistant invented a customer from nowhere.**  
   Why not: Possible, but the more likely cause is in the request itself. Check the template first.
-- **B: The template had too many placeholders.**  
+- **B: The template had too many placeholders in it.**  
   Why not: Placeholders cannot add a name: they are the places where a name is meant to go.
-- **C: The new e-mails were too long.**  
+- **C: The new e-mails were too long for the assistant to read.**  
   Why not: Long material can cause other problems, but it would not bring in a customer from an old case.
 

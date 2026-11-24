@@ -12,6 +12,7 @@ node tools/check.js 2 solutions/ex2-strong-summary.txt
 |---|---|---|
 | `ex1-strong-brief.txt` | 1: the five-part brief | Generated from the workbook's data. It is also the request behind exercise 3. |
 | `ex1-strong-reply.txt` | 1, step 3: a reply that follows the strong brief | By hand |
+| `ex2-strong-request.txt` | 2, step 1: the request with the line that asks for the source of each fact | Generated from the workbook's data. It is the request behind the recorded answer. |
 | `ex2-strong-summary.txt` | 2: the summary for the manager | By hand |
 | `ex3-annotated-answers.md` | 3: the three answers, every sentence marked, with its reason | Generated from the key |
 | `ex3-marks.txt` | 3: the key as a marks file for the checker | Generated from the key |
@@ -27,12 +28,14 @@ Generated files are rebuilt by `node tools/build.js`; CI fails if one is out of 
 
 **The brief (exercise 1).** Its *situation* says who is writing, who the customer is, and that she is partly right, which sets the tone. Its *material* is the whole thread and the policy, because the limits rely on the policy. Its *task* is one job. Its *form* names a length, a structure and the content of each paragraph. Its *limits* are four plain "Do not" sentences, each one taken from a rule of the policy, plus "use only the facts given". Each limit would have prevented one of the problems in the reply to the one-line wish.
 
-**The reply (exercise 1, step 3).** It owns the missed promise first, says what is and is not known, promises only what the writer can do himself (a call, a message), and promises no credit, no delivery day and no payment of other costs.
+**The reply (exercise 1, step 3).** It owns the missed promise first, says what is and is not known, promises only what the writer can do himself (to pass the request on today, and to write again by a day he names, even with no news), and promises no credit, no delivery day and no payment of other costs.
 
 **The summary (exercise 2).** Every figure carries the number of the message it comes from, and every citation is right. It keeps the two groups of cartons apart. It says plainly that no credit was promised, and reports the customer's claim as her claim. It puts the decision the manager has to make last, in one line, and stays inside the word limit.
 
 **The marks (exercise 3).** Each mark has a reason that points to a message or a rule of the policy. Where two marks are defensible, the key accepts both and the reason says what tips it: a delivery day both promised against the policy and found nowhere in the thread; a date the assistant chose itself, which is fine only once the writer has decided he can keep it; and "next week", which meant this week when the thread said it.
 
-**The piles and the extract (exercise 4).** Two snippets, the complaint and the rota, have two defensible piles, and their reasons say what would tip each one to "do not paste". The extract keeps the four columns the question needs, replaces each business with a stand-in, and leaves out the contact person, the phone and the e-mail. Leaving out is stronger than any stand-in.
+**The request (exercise 2, step 1).** One line in the Form part asks for the number of the message after each fact. It costs the assistant nothing, and it turns checking from a search into a glance.
+
+**The piles and the extract (exercise 4).** Three snippets, the complaint, the orders table and the rota, have two defensible piles, and their reasons say what would tip each one to "do not paste". The extract keeps the four columns the question needs, replaces each business with a stand-in, and leaves out the contact person, the phone and the e-mail. Leaving out is stronger than any stand-in.
 
 **The template (exercise 5).** Named placeholders for the material, the manager, the decision, the facts needed and the customer; nothing left from this case; the form and the limits kept, because they hold the company's rules. A first line tells the colleague what to fill in and what to check afterwards.

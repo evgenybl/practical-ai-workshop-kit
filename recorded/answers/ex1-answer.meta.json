@@ -12,18 +12,18 @@
   "edits": "none",
   "check": {
     "exercise": "reply",
-    "expect": { "numbers": "look", "counts": "ok", "credit": "ok", "costs": "ok", "date": "ok" }
+    "expect": { "numbers": "look", "counts": "ok", "credit": "look", "costs": "ok", "date": "ok" }
   },
   "strengths": [
     "It apologises first for the one promise that was clearly broken: no delivery day was confirmed by Friday.",
-    "Its figures are right, and it does not promise the credit: it says the amount is the {managerRole}'s decision."
+    "Its figures are right, and it does not promise the credit: it says it cannot approve the {money:creditAsked} itself, and that the {managerRole} will decide."
   ],
   "issues": [
-    "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" That is not in the thread, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
-    "It says \"I have also sent her your receipt\". Nobody has: in message 4, {staffFirst} sent the {managerRole} the photos and the request; the receipt arrived only in message 5.",
+    "It decides something nobody asked it to decide: \"We will issue a corrected invoice that removes those cartons.\" No one in the thread offered that, and it is not what the policy says: missing goods are sent on the next delivery run (rule 2), so the cartons are still owed, not taken off the invoice.",
+    "It says \"I have also sent her your receipt\". Nothing in the thread says anyone has: in message 4, {staffFirst} sent the {managerRole} the photos and the request, and the receipt arrived only in message 5.",
     "It promises an answer \"the same day\" to any further e-mail. The policy asks for one working day (rule 7); a same-day promise is one the writer may not be able to keep.",
-    "It commits the {managerRole} to a decision by a date (\"Dana will give you her decision by [date ...]\"): a promise made on someone else's behalf.",
-    "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that many e-mail programs would show as they are.",
-    "Its own notes under the line are useful, and incomplete. They flag the three gaps and say that nobody has agreed to the {money:creditAsked}, but say nothing about the corrected invoice or the receipt it claims was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
+    "It promises a decision from the {managerRole} by a date: \"Dana will give you her decision by [date, to be confirmed by Dana before sending].\" The bracket asks for the date to be confirmed, but the promise that she will decide by then is made on her behalf.",
+    "It cannot be sent as it is: it has three gaps in square brackets, and formatting marks (the asterisks) that an e-mail program may show as they are.",
+    "Its own notes under the line are useful, and incomplete. They list the three gaps, and say that the thread does not show anyone agreeing to any part of the {money:creditAsked}. But they treat the corrected invoice as settled, asking only for its amount, and they say nothing about the receipt the reply says was sent. They also work out a date the thread does not give (\"14 March\"): right by the calendar, but worked out, so check it."
   ]
 }

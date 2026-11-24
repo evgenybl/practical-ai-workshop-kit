@@ -19,7 +19,7 @@
   },
   "strengths": [
     "It avoids the promise that was never given: it says no credit was promised, and reports the customer's claim as hers.",
-    "It keeps the two groups of {cupsCrushed} apart, cites a message for every fact, and writes \"Not stated\" where the thread is silent, as the request asked."
+    "It keeps the two groups of {cupsCrushed} apart, ends every bullet that states a fact with the messages it comes from, and writes \"Not stated\" where the thread is silent, as the request asked."
   ],
   "issues": [
     "It ignores the word limit the request set. The checker counts the words.",
